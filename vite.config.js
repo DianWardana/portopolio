@@ -11,3 +11,6 @@ export default defineConfig({
     assetsInlineLimit: 2048,
   },
 })
+export default defineConfig({
+  base: '/portopolio/',
+})
