@@ -2566,3 +2566,5 @@ footer.foot .wrap {
     padding: 18px 16px;
   }
 }
+
+.tech-icon-card:has(.tech-icon-label:only-child) .tech-icon-img { width: 44px; }
