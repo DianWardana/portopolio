@@ -126,7 +126,7 @@ export default function ContactSection() {
         tulis('  neofetch           kartu profil ala terminal')
         tulis('  goto <bagian>      lompat ke bagian halaman')
         tulis('  theme <dark|light> ganti tema')
-        tulis('  cv                 buka / simpan CV')
+        tulis('  cv                 buka berkas CV')
         tulis('  date               waktu lokal saya')
         tulis('  clear              kosongkan layar')
         tulis('')
@@ -174,7 +174,7 @@ export default function ContactSection() {
           tulis('membuka CV...', 'ok')
           window.open(aset(profile.cv), '_blank', 'noreferrer')
         } else {
-          tulis('CV belum diunggah. Pakai Ctrl+P untuk menyimpan halaman ini sebagai PDF.', 'ok')
+          tulis('CV belum diunggah. Hubungi saya lewat email untuk memintanya.', 'ok')
         }
         tulis('')
         tampilkan(keluaran)
