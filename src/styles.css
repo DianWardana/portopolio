@@ -2470,3 +2470,99 @@ footer.foot .wrap {
     animation: none;
   }
 }
+
+/* ============================================================
+   PERBAIKAN LAYAR SEMPIT
+   ============================================================
+   Catatan: JANGAN menambal dengan `overflow-x: hidden` pada
+   html/body. .statusbar memakai position:sticky, dan membuat
+   body jadi kontainer scroll akan mematikan efek menempelnya.
+   Sumber luberan diperbaiki satu per satu di bawah ini.
+   ============================================================ */
+
+@media (max-width: 640px) {
+  /* --------------------------------------------------------
+     Bar status 90 hari
+     --------------------------------------------------------
+     90 batang x min-width 2px + 89 gap x 2px = 358px, sedangkan
+     ruang di HP 360px hanya 284px. Selisih 74px inilah yang
+     terpotong di sisi kanan.
+
+     Selain dikecilkan, batang insiden justru diberi lebar
+     minimum lebih besar. Batang setipis 2px mustahil disentuh
+     jari, padahal justru batang berwarna itulah yang perlu
+     diketuk untuk membaca ceritanya.
+     -------------------------------------------------------- */
+  .status-card {
+    padding: 16px 14px;
+  }
+  .status-bars {
+    gap: 1px;
+    height: 42px;
+  }
+  .sbar {
+    min-width: 1px;
+    border-radius: 1px;
+  }
+  .sbar.gangguan,
+  .sbar.down {
+    min-width: 7px;
+    border-radius: 2px;
+  }
+  .status-meta {
+    flex-wrap: wrap;
+    gap: 4px 12px;
+  }
+  .status-nama {
+    font-size: 13.5px;
+  }
+  .status-baris + .status-baris {
+    margin-top: 20px;
+    padding-top: 18px;
+  }
+
+  /* Teks monospace lebih kecil supaya baris panjang (log,
+     tabel neofetch) tidak terus-menerus terpotong jadi dua. */
+  .term-body,
+  .logbox {
+    font-size: 11px;
+    line-height: 1.7;
+  }
+  .term-body {
+    height: 300px;
+    padding: 12px;
+  }
+  .logbox {
+    padding: 14px;
+  }
+}
+
+/* Baris log panjang harus boleh dipotong di tengah kata,
+   sama seperti yang sudah berlaku di .tline */
+.logbox div {
+  overflow-wrap: anywhere;
+}
+
+/* Kolom fleksibel/grid secara bawaan tidak boleh menyusut di
+   bawah lebar kontennya. Tanpa min-width:0 satu anak yang lebar
+   bisa memaksa seluruh baris melebar melewati layar. */
+.status-baris,
+.pipe-grid > *,
+.contact-grid > *,
+.exp-grid > *,
+.topo-grid > * {
+  min-width: 0;
+}
+
+@media (max-width: 420px) {
+  .term-body,
+  .logbox {
+    font-size: 10.5px;
+  }
+  .status-card {
+    padding: 14px 11px;
+  }
+  .insiden-panel {
+    padding: 18px 16px;
+  }
+}
