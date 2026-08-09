@@ -629,7 +629,7 @@ export const ui = {
   label: {
     semua: 'Semua',
     lewati: 'Lewati ke konten',
-    layananNormal: 'semua layanan normal',
+    layananNormal: 'berkarier sejak 2019',
     menu: 'Menu',
     tutup: 'Tutup',
     cariPerintah: 'Cari halaman atau perintah…',

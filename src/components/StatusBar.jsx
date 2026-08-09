@@ -21,11 +21,13 @@ export default function StatusBar({ onBukaMenu, onBukaPalette }) {
         {/* Indikator kesehatan + uptime karier yang berjalan hidup.
             Ditulis satu baris penuh (nowrap) supaya tidak pernah
             terpecah jadi beberapa baris di dalam bar setinggi 60px. */}
-        <div className="health">
+       <div className="health">
           <span className="pulse" aria-hidden="true" />
-          <span className="health-teks">{ui.label.layananNormal}</span>
+          <span className="health-teks">
+            berkarier sejak {new Date(profile.mulaiKarier).getFullYear()}
+          </span>
           {uptime && (
-            <span className="uptime-live mono" title="uptime karier">
+            <span className="uptime-live mono" title="lama berkarier">
               {uptime}
             </span>
           )}
