@@ -52,7 +52,7 @@ const ICON_MAP = {
   'linux (ubuntu)': si('ubuntu', 'E95420'),
   apache2: si('apache', 'D22128'),
   'bash scripting': si('gnubash', '4EAA25'),
-  'ssh hardening': { gelap: si('openssh', 'C6D3E0'), terang: si('openssh', '1B2733') },
+  'ssh hardening': aset('icons/ssh.svg'), // ← lokal: slug 'openssh' sudah dihapus juga
   'dns & ssl': { gelap: si('letsencrypt', '5C93C7'), terang: si('letsencrypt', '003A70') },
   // Network
   mikrotik: { gelap: si('mikrotik', 'BCCBDA'), terang: si('mikrotik', '293239') },
@@ -77,13 +77,13 @@ const ICON_MAP = {
   // Workflow
   git: si('git', 'F05032'),
   'git flow': si('git', 'F05032'),
-  'vs code': si('visualstudiocode', '007ACC'),
+  'vs code': aset('icons/vscode.svg'), // ← lokal: slug resminya sudah dihapus Simple Icons
   'dokumentasi teknis': { gelap: si('markdown', 'C6D3E0'), terang: si('markdown', '1B2733') },
   // Field
   'nvr & cctv': { gelap: si('icloud', 'A3B2C0'), terang: si('icloud', '4A5A69') },
-  'jaringan alarm bank': si('amazonroute53', '8C4FFF'),
+  'jaringan alarm bank': si('bosch', 'EA0016'),
   'access control': si('adguard', '66B574'),
-  pabx: { gelap: si('cisco', '7FC4DC'), terang: si('cisco', '1BA0D7') },
+  pabx: { gelap: si('panasonic', '7FA8DC'), terang: si('panasonic', '0049AB') },
 }
 
 function getIcon(nama, tema) {
