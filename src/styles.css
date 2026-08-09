@@ -22,6 +22,13 @@
 
   --accent: var(--amber);
   --accent-wash: rgba(240, 160, 60, 0.12);
+
+  /* Dua variabel ini dipakai di beberapa tempat (kotak ikon stack,
+     bingkai foto hero) tapi tidak pernah didefinisikan. Akibatnya
+     `border: 1px solid var(--border)` jadi tidak sah dan border-nya
+     hilang sama sekali. */
+  --border: var(--line);
+  --surface-2: rgba(255, 255, 255, 0.05);
   --shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 18px 40px -24px rgba(0, 0, 0, 0.9);
 
   --display: 'Open Sans', system-ui, sans-serif;
@@ -37,11 +44,14 @@
   --bg-2: #e5ebf2;
   --panel: #ffffff;
   --panel-2: #f4f7fa;
-  --line: #d5dee8;
-  --line-2: #bcc9d7;
-  --ink: #0f1922;
-  --ink-dim: #4d6072;
-  --ink-faint: #7b8c9d;
+  --line: #ccd8e4;
+  --line-2: #adbdcd;
+  --ink: #0b141c;
+  --ink-dim: #3d5164;
+  /* Sebelumnya #7b8c9d — hanya 3,5:1 terhadap putih, di bawah ambang
+     WCAG 4,5:1 untuk teks kecil. Banyak label mono berukuran 10–11px
+     memakai warna ini, jadi paling terasa dampaknya. Sekarang 5,0:1. */
+  --ink-faint: #5e7286;
 
   --amber: #a96200;
   --green: #197f56;
@@ -51,6 +61,22 @@
 
   --accent-wash: rgba(169, 98, 0, 0.1);
   --shadow: 0 1px 2px rgba(15, 25, 34, 0.05), 0 14px 30px -22px rgba(15, 25, 34, 0.45);
+
+  /* Di tema gelap ini lapisan putih tipis; di tema terang lapisan
+     putih di atas putih jadi tidak terlihat sama sekali. */
+  --surface-2: rgba(15, 25, 34, 0.04);
+}
+
+/* Teks di dalam blok gelap (log & terminal) tetap perlu kontras tinggi
+   walau temanya terang. */
+[data-theme='light'] .logbox,
+[data-theme='light'] .term-body {
+  background: #0f1922;
+  color: #dbe4ee;
+}
+[data-theme='light'] .logbox div,
+[data-theme='light'] .tline {
+  color: #c3d0dd;
 }
 
 /* ============================================================
@@ -339,16 +365,32 @@ section.band {
   gap: 8px;
   margin-left: 12px;
 }
+/* .icon-btn memakai `display: grid` supaya ikon tunggal pas di tengah.
+   Tombol ini punya dua anak (ikon + label), dan grid tanpa arah kolom
+   menumpuk keduanya ke bawah — itulah kenapa "Ctrl K" tadi jatuh di
+   bawah ikon kacanya. inline-flex menyusunnya berdampingan. */
 .icon-btn.palette-btn {
   width: auto;
-  padding: 0 10px;
-  gap: 7px;
-  font-size: 11px;
-  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px 0 10px;
 }
 .icon-btn .kbd-hint {
+  font-family: var(--mono);
   font-size: 10px;
-  opacity: 0.65;
+  line-height: 1;
+  padding: 4px 6px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--panel-2);
+  color: var(--ink-faint);
+  letter-spacing: 0.02em;
+  transition: 0.18s;
+}
+.icon-btn.palette-btn:hover .kbd-hint {
+  border-color: var(--line-2);
+  color: var(--ink-dim);
 }
 /* Tombol menu hanya muncul di layar kecil */
 .icon-btn.menu-btn {
@@ -1391,8 +1433,24 @@ footer.foot .wrap {
   box-shadow: 0 24px 64px rgba(0,0,0,0.5);
 }
 
+/* Foto sebelumnya disembunyikan total di bawah 860px. Sekarang tetap
+   tampil, dipindah ke bawah teks dan diperkecil supaya tidak mendorong
+   tombol ajakan terlalu jauh ke bawah layar. */
 @media (max-width: 860px) {
-  .hero-kanan { display: none; }
+  .hero-kanan {
+    justify-content: center;
+    margin-top: 30px;
+  }
+  .hero-foto {
+    max-width: 240px;
+    aspect-ratio: 4 / 5;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  }
+}
+@media (max-width: 420px) {
+  .hero-foto {
+    max-width: 200px;
+  }
 }
 
 /* ============================================================
