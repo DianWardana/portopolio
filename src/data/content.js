@@ -12,6 +12,19 @@
  *  Prefix '/portopolio/' ditambahkan otomatis saat build.
  * ============================================================ */
 
+import { tahunPenuh, tahunRingkas } from '../lib/waktu'
+
+/* ------------------------------------------------------------
+ *  0. TANGGAL ACUAN KARIER
+ * ------------------------------------------------------------
+ *  Ubah di sini saja. Semua angka lama bekerja di situs —
+ *  penghitung di navbar, kartu metrik, dan rinciannya —
+ *  dihitung otomatis dari tiga tanggal ini, jadi tidak perlu
+ *  diperbarui manual tiap tahun.
+ * ---------------------------------------------------------- */
+export const MULAI_KARIER = '2019-05-01' // hari pertama sebagai IT Support (vendor)
+export const MULAI_SYSADMIN = '2025-02-01' // pindah ke PT Jayamas Medica Industri Tbk
+
 /* ------------------------------------------------------------
  *  1. IDENTITAS
  * ---------------------------------------------------------- */
@@ -27,16 +40,16 @@ export const profile = {
   labelKetersediaan: 'Terbuka untuk peluang baru',
   email: 'dianwardana.tech@gmail.com',
 
-  /* Isi kalau sudah punya. Kosongkan ('') untuk menyembunyikan tombolnya. */
-  github: '',
-  linkedin: '',
+  /* Kosongkan ('') untuk menyembunyikan tombol/tautannya. */
+  github: 'https://github.com/DianWardana',
+  linkedin: 'https://www.linkedin.com/in/dianrizkiw/',
   cv: '', // contoh: 'cv-dian.pdf' (taruh filenya di folder /public)
 
   /* File foto ada di folder /public. Tulis nama filenya saja. */
   foto: 'foto-profil.png',
 
   /* Dipakai untuk penghitung "uptime karier" hidup di navbar. */
-  mulaiKarier: '2019-05-01',
+  mulaiKarier: MULAI_KARIER,
 }
 
 /* ------------------------------------------------------------
@@ -54,11 +67,15 @@ export const metrik = [
     tren: [97.8, 98.4, 99.1, 98.9, 99.4, 99.2, 99.6, 99.3, 99.7, 99.5, 99.8, 99.6],
   },
   {
-    nilai: 7,
+    nilai: tahunPenuh(MULAI_KARIER),
     sufiks: ' tahun',
     desimal: 0,
     label: 'Pengalaman langsung',
-    catatan: 'sejak Mei 2019',
+    /* Dirinci per fase supaya jelas mana yang IT support dan mana
+       yang sysadmin. Keduanya dihitung dari tanggal acuan di atas. */
+    catatan: `${tahunRingkas(MULAI_KARIER, MULAI_SYSADMIN)} th IT support · ${tahunRingkas(
+      MULAI_SYSADMIN
+    )} th sysadmin`,
     tren: [1, 1, 2, 2, 3, 4, 4, 5, 5, 6, 6, 7],
   },
   {
