@@ -638,7 +638,6 @@ export const ui = {
     temaTerang: 'Tema terang',
     temaGelap: 'Tema gelap',
     salinEmail: 'Salin email',
-    cetakCv: 'Cetak / simpan PDF',
     hasil: 'hasil',
     stack: 'stack',
     lihatKode: 'Lihat kode',

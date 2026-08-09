@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { profile, projects, ui } from '../data/content'
 import { useKunciScroll, useTema } from '../lib/hooks'
-import { Search, Arrow, Sun, Copy, Printer, Terminal } from './Icons'
+import { Search, Arrow, Sun, Copy, Terminal } from './Icons'
 import { aset } from '../lib/aset'
 
 /* Palet perintah ala editor kode — Ctrl/Cmd + K.
@@ -60,15 +60,6 @@ export default function CommandPalette({ buka, tutup }) {
             window.location.href = `mailto:${profile.email}`
           }
           tutup()
-        },
-      },
-      {
-        grup: ui.label.tindakan,
-        label: ui.label.cetakCv,
-        ikon: Printer,
-        jalan: () => {
-          tutup()
-          setTimeout(() => window.print(), 200)
         },
       },
       {

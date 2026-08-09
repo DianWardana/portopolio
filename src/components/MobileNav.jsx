@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { profile, ui } from '../data/content'
 import { useKunciScroll, useTema } from '../lib/hooks'
-import { Close, Sun, Moon, Copy, Printer, Arrow } from './Icons'
+import { Close, Sun, Moon, Copy, Arrow } from './Icons'
 import { aset } from '../lib/aset'
 
 /* Menu navigasi untuk layar kecil.
@@ -73,17 +73,6 @@ export default function MobileNav({ buka, tutup, aktif }) {
           <button className="btn" onClick={gantiTema}>
             {tema === 'dark' ? <Sun width="14" height="14" /> : <Moon width="14" height="14" />}
             {tema === 'dark' ? ui.label.temaTerang : ui.label.temaGelap}
-          </button>
-
-          <button
-            className="btn"
-            onClick={() => {
-              tutup()
-              setTimeout(() => window.print(), 200)
-            }}
-          >
-            <Printer width="14" height="14" />
-            {ui.label.cetakCv}
           </button>
 
           {profile.cv && (

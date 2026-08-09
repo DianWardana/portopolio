@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { profile, ui } from '../data/content'
 import { useTypewriter } from '../lib/hooks'
 import { aset } from '../lib/aset'
-import { Copy, Arrow, Printer } from './Icons'
+import { Copy, Arrow } from './Icons'
 
 export default function Hero() {
   const [tersalin, setTersalin] = useState(false)
@@ -62,15 +62,10 @@ export default function Hero() {
               {tersalin ? ui.hero.tersalin : ui.hero.ctaKedua}
             </button>
 
-            {profile.cv ? (
+            {profile.cv && (
               <a className="btn" href={aset(profile.cv)} target="_blank" rel="noreferrer">
                 {ui.hero.unduhCv}
               </a>
-            ) : (
-              <button className="btn" onClick={() => window.print()}>
-                <Printer width="14" height="14" />
-                {ui.label.cetakCv}
-              </button>
             )}
           </div>
         </div>
