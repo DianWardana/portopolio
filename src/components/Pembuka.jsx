@@ -23,8 +23,8 @@ import { kurangGerak } from '../lib/hooks'
  * ============================================================ */
 
 const KUNCI = 'pembuka-tampil'
-const DURASI = 1200 // ms sebelum mulai memudar
-const MEMUDAR = 420 // ms lama transisi memudar
+const DURASI = 1900 // ms sebelum mulai memudar
+const MEMUDAR = 500 // ms lama transisi memudar
 
 export default function Pembuka() {
   const [tahap, setTahap] = useState('cek') // cek → tampil → memudar → selesai
@@ -90,7 +90,6 @@ export default function Pembuka() {
       aria-hidden="true"
     >
       <div className="pembuka-kartu">
-        <span className="pembuka-badge">{profile.inisial}</span>
         <p className="pembuka-teks">
           {ketikan}
           <span className="pembuka-kursor" />
