@@ -29,6 +29,20 @@ const SAMBUTAN = [
   { t: 'out', v: '' },
 ]
 
+/* Lama berkarier dalam tahun, dihitung dari profile.mulaiKarier.
+ * Dibuat otomatis supaya angkanya tidak basi tiap ganti tahun. */
+function tahunKarier() {
+  const a = new Date(profile.mulaiKarier)
+  if (Number.isNaN(a.getTime())) return 0
+  const b = new Date()
+  let n = b.getFullYear() - a.getFullYear()
+  const belumUlangTahun =
+    b.getMonth() < a.getMonth() ||
+    (b.getMonth() === a.getMonth() && b.getDate() < a.getDate())
+  if (belumUlangTahun) n -= 1
+  return Math.max(n, 0)
+}
+
 export default function ContactSection() {
   const [, gantiTema, setTema] = useTema()
 
@@ -255,7 +269,7 @@ export default function ContactSection() {
           '─'.repeat(28),
           `Peran     : System Administrator`,
           `Lokasi    : ${profile.lokasi}`,
-          `Uptime    : 5 tahun`,
+          `Uptime    : ${tahunKarier()} tahun`,
           `Shell     : bash`,
           `OS        : Ubuntu Server 22.04 LTS`,
           `Stack     : ${stack.length} tools`,
