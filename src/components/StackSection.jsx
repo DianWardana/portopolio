@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { stack, kategoriStack, projects, ui } from '../data/content'
 import { aset } from '../lib/aset'
+import { useTema } from '../lib/hooks'
 
 /*
  * Mapping nama tool → URL icon (SimpleIcons CDN)
@@ -20,45 +21,76 @@ import { aset } from '../lib/aset'
  *   BENAR : aset('icons/ruijie.svg')
  *   SALAH : '/icons/ruijie.svg'
  */
+const si = (slug, warna) => `https://cdn.simpleicons.org/${slug}/${warna}`
+
+/*
+ * Mapping nama tool → ikon.
+ *
+ * Nilainya boleh dua bentuk:
+ *   'https://...'                        → dipakai di kedua tema
+ *   { gelap: '...', terang: '...' }      → beda ikon per tema
+ *
+ * Bentuk kedua diperlukan karena sebagian logo resmi berwarna sangat
+ * gelap — MikroTik (#293239), OpenSSH (hitam pekat), Let's Encrypt
+ * (#003A70). Di atas latar tema gelap warna aslinya nyaris tidak
+ * terlihat, jadi versi tema gelap diberi warna terang.
+ *
+ * CARA MENAMBAH ICON BARU:
+ * 1. Tambah tool baru di src/data/content.js (di array `stack`)
+ * 2. Tambah entri baru di ICON_MAP di bawah ini
+ * 3. Cari slug-nya di https://simpleicons.org
+ *
+ * ICON CUSTOM (file sendiri di folder /public):
+ * Bungkus dengan aset(), JANGAN tulis '/icons/nama.svg' langsung.
+ * Path absolut akan 404 di GitHub Pages karena situs ini berada
+ * di sub-folder /portopolio/, bukan di root domain.
+ *   BENAR : aset('icons/ruijie.svg')
+ *   SALAH : '/icons/ruijie.svg'
+ */
 const ICON_MAP = {
   // Linux/Server
-  'linux (ubuntu)': 'https://cdn.simpleicons.org/ubuntu/E95420',
-  apache2: 'https://cdn.simpleicons.org/apache/D22128',
-  'bash scripting': 'https://cdn.simpleicons.org/gnubash/4EAA25',
-  'ssh hardening': 'https://cdn.simpleicons.org/openssh/000000',
-  'dns & ssl': 'https://cdn.simpleicons.org/letsencrypt/003A70',
+  'linux (ubuntu)': si('ubuntu', 'E95420'),
+  apache2: si('apache', 'D22128'),
+  'bash scripting': si('gnubash', '4EAA25'),
+  'ssh hardening': { gelap: si('openssh', 'C6D3E0'), terang: si('openssh', '1B2733') },
+  'dns & ssl': { gelap: si('letsencrypt', '5C93C7'), terang: si('letsencrypt', '003A70') },
   // Network
-  mikrotik: 'https://cdn.simpleicons.org/mikrotik/293239',
-  'vlan / switch': 'https://cdn.simpleicons.org/cisco/1BA0D7',
-  'network design': 'https://cdn.simpleicons.org/wireshark/1679A7',
+  mikrotik: { gelap: si('mikrotik', 'BCCBDA'), terang: si('mikrotik', '293239') },
+  'vlan / switch': { gelap: si('mikrotik', 'BCCBDA'), terang: si('mikrotik', '293239') },
+  'network design': si('wireshark', '1679A7'),
   ruijie: aset('icons/ruijie.svg'), // ← icon custom milikmu sendiri
   // Virtualisasi
-  docker: 'https://cdn.simpleicons.org/docker/2496ED',
-  'vmware esxi': 'https://cdn.simpleicons.org/vmware/607078',
-  proxmox: 'https://cdn.simpleicons.org/proxmox/E57000',
+  docker: si('docker', '2496ED'),
+  'vmware esxi': { gelap: si('vmware', '9AA9B4'), terang: si('vmware', '607078') },
+  proxmox: si('proxmox', 'E57000'),
   // Database
-  'mysql / mariadb': 'https://cdn.simpleicons.org/mysql/4479A1',
-  phpmyadmin: 'https://cdn.simpleicons.org/phpmyadmin/6C78AF',
+  'mysql / mariadb': si('mysql', '4479A1'),
+  phpmyadmin: si('phpmyadmin', '8A94C8'),
   // Security
-  'ufw firewall': 'https://cdn.simpleicons.org/linux/FCC624',
-  fail2ban: 'https://cdn.simpleicons.org/hackthebox/9FEF00',
-  'server hardening': 'https://cdn.simpleicons.org/keepassxc/6CAC4D',
+  'ufw firewall': si('linux', 'FCC624'),
+  fail2ban: si('hackthebox', '9FEF00'),
+  'server hardening': si('keepassxc', '6CAC4D'),
   // Monitoring
-  grafana: 'https://cdn.simpleicons.org/grafana/F46800',
-  prometheus: 'https://cdn.simpleicons.org/prometheus/E6522C',
-  netdata: 'https://cdn.simpleicons.org/netdata/00AB44',
+  grafana: si('grafana', 'F46800'),
+  prometheus: si('prometheus', 'E6522C'),
+  netdata: si('netdata', '00AB44'),
   // Field
-  'nvr & cctv': 'https://cdn.simpleicons.org/icloud/555555',
-  'jaringan alarm bank': 'https://cdn.simpleicons.org/amazonroute53/8C4FFF',
-  'access control': 'https://cdn.simpleicons.org/adguard/66B574',
+  'nvr & cctv': { gelap: si('icloud', 'A3B2C0'), terang: si('icloud', '4A5A69') },
+  'jaringan alarm bank': si('amazonroute53', '8C4FFF'),
+  'access control': si('adguard', '66B574'),
+  pabx: { gelap: si('cisco', '7FC4DC'), terang: si('cisco', '1BA0D7') },
 }
 
-function getIcon(nama) {
-  return ICON_MAP[nama.toLowerCase()] || null
+function getIcon(nama, tema) {
+  const entri = ICON_MAP[nama.toLowerCase()]
+  if (!entri) return null
+  if (typeof entri === 'string') return entri
+  return tema === 'light' ? entri.terang : entri.gelap
 }
 
 export default function StackSection({ onPilihTag }) {
   const [aktif, setAktif] = useState('Semua')
+  const [tema] = useTema()
 
   const daftar = aktif === 'Semua' ? stack : stack.filter((s) => s.kategori === aktif)
 
@@ -98,7 +130,7 @@ export default function StackSection({ onPilihTag }) {
 
         <div className="tech-icon-grid" data-reveal>
           {daftar.map((s, i) => {
-            const iconUrl = getIcon(s.nama)
+            const iconUrl = getIcon(s.nama, tema)
             const n = jumlahProject[s.nama] || 0
             const bisaKlik = n > 0
 
