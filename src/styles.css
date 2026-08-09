@@ -6,9 +6,9 @@
 :root {
   --bg: #0d141c;
   --bg-2: #111a24;
-  --panel: rgba(255, 255, 255, 0.055);
-  --panel-2: rgba(255, 255, 255, 0.085);
-  --line: rgba(255, 255, 255, 0.10);
+  --panel: rgba(255, 255, 255, 0.07);
+  --panel-2: rgba(255, 255, 255, 0.11);
+  --line: rgba(255, 255, 255, 0.14);
   --line-2: rgba(255, 255, 255, 0.17);
   --ink: #e9eef4;
   --ink-dim: #8fa1b3;
@@ -29,9 +29,9 @@
      buram ada gunanya, di belakang halaman dipasang gradasi warna
      (lihat body::before) — kaca di atas warna datar hanya akan
      terlihat seperti abu-abu biasa. */
-  --kaca: rgba(255, 255, 255, 0.055);
-  --kaca-kuat: rgba(255, 255, 255, 0.085);
-  --kaca-tepi: rgba(255, 255, 255, 0.10);
+  --kaca: rgba(255, 255, 255, 0.07);
+  --kaca-kuat: rgba(255, 255, 255, 0.11);
+  --kaca-tepi: rgba(255, 255, 255, 0.14);
   --kaca-tepi-kuat: rgba(255, 255, 255, 0.16);
   --kaca-buram: blur(26px) saturate(165%);
   --kaca-buram-tipis: blur(14px) saturate(140%);
@@ -489,8 +489,10 @@ section.band {
   }
 }
 @media (max-width: 420px) {
+  /* Badge DRW sudah dilepas, jadi nama tidak boleh ikut disembunyikan —
+     kalau tidak, sudut kiri navbar jadi kosong sama sekali. */
   .brand-nama {
-    display: none;
+    display: inline;
   }
 }
 
@@ -2621,15 +2623,31 @@ footer.foot .wrap {
 body::before {
   content: '';
   position: fixed;
-  inset: -20vmax;
+  /* inset HARUS 0. Versi sebelumnya memakai -20vmax, yang membesarkan
+     elemen ini jauh melampaui layar — akibatnya posisi persen seperti
+     "12% 8%" dihitung terhadap kotak raksasa itu, dan keempat pusat
+     gumpalan warna terlempar ke luar layar. Yang tersisa hanya ekor
+     gradasi yang sudah nyaris transparan, jadi aurora tidak kelihatan
+     sama sekali. */
+  inset: 0;
   z-index: -2;
   pointer-events: none;
   background:
-    radial-gradient(38vmax 32vmax at 12% 8%, rgba(240, 160, 60, 0.16), transparent 62%),
-    radial-gradient(34vmax 30vmax at 88% 14%, rgba(85, 185, 216, 0.14), transparent 62%),
-    radial-gradient(40vmax 34vmax at 72% 78%, rgba(155, 140, 240, 0.13), transparent 64%),
-    radial-gradient(30vmax 28vmax at 22% 88%, rgba(63, 191, 135, 0.10), transparent 62%);
+    radial-gradient(46vmax 40vmax at 10% 4%, rgba(240, 160, 60, 0.26), transparent 60%),
+    radial-gradient(42vmax 38vmax at 92% 12%, rgba(85, 185, 216, 0.22), transparent 60%),
+    radial-gradient(48vmax 42vmax at 78% 82%, rgba(155, 140, 240, 0.2), transparent 62%),
+    radial-gradient(38vmax 34vmax at 16% 92%, rgba(63, 191, 135, 0.16), transparent 60%);
   animation: aurora 34s ease-in-out infinite alternate;
+}
+
+/* Warna yang sama terasa jauh lebih pekat di atas latar cerah,
+   jadi tema terang memakai kepekatan sendiri yang lebih rendah. */
+[data-theme='light'] body::before {
+  background:
+    radial-gradient(46vmax 40vmax at 10% 4%, rgba(214, 138, 42, 0.2), transparent 60%),
+    radial-gradient(42vmax 38vmax at 92% 12%, rgba(46, 150, 190, 0.18), transparent 60%),
+    radial-gradient(48vmax 42vmax at 78% 82%, rgba(126, 108, 224, 0.16), transparent 62%),
+    radial-gradient(38vmax 34vmax at 16% 92%, rgba(40, 168, 116, 0.14), transparent 60%);
 }
 
 /* Kisi tipis di atas aurora — jejak tema blueprint tetap dipertahankan
@@ -2654,17 +2672,13 @@ body::after {
     transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
-    transform: translate3d(2%, -2%, 0) scale(1.06);
+    transform: translate3d(1.5%, -1.5%, 0) scale(1.08);
   }
   100% {
-    transform: translate3d(-2%, 1.5%, 0) scale(1.02);
+    transform: translate3d(-1.5%, 1%, 0) scale(1.04);
   }
 }
 
-[data-theme='light'] body::before,
-body[data-x]::before {
-  opacity: 1;
-}
 [data-theme='light'] body::after {
   opacity: 0.5;
 }
