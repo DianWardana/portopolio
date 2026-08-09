@@ -11,7 +11,7 @@ export default function ExperienceSection() {
           <h2>{ui.pengalamanJudul}</h2>
         </div>
 
-        <div className="exp-grid">
+        <div className={`exp-grid${sertifikasi.length ? '' : ' tanpa-cert'}`}>
           <div className="tl" data-reveal>
             {pengalaman.map((e) => (
               <div className="tl-item" key={e.posisi + e.perusahaan}>
@@ -27,6 +27,7 @@ export default function ExperienceSection() {
             ))}
           </div>
 
+          {sertifikasi.length > 0 && (
           <aside className="cert" data-reveal>
             <h4>{ui.label.sertifikasi}</h4>
             {sertifikasi.map((s) => {
@@ -59,6 +60,7 @@ export default function ExperienceSection() {
               )
             })}
           </aside>
+          )}
         </div>
       </div>
     </section>

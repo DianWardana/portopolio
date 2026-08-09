@@ -1137,6 +1137,11 @@ section.band {
   gap: clamp(24px, 5vw, 56px);
   align-items: start;
 }
+/* Dipakai saat array `sertifikasi` di content.js masih kosong —
+   tanpa ini, riwayat pekerjaan tetap menyisakan kolom kanan yang menganga. */
+.exp-grid.tanpa-cert {
+  grid-template-columns: 1fr;
+}
 .tl {
   border-left: 1px solid var(--line-2);
   padding-left: 26px;

@@ -626,10 +626,18 @@ export const pengalaman = [
 /* ------------------------------------------------------------
  *  9. SERTIFIKASI
  * ---------------------------------------------------------- */
-export const sertifikasi = [
-  { nama: 'MikroTik Certified Network Associate (MTCNA)', penerbit: 'MikroTik', tahun: '', url: '' },
-  { nama: 'Linux Server Administration', penerbit: 'Praktik Mandiri', tahun: '', url: '' },
-]
+/* Selama array ini kosong, kolom "Sertifikasi" otomatis disembunyikan
+ * dan daftar riwayat pekerjaan melebar memenuhi lebar penuh.
+ *
+ * Untuk memunculkannya lagi, cukup isi array ini — tidak ada file lain
+ * yang perlu disentuh. Formatnya:
+ *
+ *   { nama: 'MikroTik Certified Network Associate (MTCNA)',
+ *     penerbit: 'MikroTik',
+ *     tahun: '2026',
+ *     url: 'https://...' },   // kosongkan '' kalau tidak ada tautan
+ */
+export const sertifikasi = []
 
 /* ------------------------------------------------------------
  *  10. TERMINAL INTERAKTIF
