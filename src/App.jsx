@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { profile, ui } from './data/content'
 import { useReveal, useScrollSpy } from './lib/hooks'
 
+import Pembuka from './components/Pembuka'
 import StatusBar from './components/StatusBar'
 import MobileNav from './components/MobileNav'
 import CommandPalette from './components/CommandPalette'
@@ -67,6 +68,8 @@ export default function App() {
 
   return (
     <>
+      <Pembuka />
+
       <a className="skip" href="#pipeline">
         {ui.label.lewati}
       </a>
