@@ -80,6 +80,7 @@ export default function App() {
         <span className="a4" />
       </div>
       <div className="aurora-kisi" aria-hidden="true" />
+      <div className="aurora-tekstur" aria-hidden="true" />
 
       <a className="skip" href="#pipeline">
         {ui.label.lewati}

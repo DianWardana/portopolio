@@ -2894,126 +2894,179 @@ body {
 }
 
 /* ============================================================
-   AURORA — LAPISAN WARNA DI BELAKANG SELURUH HALAMAN
+   LATAR HALAMAN — TUMPUKAN LIMA LAPISAN
    ============================================================
-   Inilah yang diburamkan panel-panel kaca di atasnya. Tanpa ini,
-   backdrop-filter tidak punya apa pun untuk diburamkan dan panel
-   hanya tampak seperti abu-abu biasa.
+   Gradasi warna saja selalu terbaca datar, seberapa pun bagus
+   warnanya. Yang membuat sebuah latar terasa dirancang adalah
+   lapisan: warna, struktur, dan butiran halus yang menyatukannya.
 
-   Dibuat sebagai elemen nyata, bukan body::before, karena dua
-   alasan:
-   1. Satu elemen hanya boleh punya satu ::before. Stylesheet ini
-      sudah memakainya untuk kisi blueprint, jadi aturan aurora
-      akan bergabung dengan aturan kisi — ikut terkena opacity dan
-      mask milik kisi, lalu hilang tak terlihat.
-   2. z-index negatif membuat urutan lukis bergantung pada apakah
-      induknya membentuk stacking context. Dengan elemen nyata
-      ber-z-index 0 dan isi halaman di z-index 1, urutannya pasti.
+   Urutan dari bawah ke atas:
+     1. body            — gradasi dasar
+     2. .aurora         — gumpalan warna lembut
+     3. .aurora-kisi    — kisi blueprint dua tingkat
+     4. .aurora-tekstur — butiran + vignette
+     5. main / .foot    — isi halaman (z-index 1)
+
+   Semuanya position: fixed, jadi diam saat halaman digulir —
+   inilah yang membuat panel kaca terasa melayang di atasnya.
+
+   Dibuat sebagai elemen nyata, bukan body::before, karena satu
+   elemen hanya boleh punya satu ::before — dan stylesheet ini
+   sudah memakainya. Aturan yang bertabrakan akan bergabung diam-
+   diam, lalu efeknya hilang tanpa jejak.
    ============================================================ */
+
+:root {
+  --kisi-mayor: rgba(255, 255, 255, 0.055);
+  --kisi-minor: rgba(255, 255, 255, 0.022);
+  --butiran: 0.05;
+  --vignette: rgba(0, 0, 0, 0.42);
+  --cahaya-atas: rgba(255, 255, 255, 0.05);
+}
+[data-theme='light'] {
+  --kisi-mayor: rgba(15, 25, 34, 0.05);
+  --kisi-minor: rgba(15, 25, 34, 0.022);
+  --butiran: 0.035;
+  --vignette: rgba(15, 25, 34, 0.1);
+  --cahaya-atas: rgba(255, 255, 255, 0.65);
+}
+
 .aurora,
-.aurora-kisi {
+.aurora-kisi,
+.aurora-tekstur {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
 }
+
+/* ---------- 1. Gradasi dasar ---------- */
+body {
+  background:
+    linear-gradient(180deg, var(--cahaya-atas) 0%, transparent 38%),
+    linear-gradient(168deg, var(--bg) 0%, var(--bg-2) 46%, var(--bg) 100%);
+  background-attachment: fixed;
+}
+
+/* ---------- 2. Gumpalan warna ---------- */
 .aurora {
   overflow: hidden;
 }
-
 .aurora span {
   position: absolute;
   display: block;
   border-radius: 50%;
-  /* Gumpalan sengaja tidak dibuat selebar layar. Gradasi yang
-     terlalu melebar berubah jadi warna rata — justru tidak terbaca
-     sebagai aurora. Lebih rapat + blur tebal terlihat jauh lebih
-     hidup. */
-  filter: blur(70px);
+  /* Blur 55px, bukan 70px. Terlalu buram membuat gumpalan kehilangan
+     bentuk dan berubah jadi kabut rata — persis yang bikin latar
+     terasa polos. Sedikit lebih tegas justru terlihat lebih bersih. */
+  filter: blur(55px);
   will-change: transform;
 }
 .aurora .a1 {
-  width: 44vmax;
-  height: 38vmax;
-  left: -8vmax;
-  top: -10vmax;
-  background: radial-gradient(circle, rgba(240, 160, 60, 0.5), transparent 70%);
+  width: 42vmax;
+  height: 34vmax;
+  left: -4vmax;
+  top: -8vmax;
+  background: radial-gradient(circle, rgba(240, 160, 60, 0.42), transparent 68%);
   animation: aurora-1 26s ease-in-out infinite alternate;
 }
 .aurora .a2 {
-  width: 40vmax;
-  height: 36vmax;
-  right: -8vmax;
-  top: -6vmax;
-  background: radial-gradient(circle, rgba(85, 185, 216, 0.42), transparent 70%);
+  width: 36vmax;
+  height: 32vmax;
+  right: -6vmax;
+  top: 2vmax;
+  background: radial-gradient(circle, rgba(85, 185, 216, 0.36), transparent 68%);
   animation: aurora-2 31s ease-in-out infinite alternate;
 }
 .aurora .a3 {
-  width: 46vmax;
-  height: 42vmax;
-  right: 2vmax;
-  bottom: -14vmax;
-  background: radial-gradient(circle, rgba(155, 140, 240, 0.4), transparent 70%);
+  width: 44vmax;
+  height: 38vmax;
+  right: 6vmax;
+  bottom: -12vmax;
+  background: radial-gradient(circle, rgba(155, 140, 240, 0.34), transparent 68%);
   animation: aurora-3 35s ease-in-out infinite alternate;
 }
 .aurora .a4 {
-  width: 36vmax;
-  height: 32vmax;
+  width: 34vmax;
+  height: 30vmax;
   left: -6vmax;
-  bottom: -10vmax;
-  background: radial-gradient(circle, rgba(63, 191, 135, 0.34), transparent 70%);
+  bottom: 2vmax;
+  background: radial-gradient(circle, rgba(63, 191, 135, 0.28), transparent 68%);
   animation: aurora-4 29s ease-in-out infinite alternate;
 }
 
-/* Warna yang sama terasa jauh lebih menyala di atas latar cerah,
-   jadi tema terang memakai kepekatan sendiri yang lebih rendah. */
 [data-theme='light'] .aurora .a1 {
-  background: radial-gradient(circle, rgba(214, 138, 42, 0.3), transparent 70%);
+  background: radial-gradient(circle, rgba(219, 141, 40, 0.3), transparent 68%);
 }
 [data-theme='light'] .aurora .a2 {
-  background: radial-gradient(circle, rgba(46, 150, 190, 0.26), transparent 70%);
+  background: radial-gradient(circle, rgba(42, 149, 192, 0.26), transparent 68%);
 }
 [data-theme='light'] .aurora .a3 {
-  background: radial-gradient(circle, rgba(126, 108, 224, 0.24), transparent 70%);
+  background: radial-gradient(circle, rgba(122, 104, 226, 0.24), transparent 68%);
 }
 [data-theme='light'] .aurora .a4 {
-  background: radial-gradient(circle, rgba(40, 168, 116, 0.2), transparent 70%);
+  background: radial-gradient(circle, rgba(36, 168, 114, 0.2), transparent 68%);
 }
 
 @keyframes aurora-1 {
   to {
-    transform: translate3d(8vmax, 5vmax, 0) scale(1.15);
+    transform: translate3d(7vmax, 4vmax, 0) scale(1.14);
   }
 }
 @keyframes aurora-2 {
   to {
-    transform: translate3d(-7vmax, 7vmax, 0) scale(1.12);
+    transform: translate3d(-6vmax, 6vmax, 0) scale(1.1);
   }
 }
 @keyframes aurora-3 {
   to {
-    transform: translate3d(-6vmax, -6vmax, 0) scale(1.18);
+    transform: translate3d(-5vmax, -5vmax, 0) scale(1.16);
   }
 }
 @keyframes aurora-4 {
   to {
-    transform: translate3d(6vmax, -5vmax, 0) scale(1.1);
+    transform: translate3d(5vmax, -4vmax, 0) scale(1.08);
   }
 }
 
-/* Kisi blueprint, kini di atas aurora — identitas sysadmin tetap
-   terjaga supaya tidak berubah jadi sekadar kaca generik. */
+/* ---------- 3. Kisi blueprint dua tingkat ---------- */
+/* Kertas milimeter sungguhan punya garis halus rapat dan garis tebal
+   tiap beberapa kotak. Dua tingkat inilah yang memberi kesan
+   terstruktur — kisi satu tingkat cuma terbaca sebagai pola. */
 .aurora-kisi {
   background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 72px 72px;
-  opacity: 0.45;
-  mask-image: radial-gradient(ellipse 95% 75% at 50% 0%, #000 5%, transparent 78%);
-  -webkit-mask-image: radial-gradient(ellipse 95% 75% at 50% 0%, #000 5%, transparent 78%);
+    linear-gradient(var(--kisi-mayor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--kisi-mayor) 1px, transparent 1px),
+    linear-gradient(var(--kisi-minor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--kisi-minor) 1px, transparent 1px);
+  background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
+  mask-image: radial-gradient(ellipse 110% 85% at 50% 0%, #000 8%, transparent 82%);
+  -webkit-mask-image: radial-gradient(ellipse 110% 85% at 50% 0%, #000 8%, transparent 82%);
 }
 
-/* Seluruh isi halaman berada di atas aurora */
+/* ---------- 4. Butiran + vignette ---------- */
+/* Butiran halus adalah satu hal yang paling ampuh membuat gradasi
+   berhenti terlihat "polos". Sekaligus menghilangkan banding —
+   garis-garis tangga yang muncul pada gradasi lembut di layar 8-bit.
+   Vignette menggelapkan tepi sedikit supaya mata tertarik ke tengah. */
+/* Elemen induk hanya membawa vignette. Butiran ditaruh di ::after
+   dengan opasitasnya sendiri — kalau digabung di sini, keduanya
+   terpaksa berbagi satu nilai opacity dan butirannya akan tampil
+   pada kepekatan penuh. */
+.aurora-tekstur {
+  background-image:
+    radial-gradient(ellipse 125% 105% at 50% 42%, transparent 42%, var(--vignette) 100%);
+}
+.aurora-tekstur::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: var(--butiran);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* ---------- 5. Isi halaman selalu di atas ---------- */
 main,
 .foot,
 .skip {
@@ -3021,22 +3074,22 @@ main,
   z-index: 1;
 }
 
-/* Latar dasar sedikit bergradasi supaya aurora punya kedalaman */
-body {
-  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 55%, var(--bg) 100%);
-  background-attachment: fixed;
-}
-
-/* Gerak minimal: aurora diam, tidak dihilangkan */
+/* Gerak minimal: gumpalan diam, latar tetap utuh */
 @media (prefers-reduced-motion: reduce) {
   .aurora span {
     animation: none !important;
   }
 }
 
-/* HP: blur elemen aurora diringankan supaya gulir tetap lancar */
+/* HP: blur diringankan dan butiran dimatikan demi kelancaran gulir */
 @media (max-width: 640px) {
   .aurora span {
-    filter: blur(50px);
+    filter: blur(45px);
+  }
+  .aurora-tekstur::after {
+    display: none;
+  }
+  .aurora-kisi {
+    background-size: 72px 72px, 72px 72px, 24px 24px, 24px 24px;
   }
 }
