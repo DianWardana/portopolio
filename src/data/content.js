@@ -26,7 +26,7 @@ export const profile = {
   cv: '',
   // Taruh foto di folder /public, lalu tulis '/foto.jpg' (atau .png, .webp)
   // Kosongkan ('') kalau belum punya — akan tampil inisial sebagai gantinya.
-  foto: '/foto-profil.png',
+  foto: '/portopolio/foto-profil.png'
 }
 
 /* ------------------------------------------------------------
