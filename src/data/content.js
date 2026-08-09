@@ -98,91 +98,198 @@ export const metrik = [
  *  3. PIPELINE — Alur Kerja Harian Sysadmin
  * ---------------------------------------------------------- */
 export const pipeline = [
+  /* ---------- FASE 1: FONDASI ----------
+     Infrastruktur harus berdiri lebih dulu. Tidak ada gunanya
+     merancang sistem kalau tempat menjalankannya belum siap. */
   {
-    id: 'deploy',
-    nama: 'Deploy',
-    durasi: 'on demand',
-    ringkas: 'Deploy manual ke server & VPS: Apache2, PHP/CI4, MySQL, Docker multi-container.',
-    tools: ['Apache2', 'Docker', 'Git'],
+    id: 'konfigurasi',
+    fase: 'Fondasi',
+    nama: 'Konfigurasi',
+    durasi: 'baseline',
+    ringkas:
+      'Menyiapkan server dari kondisi kosong: sistem operasi, paket dasar, layanan, dan pengguna. Setiap langkah dicatat supaya bisa diulang persis di server berikutnya.',
+    tools: ['Ubuntu Server', 'Bash', 'Apache2'],
     log: [
-      '$ git pull origin main',
-      'Already up to date.',
-      '$ docker compose up -d --build',
-      'Container app_web    Started',
-      'Container app_db     Running',
-      'Container app_cache  Running',
-      '13 container aktif',
+      '$ hostnamectl set-hostname app-prod-01',
+      '$ apt update && apt upgrade -y',
+      '$ timedatectl set-timezone Asia/Jakarta',
+      'User & group  : dibuat, sudo dibatasi per peran',
+      'Layanan dasar : apache2, mysql, docker',
+      'Dokumentasi   : tiap langkah dicatat saat dikerjakan',
     ],
   },
   {
-    id: 'network',
-    nama: 'Network',
+    id: 'jaringan',
+    fase: 'Fondasi',
+    nama: 'Jaringan',
     durasi: 'managed',
-    ringkas: 'VLAN segmentation, MikroTik queue & firewall, bandwidth management, filtering.',
-    tools: ['MikroTik', 'Ruijie', 'UniFi'],
+    ringkas:
+      'Menentukan alamat, segmentasi VLAN, dan jalur akses. Server tidak pernah ditaruh di segmen yang sama dengan laptop karyawan.',
+    tools: ['MikroTik', 'VLAN', 'PPTP'],
     log: [
       '$ /ip firewall filter print',
-      'Firewall rules   : 100+ aktif',
-      'Blocked domain   : YouTube, apps filter',
-      'VLAN segment     : 6 zona aktif',
-      'Bandwidth queue  : per-user limit aktif',
+      'Firewall rules : 100+ aktif',
+      'VLAN aktif     : 6 zona terpisah',
+      'Simple queue   : batas bandwidth per user',
+      'PPTP           : jalur akses dari luar kantor',
+      'Zona server    : tidak dapat dijangkau VLAN tamu',
     ],
   },
   {
-    id: 'secure',
-    nama: 'Harden',
-    durasi: 'baseline',
-    ringkas: 'SSH port custom, root login dimatikan, UFW whitelist-based, Fail2Ban aktif.',
+    id: 'security',
+    fase: 'Fondasi',
+    nama: 'Security',
+    durasi: 'wajib',
+    ringkas:
+      'Pengerasan dilakukan sebelum layanan dibuka, bukan sesudah ada masalah. Termasuk notifikasi setiap login yang masuk ke server.',
     tools: ['UFW', 'Fail2Ban', 'SSH'],
     log: [
+      '$ ufw status verbose',
+      'Default          : deny (incoming)',
       '$ fail2ban-client status sshd',
       'Currently banned : 312 IP',
-      'Total banned     : 1.847 IP',
-      'UFW default: deny (incoming)',
-      'Root login: disabled',
+      'Root login       : disabled',
+      'Notifikasi login : terkirim ke Telegram',
+    ],
+  },
+
+  /* ---------- FASE 2: PERANCANGAN ----------
+     Tahap yang paling sering dilewati orang, dan paling sering
+     jadi sebab sistem selesai dibangun tapi tidak terpakai. */
+  {
+    id: 'analisa',
+    fase: 'Perancangan',
+    nama: 'Analisa Bisnis',
+    durasi: 'awal',
+    ringkas:
+      'Memetakan cara kerja departemen yang meminta — mencari apa yang sebenarnya dibutuhkan, bukan sekadar menuruti apa yang diminta di permukaan.',
+    tools: ['Wawancara', 'Observasi', 'Pemetaan Proses'],
+    log: [
+      '# Permintaan     : sistem pencatatan aset',
+      '# Departemen     : Umum & GA',
+      'Proses berjalan  : dicatat manual di spreadsheet',
+      'Titik masalah    : data ganda, sulit ditelusuri',
+      'Kebutuhan nyata  : riwayat perpindahan aset',
+      'Catatan          : yang diminta != yang dibutuhkan',
     ],
   },
   {
+    id: 'flowchart',
+    fase: 'Perancangan',
+    nama: 'Flowchart',
+    durasi: 'sepakat',
+    ringkas:
+      'Menuangkan alur proses jadi gambar, supaya semua pihak melihat gambaran yang sama sebelum satu baris kode ditulis.',
+    tools: ['Flowchart', 'Review', 'Persetujuan'],
+    log: [
+      '# Alur disusun lalu ditinjau bersama pemohon',
+      'Aktor          : staf gudang, admin, manajer',
+      'Titik putusan  : 4 percabangan',
+      'Revisi         : 2 kali sebelum disepakati',
+      'Status         : disetujui sebelum lanjut',
+    ],
+  },
+  {
+    id: 'blueprint',
+    fase: 'Perancangan',
+    nama: 'Blueprint',
+    durasi: 'serah',
+    ringkas:
+      'Rancangan yang siap dikerjakan developer: struktur data, hak akses, dan batasan. Developer menerima rancangan, bukan tebakan.',
+    tools: ['Blueprint Sistem', 'Struktur Data', 'Hak Akses'],
+    log: [
+      '# Blueprint diserahkan ke tim developer',
+      'Entitas    : aset, lokasi, riwayat, pengguna',
+      'Hak akses  : 3 peran dengan batas berbeda',
+      'Batasan    : aset tidak dihapus, hanya ditandai',
+      'Lampiran   : flowchart + contoh tampilan',
+    ],
+  },
+
+  /* ---------- FASE 3: RILIS ---------- */
+  {
+    id: 'testing',
+    fase: 'Rilis',
+    nama: 'Testing',
+    durasi: 'iterasi',
+    ringkas:
+      'Diuji terhadap flowchart yang sudah disepakati, bukan terhadap selera. Yang belum sesuai dikembalikan ke developer.',
+    tools: ['Test Case', 'Git', 'Review'],
+    log: [
+      '$ git checkout develop',
+      'Test case      : 24 skenario',
+      'Lolos          : 21',
+      'Dikembalikan   : 3 ke developer',
+      'Acuan uji      : flowchart yang disepakati',
+    ],
+  },
+  {
+    id: 'staging',
+    fase: 'Rilis',
+    nama: 'Staging',
+    durasi: 'cermin',
+    ringkas:
+      'Dijalankan di lingkungan yang menyerupai produksi. Kalau gagal di sini, tidak ada satu pun pengguna yang terdampak.',
+    tools: ['Docker', 'Git Flow', 'Apache2'],
+    log: [
+      '$ git flow release start v1.2.0',
+      '$ docker compose -f staging.yml up -d',
+      'Container      : 5 aktif',
+      'Data           : salinan produksi yang disamarkan',
+      'Diuji oleh     : pemohon langsung, bukan saya',
+    ],
+  },
+  {
+    id: 'deploy',
+    fase: 'Rilis',
+    nama: 'Deploy',
+    durasi: 'terjadwal',
+    ringkas:
+      'Rilis ke produksi mengikuti langkah yang sudah tertulis. Reverse proxy mengarahkan subdomain ke layanan yang benar.',
+    tools: ['Git Flow', 'Docker', 'Reverse Proxy'],
+    log: [
+      '$ git flow release finish v1.2.0',
+      '$ git pull origin main',
+      '$ docker compose up -d --build',
+      'Container app_web    Started',
+      'Reverse proxy        : subdomain diarahkan',
+      'Langkah              : mengikuti dokumentasi rilis',
+    ],
+  },
+
+  /* ---------- FASE 4: OPERASIONAL ----------
+     Rilis bukan garis akhir. Di sinilah sistem hidup atau mati. */
+  {
     id: 'backup',
+    fase: 'Operasional',
     nama: 'Backup',
     durasi: 'cron',
-    ringkas: 'Backup database multi-instance otomatis via cron, strategi recovery siap pakai.',
-    tools: ['Cron', 'MySQL', 'MariaDB'],
+    ringkas:
+      'Sistem baru masuk skema backup di hari rilis, bukan menyusul kemudian. Setiap backup diikuti percobaan restore.',
+    tools: ['Cron', 'MySQL', 'Telegram'],
     log: [
       '$ crontab -l | grep backup',
       '0 2 * * * /scripts/db-backup-all.sh',
-      'Backup db_produksi  : ok  [02:00]',
-      'Backup db_laporan   : ok  [02:04]',
-      'Backup db_arsip     : ok  [02:07]',
-      'Retention: 30 hari',
+      'Retensi        : 30 hari',
+      'Uji restore    : dijalankan tiap backup',
+      'Notifikasi     : status terkirim ke Telegram',
     ],
   },
   {
-    id: 'resolve',
-    nama: 'Resolve',
-    durasi: 'on-call',
-    ringkas: 'Troubleshooting real case: HTTP 500, network drop, service mati, akses terkunci.',
-    tools: ['Bash', 'journalctl', 'tcpdump'],
-    log: [
-      '$ journalctl -u apache2 --since "1h ago"',
-      'Error: PHP Fatal error CI4 config',
-      'Action: fix env, reload apache2',
-      'Service restored in < 5 menit',
-      'Root cause: env variable missing after deploy',
-    ],
-  },
-  {
-    id: 'monitor',
-    nama: 'Monitor',
+    id: 'monitoring',
+    fase: 'Operasional',
+    nama: 'Monitoring',
     durasi: '24/7',
-    ringkas: 'Sistem tidak pernah tidur. Dashboard Grafana & Netdata selalu terbuka.',
-    tools: ['Grafana', 'Prometheus', 'Netdata'],
+    ringkas:
+      'Target baru ditambahkan ke Prometheus dan healthcheck. Tujuannya sederhana: tahu duluan sebelum pengguna tahu.',
+    tools: ['Prometheus', 'Grafana', 'Healthcheck'],
     log: [
-      '$ netdata-cli status',
-      'CPU usage    : 12% (normal)',
-      'RAM free     : 4.1 GB / 8 GB',
-      'Disk I/O     : 18 MB/s',
-      'Alert aktif  : 0',
+      '$ curl -s localhost:9090/api/v1/targets',
+      'Target aktif   : semua up',
+      'Dashboard      : ditambahkan ke Grafana',
+      'Healthcheck    : cek tiap 60 detik',
+      'Alert          : dikirim saat layanan mati',
+      'Insiden aktif  : 0',
     ],
   },
 ]
@@ -421,7 +528,7 @@ export const topologi = {
 /* ------------------------------------------------------------
  *  6. TOOLS & SKILL
  * ---------------------------------------------------------- */
-export const kategoriStack = ['Semua', 'Linux/Server', 'Network', 'Virtualisasi', 'Database', 'Security', 'Monitoring', 'Field']
+export const kategoriStack = ['Semua', 'Linux/Server', 'Network', 'Virtualisasi', 'Database', 'Security', 'Monitoring', 'Workflow', 'Field']
 
 /* `proyek` = daftar tag project yang memakai tool ini.
  * Dipakai untuk fitur klik ikon → filter project otomatis. */
@@ -452,6 +559,11 @@ export const stack = [
   { nama: 'Grafana', kategori: 'Monitoring', level: 4, catatan: 'dashboard server & service', proyek: 'Grafana' },
   { nama: 'Prometheus', kategori: 'Monitoring', level: 3, catatan: 'metrics scraping & alerting', proyek: 'Prometheus' },
   { nama: 'Netdata', kategori: 'Monitoring', level: 4, catatan: 'real-time server monitoring', proyek: 'Monitoring' },
+  // Workflow — alur kerja & version control
+  { nama: 'Git', kategori: 'Workflow', level: 4, catatan: 'branching, merge, penelusuran riwayat rilis', proyek: 'Version Control' },
+  { nama: 'Git Flow', kategori: 'Workflow', level: 4, catatan: 'model branching untuk tim developer', proyek: 'Version Control' },
+  { nama: 'VS Code', kategori: 'Workflow', level: 4, catatan: 'editor utama, remote SSH ke server', proyek: 'Version Control' },
+  { nama: 'Dokumentasi Teknis', kategori: 'Workflow', level: 5, catatan: 'langkah deploy & konfigurasi server', proyek: 'Dokumentasi' },
   // Field
   { nama: 'NVR & CCTV', kategori: 'Field', level: 4, catatan: '300+ titik, instalasi indoor & outdoor', proyek: 'Field' },
   { nama: 'Jaringan Alarm Bank', kategori: 'Field', level: 4, catatan: 'instalasi & maintenance', proyek: 'Field' },
@@ -571,19 +683,93 @@ export const projects = [
     demo: '',
   },
   {
-    judul: 'Blueprint Sistem dari Analisa Alur Bisnis',
-    subjudul: 'Menerjemahkan cara kerja departemen lain menjadi rancangan siap bangun',
+    judul: 'Alur Pengembangan Software: dari Permintaan Departemen sampai Monitoring',
+    subjudul: 'Tujuh tahap tetap yang saya jalankan untuk setiap permintaan sistem baru',
     tahun: '2025—kini',
     status: 'aktif',
-    tag: ['Blueprint'],
+    tag: ['Blueprint', 'Dokumentasi', 'Automation'],
     deskripsi:
-      'Menganalisa alur kerja departemen lain, memetakan proses yang sedang berjalan, lalu menyusunnya menjadi blueprint sistem yang siap dikerjakan tim developer. Peran ini menjembatani kebutuhan pengguna di lapangan dengan orang yang menuliskan kodenya — dua pihak yang sering bicara dalam bahasa yang berbeda.',
+      'Setiap permintaan pembuatan software dari departemen lain melewati alur yang sama, bukan ditangani seadanya menurut siapa yang meminta. Saya berada di sepanjang alur itu: menerjemahkan kebutuhan bisnis jadi rancangan, menyerahkannya ke developer, lalu mengurus sisi rilis sampai sistemnya berjalan dan terpantau. Alur yang tetap membuat hasilnya bisa diperkirakan dan kesalahan yang sama tidak terulang.',
     hasil: [
-      'Alur kerja departemen dipetakan lebih dulu sebelum satu baris kode ditulis',
-      'Blueprint diserahkan ke developer dalam bentuk yang langsung bisa dikerjakan',
-      'Mengurangi selisih antara apa yang dibutuhkan pengguna dan apa yang akhirnya dibangun',
+      'Setiap permintaan melewati alur yang sama, jadi hasilnya bisa diperkirakan',
+      'Kebutuhan dipetakan lebih dulu — memperkecil selisih antara yang diminta dan yang dibangun',
+      'Developer menerima rancangan yang siap dikerjakan, bukan tebakan',
+      'Sistem baru masuk skema backup dan pemantauan di hari rilis, bukan menyusul kemudian',
+      'Tahap demi tahapnya bisa dilihat di bagian Alur Kerja di atas halaman ini',
     ],
-    stack: ['Analisa Proses', 'Dokumentasi', 'Blueprint Sistem'],
+    stack: ['Analisa Proses', 'Flowchart', 'Blueprint Sistem', 'Git Flow', 'Docker', 'Prometheus'],
+    repo: '',
+    demo: '',
+  },
+  {
+    judul: 'Version Control Git Flow sebagai Project Administrator',
+    subjudul: 'Menjaga riwayat rilis tetap tertelusur, dan mendokumentasikan tiap langkah deploy',
+    tahun: '2025—kini',
+    status: 'aktif',
+    tag: ['Version Control', 'Dokumentasi', 'Automation'],
+    deskripsi:
+      'Bertindak sebagai project administrator untuk version control tim developer: mengatur model branching Git Flow, menjaga alur dari fitur sampai rilis tetap rapi, dan memastikan setiap perubahan yang masuk produksi bisa ditelusuri asalnya. Di sisi saya sendiri, setiap langkah deployment dan konfigurasi server didokumentasikan — supaya pekerjaan bisa diulang, diperiksa, dan diserahkan tanpa bergantung pada ingatan satu orang.',
+    hasil: [
+      'Model branching Git Flow diterapkan konsisten oleh tim developer',
+      'Setiap perubahan yang masuk produksi dapat ditelusuri sampai ke asalnya',
+      'Langkah deployment terdokumentasi, jadi rilis berikutnya tidak dimulai dari nol',
+      'Konfigurasi server tercatat rapi — pemulihan dan serah terima jadi jauh lebih cepat',
+    ],
+    stack: ['Git', 'Git Flow', 'VS Code', 'Dokumentasi Teknis', 'Docker'],
+    repo: '',
+    demo: '',
+  },
+  {
+    judul: 'Jaringan Terpadu 2 KCP Bank Mandiri: Internet, Telepon, CCTV, Alarm',
+    subjudul: 'Dari perencanaan sampai serah terima — empat sistem dalam satu kantor',
+    tahun: '2019—2025',
+    status: 'arsip',
+    tag: ['Field', 'Network', 'Support'],
+    deskripsi:
+      'Merencanakan dan mengimplementasikan seluruh infrastruktur pendukung untuk kantor cabang pembantu Bank Mandiri di Sukoharjo dan Sragen: jaringan internet, jaringan telepon, sistem CCTV, dan alarm system. Pekerjaan dimulai dari survei lokasi dan perencanaan jalur — bukan sekadar memasang perangkat yang jalurnya sudah ditentukan orang lain.',
+    hasil: [
+      'Empat sistem berbeda dirancang dan dipasang dalam satu lingkungan kantor',
+      'Jalur kabel direncanakan sejak awal, bukan disesuaikan setelah perangkat datang',
+      'Lingkungan perbankan menuntut kerapian dan dokumentasi yang tidak bisa ditawar',
+      'Diserahterimakan dalam kondisi siap operasional',
+    ],
+    stack: ['Jaringan LAN', 'PABX', 'CCTV', 'Alarm System', 'Cabling'],
+    repo: '',
+    demo: '',
+  },
+  {
+    judul: 'Migrasi Perangkat Jaringan Bank Tanpa Mengganggu Jam Operasional',
+    subjudul: 'Dikerjakan pukul 19.00–04.00 supaya nasabah tidak pernah merasakannya',
+    tahun: '2019—2025',
+    status: 'arsip',
+    tag: ['Field', 'Network'],
+    deskripsi:
+      'Memindahkan perangkat jaringan lokal di beberapa kantor cabang pembantu Bank Mandiri, antara lain KCP Purwantoro dan Tawangmangu. Seluruh pekerjaan dijadwalkan mulai pukul 19.00 sampai 04.00, karena kantor bank tidak boleh berhenti melayani. Jendela waktunya tetap: apa pun yang terjadi di lapangan, pagi harinya semua sudah harus berjalan normal.',
+    hasil: [
+      'Nol gangguan pada jam operasional — nasabah dan pegawai tidak merasakan perpindahannya',
+      'Bekerja dalam jendela tetap sembilan jam, tanpa pilihan menunda ke hari berikutnya',
+      'Pelabelan dan pemetaan diselesaikan sebelum hari-H supaya waktu di lokasi tidak terbuang',
+      'Rencana mundur disiapkan untuk tiap tahap, bukan sekadar berharap semuanya lancar',
+    ],
+    stack: ['Jaringan LAN', 'Switch', 'Cabling', 'Dokumentasi Jaringan'],
+    repo: '',
+    demo: '',
+  },
+  {
+    judul: 'CCTV 34 Titik Kantor BPN se-Jawa Tengah, Terpantau dari Satu Layar',
+    subjudul: 'Kantor tersebar di banyak kota, pemantauan terpusat di Semarang',
+    tahun: '2019—2025',
+    status: 'arsip',
+    tag: ['Field', 'Network', 'Support'],
+    deskripsi:
+      'Memasang 34 titik CCTV di kantor-kantor BPN yang tersebar di Jawa Tengah, lalu menyatukan seluruhnya agar dapat dipantau dari satu monitor di kantor pusat BPN Semarang. Tantangan sebenarnya bukan memasang kameranya, melainkan membuat lokasi-lokasi yang terpisah jauh tampil dalam satu layar yang masih bisa dibaca oleh satu orang.',
+    hasil: [
+      '34 titik kamera aktif tersebar di banyak kantor di seluruh Jawa Tengah',
+      'Seluruh lokasi disatukan ke satu layar pemantauan di kantor pusat Semarang',
+      'Pemantauan yang tadinya menuntut datang ke lokasi kini cukup dari satu tempat',
+      'Jaringan disiapkan supaya rekaman tetap dapat diakses lintas kantor',
+    ],
+    stack: ['CCTV', 'NVR', 'Jaringan LAN', 'Remote Monitoring'],
     repo: '',
     demo: '',
   },
@@ -622,7 +808,9 @@ export const pengalaman = [
       'Mengeraskan sisi keamanan dengan UFW dan Fail2Ban, ditambah notifikasi Telegram untuk setiap login yang masuk ke server',
       'Menjalankan backup terjadwal dengan notifikasi status dan uji restore pada setiap backup — bukan sekadar backup yang tidak pernah dibuka',
       'Memasang pemantauan Prometheus + Grafana dan healthcheck monitor yang mengirim notifikasi saat ada server mati atau offline',
-      'Menganalisa alur bisnis departemen lain, menyusunnya menjadi blueprint sistem, lalu menyerahkannya ke tim developer',
+      'Menjalankan alur tetap tujuh tahap untuk tiap permintaan software: analisa bisnis, flowchart, blueprint, testing, staging, deploy, lalu backup dan monitoring',
+      'Bertindak sebagai project administrator untuk version control tim developer — mengatur model branching Git Flow dan menjaga riwayat rilis tetap tertelusur',
+      'Mendokumentasikan setiap langkah deployment dan konfigurasi server, supaya pekerjaan bisa diulang dan diserahkan tanpa bergantung pada ingatan',
       'Mengelola jaringan MikroTik: 100+ rule firewall aktif, web filtering, simple queue, VLAN, dan PPTP',
       'Memastikan 300+ titik CCTV menyala dan terpantau setiap hari',
     ],
@@ -635,6 +823,7 @@ export const pengalaman = [
       'Menangani support IT untuk lebih dari 30 klien perusahaan dan perorangan secara bersamaan',
       'Instalasi dan maintenance jaringan internet, jaringan telepon, serta jaringan alarm',
       'Instalasi dan perawatan perangkat: komputer, printer, CCTV, PABX, alarm, dan access control',
+      'Menangani project berskala institusi: jaringan terpadu kantor cabang Bank Mandiri, migrasi perangkat di luar jam operasional, dan 34 titik CCTV kantor BPN se-Jawa Tengah',
       'Menjadi titik kontak pertama user di sisi IT — dari keluhan harian sampai perbaikan langsung di lokasi klien',
     ],
   },
@@ -713,8 +902,8 @@ export const ui = {
     tersalin: 'Email tersalin',
     unduhCv: 'Unduh CV',
   },
-  pipelineJudul: 'Cara saya menjaga sistem tetap hidup',
-  pipelineDeskripsi: 'Klik tiap tahap untuk melihat apa yang sebenarnya saya kerjakan sehari-hari.',
+  pipelineJudul: 'Dari server kosong sampai sistem terpantau',
+  pipelineDeskripsi: 'Sebelas tahap tetap yang saya jalankan: tiga tahap menyiapkan fondasi infrastruktur, lalu delapan tahap dari permintaan sistem sampai berjalan dan terpantau. Klik tiap tahap untuk melihat isinya.',
   statusJudul: 'Riwayat uptime & insiden',
   statusDeskripsi: 'Angka uptime mudah diklaim. Ini kejadian nyatanya: apa yang rusak, kenapa, dan apa yang saya ubah supaya tidak terulang. Arahkan kursor ke batang berwarna untuk detailnya.',
   stackJudul: 'Alat yang saya pakai di lapangan',

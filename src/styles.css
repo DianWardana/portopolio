@@ -3093,3 +3093,58 @@ main,
     background-size: 72px 72px, 72px 72px, 24px 24px, 24px 24px;
   }
 }
+
+/* ============================================================
+   ALUR KERJA — PENGELOMPOKAN FASE
+   ============================================================ */
+.stage-blok {
+  display: contents;
+}
+.fase {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 8px;
+  padding-left: 2px;
+}
+.stage-blok:first-child .fase {
+  margin-top: 0;
+}
+.fase-nama {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+.fase-garis {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line-2), transparent);
+}
+
+/* Panel kanan ikut menunjukkan fase tahap yang sedang dibuka,
+   supaya pembaca tidak kehilangan konteks setelah mengklik. */
+.inspector-fase {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-wash);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  padding: 4px 9px;
+  border-radius: 99px;
+  margin-bottom: 12px;
+}
+
+/* Daftar sebelas tahap jadi cukup tinggi — panel kanan dibuat
+   menempel supaya tetap terlihat saat daftar digulir. */
+@media (min-width: 861px) {
+  .inspector {
+    position: sticky;
+    top: 84px;
+  }
+}
