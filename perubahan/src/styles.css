@@ -1,0 +1,3180 @@
+/* ============================================================
+   TOKEN
+   Tema utama: "blueprint slate" — biru tua kehijauan, bukan hitam.
+   Warna punya arti: hijau = sehat, amber = sedang jalan, merah = insiden.
+   ============================================================ */
+:root {
+  --bg: #0d141c;
+  --bg-2: #111a24;
+  --panel: rgba(255, 255, 255, 0.07);
+  --panel-2: rgba(255, 255, 255, 0.11);
+  --line: rgba(255, 255, 255, 0.14);
+  --line-2: rgba(255, 255, 255, 0.17);
+  --ink: #e9eef4;
+  --ink-dim: #8fa1b3;
+  --ink-faint: #61758a;
+
+  --amber: #f0a03c;
+  --green: #3fbf87;
+  --cyan: #55b9d8;
+  --violet: #9b8cf0;
+  --rose: #e8615f;
+
+  --accent: var(--amber);
+  --accent-wash: rgba(240, 160, 60, 0.12);
+
+  /* ---------- SISTEM KACA ----------
+     Panel tidak lagi berwarna solid, melainkan lapisan tembus
+     pandang yang mengaburkan apa pun di belakangnya. Supaya efek
+     buram ada gunanya, di belakang halaman dipasang gradasi warna
+     (lihat body::before) — kaca di atas warna datar hanya akan
+     terlihat seperti abu-abu biasa. */
+  --kaca: rgba(255, 255, 255, 0.07);
+  --kaca-kuat: rgba(255, 255, 255, 0.11);
+  --kaca-tepi: rgba(255, 255, 255, 0.14);
+  --kaca-tepi-kuat: rgba(255, 255, 255, 0.16);
+  --kaca-buram: blur(26px) saturate(165%);
+  --kaca-buram-tipis: blur(14px) saturate(140%);
+
+  /* Kilau tipis di sisi atas — meniru cara kaca menangkap cahaya */
+  --kaca-kilau: inset 0 1px 0 rgba(255, 255, 255, 0.09);
+
+  /* Dua variabel ini dipakai di beberapa tempat (kotak ikon stack,
+     bingkai foto hero) tapi tidak pernah didefinisikan. Akibatnya
+     `border: 1px solid var(--border)` jadi tidak sah dan border-nya
+     hilang sama sekali. */
+  --border: var(--line);
+  --surface-2: rgba(255, 255, 255, 0.05);
+
+  /* Dua variabel ini juga tidak pernah didefinisikan. Selama ini
+     nilainya jatuh ke fallback bawaan (#ccc dan #1a2332) yang
+     kebetulan pas untuk tema gelap — tapi di tema terang, label
+     abu terang di atas latar hampir putih jadi nyaris tak terbaca.
+     Nilainya di sini sengaja disamakan dengan fallback lama supaya
+     tema gelap tidak berubah sedikit pun. */
+  --ink-2: #ccc;
+  --surface: #1a2332;
+  --shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09), 0 20px 50px -28px rgba(0, 0, 0, 0.75);
+
+  --display: 'Open Sans', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --r: 18px;
+  --pad: clamp(20px, 5vw, 40px);
+  --maxw: 1160px;
+}
+
+[data-theme='light'] {
+  --bg: #eef1f5;
+  --bg-2: #e5ebf2;
+  /* Di tema terang, kaca justru lebih putih daripada latar —
+     kebalikan dari tema gelap. Tepinya nyaris putih pekat supaya
+     kartu tetap punya batas jelas di atas latar yang sudah cerah. */
+  --kaca: rgba(255, 255, 255, 0.62);
+  --kaca-kuat: rgba(255, 255, 255, 0.82);
+  --kaca-tepi: rgba(255, 255, 255, 0.85);
+  --kaca-tepi-kuat: rgba(15, 25, 34, 0.14);
+  --kaca-kilau: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+
+  --panel: rgba(255, 255, 255, 0.62);
+  --panel-2: rgba(255, 255, 255, 0.82);
+  --line: rgba(15, 25, 34, 0.10);
+  --line-2: rgba(15, 25, 34, 0.18);
+  --ink: #0b141c;
+  --ink-dim: #3d5164;
+  /* Sebelumnya #7b8c9d — hanya 3,5:1 terhadap putih, di bawah ambang
+     WCAG 4,5:1 untuk teks kecil. Banyak label mono berukuran 10–11px
+     memakai warna ini, jadi paling terasa dampaknya. Sekarang 5,0:1. */
+  --ink-faint: #5e7286;
+
+  --amber: #a96200;
+  --green: #197f56;
+  --cyan: #14708f;
+  --violet: #5b45c4;
+  --rose: #bc2f29;
+
+  --accent-wash: rgba(169, 98, 0, 0.1);
+  --shadow: 0 1px 2px rgba(15, 25, 34, 0.05), 0 14px 30px -22px rgba(15, 25, 34, 0.45);
+
+  /* Di tema gelap ini lapisan putih tipis; di tema terang lapisan
+     putih di atas putih jadi tidak terlihat sama sekali. */
+  --surface-2: rgba(15, 25, 34, 0.04);
+  --shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 16px 40px -26px rgba(15, 25, 34, 0.35);
+
+  /* Label ikon: #ccc di atas latar hampir putih hanya 1,4:1 —
+     praktis tidak terbaca. Nilai ini 7,3:1. */
+  --ink-2: #33475a;
+  --surface: #ffffff;
+
+  /* Catatan: --cahaya-atas, --butiran, dan --vignette diatur di
+     blok LATAR HALAMAN di bagian bawah berkas ini — blok itu letaknya
+     lebih akhir, jadi nilainya yang berlaku. */
+
+  /* Panel dibuat lebih pekat supaya kartu terbaca sebagai
+     permukaan padat, bukan kabut. */
+  --kaca: rgba(255, 255, 255, 0.78);
+  --kaca-kuat: rgba(255, 255, 255, 0.92);
+  --panel: rgba(255, 255, 255, 0.78);
+  --panel-2: rgba(255, 255, 255, 0.92);
+}
+
+/* Teks di dalam blok gelap (log & terminal) tetap perlu kontras tinggi
+   walau temanya terang. */
+[data-theme='light'] .logbox,
+[data-theme='light'] .term-body {
+  background: #0f1922;
+  color: #dbe4ee;
+}
+[data-theme='light'] .logbox div,
+[data-theme='light'] .tline {
+  color: #c3d0dd;
+}
+
+/* ============================================================
+   DASAR
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Kisi blueprint dipindah ke elemen .aurora-kisi (lihat blok AURORA
+   di bawah). Dulu ini body::before, dan itu jadi sumber masalah:
+   satu elemen hanya punya SATU ::before, jadi aturan aurora yang
+   ditambahkan belakangan bergabung dengan aturan ini — aurora ikut
+   terkena `opacity: 0.4` dan `mask-image` di sini, lalu praktis
+   tidak terlihat sama sekali. */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+  position: relative;
+  z-index: 1;
+}
+
+.skip {
+  position: absolute;
+  left: -9999px;
+}
+.skip:focus {
+  left: 16px;
+  top: 16px;
+  z-index: 100;
+  background: var(--panel);
+  padding: 10px 16px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r);
+}
+
+/* ============================================================
+   TIPOGRAFI
+   ============================================================ */
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.eyebrow::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.mono {
+  font-family: var(--mono);
+}
+
+.section-head {
+  margin-bottom: 36px;
+}
+.section-head h2 {
+  font-size: clamp(26px, 4vw, 40px);
+  margin: 18px 0 10px;
+  max-width: 20ch;
+}
+.section-head p {
+  margin: 0;
+  color: var(--ink-dim);
+  max-width: 56ch;
+  font-size: 15px;
+}
+
+section.band {
+  padding: clamp(64px, 10vw, 116px) 0;
+  border-top: 1px solid var(--line);
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   REVEAL SAAT SCROLL
+   ============================================================ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================
+   STATUS BAR / NAVIGASI
+   ============================================================ */
+.statusbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+.statusbar .wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 60px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 13px;
+  white-space: nowrap;
+}
+.brand .badge {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+[data-theme='light'] .brand .badge {
+  color: #fff;
+}
+
+.pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--green) 60%, transparent);
+  animation: pulse 2.4s infinite;
+  flex: none;
+}
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--green) 55%, transparent);
+  }
+  70% {
+    box-shadow: 0 0 0 7px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+.health {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-dim);
+  padding-left: 20px;
+  border-left: 1px solid var(--line);
+
+  /* Tanpa dua baris ini, teks membungkus jadi 3 baris dan meluber
+     keluar dari status bar yang tingginya dikunci 60px. */
+  white-space: nowrap;
+  flex: none;
+}
+.health-teks,
+.health .uptime-live {
+  white-space: nowrap;
+}
+
+.nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.nav a {
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 7px 12px;
+  border-radius: 7px;
+  color: var(--ink-dim);
+  transition: color 0.18s, background 0.18s;
+}
+.nav a:hover {
+  color: var(--ink);
+  background: var(--panel);
+}
+.nav a.active {
+  color: var(--accent);
+  background: var(--accent-wash);
+}
+
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink-dim);
+  transition: 0.18s;
+  flex: none;
+}
+.icon-btn:hover {
+  color: var(--accent);
+  border-color: var(--line-2);
+}
+
+/* Kelompok tombol di kanan status bar */
+.bar-aksi {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 12px;
+}
+/* .icon-btn memakai `display: grid` supaya ikon tunggal pas di tengah.
+   Tombol ini punya dua anak (ikon + label), dan grid tanpa arah kolom
+   menumpuk keduanya ke bawah — itulah kenapa "Ctrl K" tadi jatuh di
+   bawah ikon kacanya. inline-flex menyusunnya berdampingan. */
+.icon-btn.palette-btn {
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px 0 10px;
+}
+.icon-btn .kbd-hint {
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1;
+  padding: 4px 6px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--panel-2);
+  color: var(--ink-faint);
+  letter-spacing: 0.02em;
+  transition: 0.18s;
+}
+.icon-btn.palette-btn:hover .kbd-hint {
+  border-color: var(--line-2);
+  color: var(--ink-dim);
+}
+/* Tombol menu hanya muncul di layar kecil */
+.icon-btn.menu-btn {
+  display: none;
+}
+
+/* Progres scroll — bergaya progress bar deployment */
+.scroll-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: transparent;
+  overflow: hidden;
+}
+.scroll-progress span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, var(--accent), var(--green));
+  transition: transform 0.08s linear;
+}
+
+/* Ruang sempit: lepas elemen paling tidak penting lebih dulu.
+   Ambangnya sengaja tinggi karena label menu Bahasa Indonesia
+   ("Alur Kerja", "Pengalaman", "Arsitektur") lebih panjang daripada
+   padanan Inggrisnya, jadi bar penuh lebih cepat. */
+@media (max-width: 1400px) {
+  .icon-btn .kbd-hint {
+    display: none;
+  }
+}
+@media (max-width: 1320px) {
+  .health .uptime-live {
+    display: none;
+  }
+}
+@media (max-width: 1180px) {
+  .health {
+    display: none;
+  }
+  .nav a {
+    padding: 7px 9px;
+    font-size: 11.5px;
+  }
+}
+
+/* ------------------------------------------------------------
+   NAVIGASI MOBILE
+   Sebelumnya .nav cuma di-hide tanpa pengganti, jadi pengunjung
+   HP tidak punya cara berpindah section sama sekali.
+   ------------------------------------------------------------ */
+@media (max-width: 900px) {
+  .health,
+  .nav,
+  .icon-btn.palette-btn {
+    display: none;
+  }
+  .icon-btn.menu-btn {
+    display: grid;
+  }
+  .bar-aksi {
+    margin-left: auto;
+  }
+  .statusbar .wrap {
+    gap: 12px;
+  }
+}
+@media (max-width: 420px) {
+  /* Badge DRW sudah dilepas, jadi nama tidak boleh ikut disembunyikan —
+     kalau tidak, sudut kiri navbar jadi kosong sama sekali. */
+  .brand-nama {
+    display: inline;
+  }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  padding: clamp(48px, 9vw, 96px) 0 clamp(40px, 6vw, 72px);
+  position: relative;
+  z-index: 1;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+}
+
+.avail {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  padding: 6px 12px 6px 10px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  color: var(--ink-dim);
+  background: var(--panel);
+}
+
+.hero h1 {
+  font-size: clamp(50px, 11vw, 104px);
+  line-height: 0.88;
+  letter-spacing: -0.05em;
+  margin: 22px 0 0;
+  text-transform: uppercase;
+}
+.hero h1 .thin {
+  display: block;
+  font-weight: 300;
+  color: var(--ink-dim);
+}
+.hero .name {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  margin-top: 20px;
+}
+.hero .tagline {
+  color: var(--ink-dim);
+  max-width: 46ch;
+  margin: 14px 0 0;
+  font-size: 16.5px;
+}
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 30px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 18px;
+  border-radius: 9px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  border: 1px solid var(--line-2);
+  background: var(--panel);
+  color: var(--ink);
+  transition: 0.18s;
+}
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+.btn.solid {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0d141c;
+  font-weight: 600;
+}
+[data-theme='light'] .btn.solid {
+  color: #fff;
+}
+.btn.solid:hover {
+  color: #0d141c;
+  filter: brightness(1.08);
+}
+[data-theme='light'] .btn.solid:hover {
+  color: #fff;
+}
+
+/* --- Panel deploy: elemen tanda tangan halaman ini --- */
+.deckpanel {
+  border: 1px solid var(--line-2);
+  border-radius: 14px;
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.deckpanel header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-dim);
+}
+.dots {
+  display: flex;
+  gap: 5px;
+}
+.dots i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--line-2);
+  display: block;
+}
+.deckpanel header .run {
+  margin-left: auto;
+  color: var(--ink-faint);
+}
+
+.runlist {
+  padding: 8px 0 12px;
+}
+.runrow {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 16px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  position: relative;
+}
+.runrow .st {
+  display: grid;
+  place-items: center;
+  color: var(--ink-faint);
+}
+.runrow .nm {
+  color: var(--ink-faint);
+  transition: color 0.3s;
+}
+.runrow .tm {
+  color: var(--ink-faint);
+  font-size: 11.5px;
+}
+.runrow[data-state='running'] .nm {
+  color: var(--ink);
+}
+.runrow[data-state='running'] .st {
+  color: var(--amber);
+}
+.runrow[data-state='done'] .nm {
+  color: var(--ink-dim);
+}
+.runrow[data-state='done'] .st {
+  color: var(--green);
+}
+.runrow[data-state='running']::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--amber);
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+  display: block;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.deckfoot {
+  border-top: 1px solid var(--line);
+  padding: 11px 16px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-dim);
+  background: color-mix(in srgb, var(--green) 8%, transparent);
+}
+.deckfoot .ok {
+  color: var(--green);
+}
+
+@media (max-width: 860px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   METRIK
+   ============================================================ */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--panel);
+  margin-top: clamp(36px, 6vw, 64px);
+}
+.metric {
+  padding: 22px;
+  border-right: 1px solid var(--line);
+}
+.metric:last-child {
+  border-right: none;
+}
+.metric .val {
+  font-size: clamp(26px, 3.4vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+.metric .val em {
+  font-style: normal;
+  color: var(--accent);
+  font-size: 0.6em;
+}
+.metric .lb {
+  font-size: 13.5px;
+  margin-top: 4px;
+}
+.metric .nt {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 3px;
+}
+@media (max-width: 780px) {
+  .metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .metric:nth-child(2) {
+    border-right: none;
+  }
+  .metric:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+/* ============================================================
+   PIPELINE
+   ============================================================ */
+.pipe-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: clamp(20px, 3vw, 36px);
+  align-items: start;
+}
+
+.stages {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.stage {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel);
+  text-align: left;
+  transition: 0.2s;
+  position: relative;
+  width: 100%;
+}
+.stage::after {
+  content: '';
+  position: absolute;
+  left: 30px;
+  top: 100%;
+  height: 6px;
+  width: 1px;
+  background: var(--line-2);
+}
+.stage:last-child::after {
+  display: none;
+}
+.stage:hover {
+  border-color: var(--line-2);
+  transform: translateX(3px);
+}
+.stage .num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+}
+.stage .nm {
+  font-family: var(--mono);
+  font-size: 13.5px;
+}
+.stage .dur {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+.stage[aria-selected='true'] {
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+.stage[aria-selected='true'] .num {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  font-weight: 700;
+}
+[data-theme='light'] .stage[aria-selected='true'] .num {
+  color: #fff;
+}
+.stage[aria-selected='true'] .nm {
+  color: var(--accent);
+}
+
+.inspector {
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: sticky;
+  top: 84px;
+}
+.inspector .top {
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.inspector h3 {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+.inspector .top p {
+  margin: 0;
+  color: var(--ink-dim);
+  font-size: 14px;
+}
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+.chip {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  padding: 4px 9px;
+  border-radius: 5px;
+  border: 1px solid var(--line-2);
+  color: var(--ink-dim);
+  background: var(--bg-2);
+}
+
+.logbox {
+  padding: 16px 20px 20px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.85;
+  background: var(--bg-2);
+}
+.logbox div {
+  color: var(--ink-dim);
+  animation: logIn 0.35s ease both;
+  overflow-wrap: anywhere;
+}
+.logbox div:first-child {
+  color: var(--accent);
+}
+@keyframes logIn {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+}
+
+@media (max-width: 860px) {
+  .pipe-grid {
+    grid-template-columns: 1fr;
+  }
+  .inspector {
+    position: static;
+  }
+}
+
+/* ============================================================
+   FILTER
+   ============================================================ */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 26px;
+}
+.filter {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+  transition: 0.18s;
+}
+.filter:hover {
+  border-color: var(--line-2);
+  color: var(--ink);
+}
+.filter[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+/* ============================================================
+   STACK
+   ============================================================ */
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 10px;
+}
+.tool {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 15px 16px;
+  background: var(--panel);
+  transition: 0.2s;
+  animation: logIn 0.3s ease both;
+}
+.tool:hover {
+  border-color: var(--line-2);
+  transform: translateY(-2px);
+}
+.tool .hd {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+.tool .nm {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.tool .kt {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.bar {
+  display: flex;
+  gap: 3px;
+  margin: 11px 0 9px;
+}
+.bar i {
+  height: 3px;
+  flex: 1;
+  border-radius: 2px;
+  background: var(--line-2);
+  transition: background 0.3s;
+}
+.tool:hover .bar i.on {
+  background: var(--accent);
+}
+.bar i.on {
+  background: var(--ink-dim);
+}
+.tool .nt {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+/* ============================================================
+   PROJECT
+   ============================================================ */
+.proj-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.proj {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.proj:hover {
+  border-color: var(--line-2);
+}
+.proj.open {
+  border-color: var(--accent);
+}
+.proj-head {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 18px;
+  align-items: center;
+  padding: 20px;
+  text-align: left;
+}
+.proj-year {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  padding-top: 3px;
+}
+.proj-title {
+  font-size: clamp(18px, 2.4vw, 23px);
+  letter-spacing: -0.025em;
+}
+.proj-sub {
+  color: var(--ink-dim);
+  font-size: 14px;
+  margin-top: 3px;
+}
+.proj-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 11px;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line-2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.status i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.status.produksi {
+  color: var(--green);
+  border-color: color-mix(in srgb, var(--green) 40%, transparent);
+}
+.status.aktif {
+  color: var(--cyan);
+  border-color: color-mix(in srgb, var(--cyan) 40%, transparent);
+}
+.status.arsip {
+  color: var(--ink-faint);
+}
+
+.caret {
+  color: var(--ink-faint);
+  transition: transform 0.3s;
+}
+.proj.open .caret {
+  transform: rotate(180deg);
+  color: var(--accent);
+}
+
+.proj-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.proj.open .proj-body {
+  grid-template-rows: 1fr;
+}
+.proj-body > div {
+  overflow: hidden;
+}
+.proj-inner {
+  padding: 0 20px 22px;
+  border-top: 1px solid var(--line);
+  margin-top: 0;
+  padding-top: 20px;
+}
+.proj-inner p {
+  margin: 0 0 18px;
+  color: var(--ink-dim);
+  max-width: 68ch;
+  font-size: 15px;
+}
+.proj-cols {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 26px;
+}
+.hasil {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.hasil li {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  gap: 10px;
+  font-size: 14.5px;
+  color: var(--ink);
+}
+.hasil li span {
+  color: var(--green);
+  font-family: var(--mono);
+  font-size: 12px;
+  padding-top: 2px;
+}
+.proj-links {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+@media (max-width: 760px) {
+  .proj-head {
+    grid-template-columns: 1fr auto;
+  }
+  .proj-year {
+    display: none;
+  }
+  .proj-cols {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* ============================================================
+   PENGALAMAN + SERTIFIKASI
+   ============================================================ */
+.exp-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: clamp(24px, 5vw, 56px);
+  align-items: start;
+}
+/* Dipakai saat array `sertifikasi` di content.js masih kosong —
+   tanpa ini, riwayat pekerjaan tetap menyisakan kolom kanan yang menganga. */
+.exp-grid.tanpa-cert {
+  grid-template-columns: 1fr;
+}
+.tl {
+  border-left: 1px solid var(--line-2);
+  padding-left: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 34px;
+}
+.tl-item {
+  position: relative;
+}
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -31px;
+  top: 8px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--line-2);
+}
+.tl-item:first-child::before {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.tl-item .pd {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-faint);
+}
+.tl-item h3 {
+  font-size: 19px;
+  margin: 5px 0 2px;
+}
+.tl-item .co {
+  color: var(--accent);
+  font-size: 14px;
+  font-family: var(--mono);
+}
+.tl-item ul {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.tl-item ul li {
+  color: var(--ink-dim);
+  font-size: 14.5px;
+  padding-left: 16px;
+  position: relative;
+}
+.tl-item ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 6px;
+  height: 1px;
+  background: var(--line-2);
+}
+
+.cert {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  padding: 20px;
+  position: sticky;
+  top: 84px;
+}
+.cert h4 {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 400;
+  margin-bottom: 14px;
+}
+.cert-item {
+  padding: 13px 0;
+  border-top: 1px solid var(--line);
+  display: block;
+}
+.cert-item .nm {
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.cert-item .mt {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 4px;
+}
+@media (max-width: 860px) {
+  .exp-grid {
+    grid-template-columns: 1fr;
+  }
+  .cert {
+    position: static;
+  }
+}
+
+/* ============================================================
+   KONTAK + TERMINAL
+   ============================================================ */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: clamp(24px, 4vw, 48px);
+  align-items: start;
+}
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 26px;
+}
+.clink {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 4px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 13.5px;
+  transition: 0.18s;
+}
+.clink:hover {
+  color: var(--accent);
+  padding-left: 10px;
+}
+.clink .lbl {
+  color: var(--ink-faint);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  width: 68px;
+  flex: none;
+}
+.clink .arw {
+  margin-left: auto;
+  color: var(--ink-faint);
+}
+
+.term {
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+  background: var(--bg-2);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.term header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 15px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-dim);
+}
+.term-body {
+  height: 340px;
+  overflow-y: auto;
+  padding: 15px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.75;
+  cursor: text;
+}
+.term-body::-webkit-scrollbar {
+  width: 8px;
+}
+.term-body::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border-radius: 4px;
+}
+.tline {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.tline.cmd {
+  color: var(--ink);
+}
+.tline.out {
+  color: var(--ink-dim);
+}
+.tline.err {
+  color: var(--rose);
+}
+.tline.acc {
+  color: var(--accent);
+}
+.tline.ok {
+  color: var(--green);
+}
+.prompt {
+  color: var(--green);
+  user-select: none;
+}
+.term-input {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.term-input input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--ink);
+  font: inherit;
+  padding: 0;
+  caret-color: var(--accent);
+}
+.hint {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-top: 10px;
+}
+@media (max-width: 860px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer.foot {
+  border-top: 1px solid var(--line);
+  padding: 26px 0 40px;
+  position: relative;
+  z-index: 1;
+}
+footer.foot .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--ink-faint);
+}
+
+/* ============================================================
+   AKSESIBILITAS: HORMATI PREFERENSI GERAK
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================
+   HERO — FOTO PROFIL
+   ============================================================ */
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-kanan {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.hero-foto {
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 1rem;
+  display: block;
+  border: 1px solid var(--border);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+}
+
+/* Foto sebelumnya disembunyikan total di bawah 860px. Sekarang tetap
+   tampil, dipindah ke bawah teks dan diperkecil supaya tidak mendorong
+   tombol ajakan terlalu jauh ke bawah layar. */
+@media (max-width: 860px) {
+  .hero-kanan {
+    justify-content: center;
+    margin-top: 30px;
+  }
+  .hero-foto {
+    max-width: 240px;
+    aspect-ratio: 4 / 5;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  }
+}
+@media (max-width: 420px) {
+  .hero-foto {
+    max-width: 200px;
+  }
+}
+
+/* ============================================================
+   TECH ICON GRID (Stack Section)
+   ============================================================ */
+.tech-icon-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
+.tech-icon-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: default;
+  width: 88px;
+}
+
+.tech-icon-box {
+  width: 68px;
+  height: 68px;
+  background: var(--surface-2, rgba(255,255,255,0.06));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tech-icon-card:hover .tech-icon-box {
+  transform: translateY(-4px) scale(1.06);
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+.tech-icon-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.3));
+}
+
+.tech-icon-fallback {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+.tech-icon-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--ink-2, #ccc);
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  max-width: 88px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tech-icon-kat {
+  font-size: 0.55rem;
+  color: var(--ink-faint);
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0;
+  transition: opacity 0.18s;
+}
+
+.tech-icon-card:hover .tech-icon-kat {
+  opacity: 1;
+}
+
+@media (max-width: 600px) {
+  .tech-icon-card { width: 72px; }
+  .tech-icon-box { width: 56px; height: 56px; border-radius: 14px; }
+  .tech-icon-img { width: 28px; height: 28px; }
+}
+
+/* ============================================================
+   TECH ICON — TOOLTIP
+   ============================================================ */
+.tech-icon-card {
+  position: relative;
+}
+
+.tech-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%) translateY(6px);
+  background: var(--surface, #1a2332);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 10;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+/* Segitiga kecil di bawah tooltip */
+.tech-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--border);
+}
+
+.tech-icon-card:hover .tech-tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.tech-tooltip-nama {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink, #fff);
+  font-family: var(--display);
+}
+
+.tech-tooltip-kat {
+  font-size: 0.62rem;
+  color: var(--ink-faint);
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+/* ============================================================
+   ============================================================
+   BAGIAN TAMBAHAN
+   Semua gaya untuk fitur baru ada di bawah ini supaya mudah
+   dibedakan dari gaya asli.
+   ============================================================
+   ============================================================ */
+
+/* ============================================================
+   UTILITAS
+   ============================================================ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ============================================================
+   HERO — LATAR GRID BLUEPRINT + KURSOR KETIK
+   ============================================================ */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.35;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 20%, transparent 78%);
+  animation: grid-hanyut 26s linear infinite;
+}
+@keyframes grid-hanyut {
+  to {
+    background-position: 48px 48px;
+  }
+}
+.hero .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.kursor-ketik {
+  display: inline-block;
+  width: 8px;
+  height: 1.05em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background: var(--accent);
+  animation: kedip 1s steps(2, start) infinite;
+}
+@keyframes kedip {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ============================================================
+   METRIK — SPARKLINE
+   ============================================================ */
+.metric {
+  position: relative;
+}
+.spark {
+  display: block;
+  width: 100%;
+  height: 34px;
+  margin: 10px 0 12px;
+  overflow: visible;
+}
+.spark-garis {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  /* Karena vector-effect: non-scaling-stroke, panjang dash dihitung
+     dalam piksel layar — bukan satuan viewBox. Nilai lama (200) lebih
+     pendek dari panjang garis sebenarnya (~257px), jadi garisnya
+     terpotong di sekitar 78%. Kartu metrik maksimal ~290px, jadi 1000
+     memberi ruang aman berlipat. */
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 1.1s ease-out;
+}
+.spark.aktif .spark-garis {
+  stroke-dashoffset: 0;
+}
+.spark-area {
+  fill: var(--accent);
+  opacity: 0;
+  transition: opacity 0.6s ease-out 0.5s;
+}
+.spark.aktif .spark-area {
+  opacity: 0.09;
+}
+.spark-titik {
+  fill: var(--accent);
+  opacity: 0;
+  transition: opacity 0.3s ease-out 1s;
+}
+.spark.aktif .spark-titik {
+  opacity: 1;
+}
+
+/* ============================================================
+   STATUS PAGE
+   ============================================================ */
+.status-card {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  padding: clamp(18px, 3vw, 28px);
+}
+.status-baris + .status-baris {
+  margin-top: 26px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+.status-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.status-nama {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.status-angka {
+  font-size: 13px;
+  color: var(--green);
+  font-weight: 500;
+}
+
+.status-bars {
+  display: flex;
+  gap: 2px;
+  align-items: stretch;
+  height: 34px;
+}
+.sbar {
+  flex: 1;
+  min-width: 2px;
+  border-radius: 2px;
+  border: 0;
+  padding: 0;
+  transition: transform 0.12s, filter 0.12s;
+}
+.sbar.ok {
+  background: color-mix(in srgb, var(--green) 62%, transparent);
+}
+.sbar.gangguan {
+  background: var(--amber);
+  cursor: pointer;
+}
+.sbar.down {
+  background: var(--rose);
+  cursor: pointer;
+}
+.sbar.gangguan:hover,
+.sbar.down:hover,
+.sbar.gangguan:focus-visible,
+.sbar.down:focus-visible {
+  transform: scaleY(1.18);
+  filter: brightness(1.2);
+  outline: none;
+}
+
+.status-kaki {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 10.5px;
+  color: var(--ink-faint);
+}
+.status-garis {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.status-legenda {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+.status-legenda span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.status-legenda .lg {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+}
+.status-legenda .lg.ok {
+  background: color-mix(in srgb, var(--green) 62%, transparent);
+}
+.status-legenda .lg.gangguan {
+  background: var(--amber);
+}
+.status-legenda .lg.down {
+  background: var(--rose);
+}
+
+/* Modal detail insiden */
+.insiden-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+.insiden-tirai {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(6px);
+  animation: fade-in 0.18s ease-out;
+}
+.insiden-panel {
+  position: relative;
+  width: min(620px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-top: 3px solid var(--amber);
+  border-radius: var(--r);
+  padding: clamp(20px, 4vw, 32px);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.8);
+  animation: naik-masuk 0.24s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+.insiden-panel.down {
+  border-top-color: var(--rose);
+}
+.insiden-panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.insiden-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  padding: 5px 10px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--amber) 14%, transparent);
+  color: var(--amber);
+  border: 1px solid color-mix(in srgb, var(--amber) 35%, transparent);
+}
+.insiden-tag.down {
+  background: color-mix(in srgb, var(--rose) 14%, transparent);
+  color: var(--rose);
+  border-color: color-mix(in srgb, var(--rose) 35%, transparent);
+}
+.insiden-panel h3 {
+  font-size: clamp(18px, 2.6vw, 22px);
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+.insiden-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.insiden-blok + .insiden-blok {
+  margin-top: 20px;
+}
+.insiden-blok p {
+  margin-top: 10px;
+  color: var(--ink-dim);
+  line-height: 1.68;
+  font-size: 14.5px;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes naik-masuk {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+}
+
+/* ============================================================
+   TOPOLOGI JARINGAN
+   ============================================================ */
+.topo-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 22px;
+  align-items: start;
+}
+.topo-kanvas {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  padding: 12px;
+  overflow-x: auto;
+}
+.topo-svg {
+  display: block;
+  width: 100%;
+  min-width: 700px;
+  height: auto;
+}
+.topo-hint {
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  text-align: center;
+  padding: 10px 4px 2px;
+}
+
+.topo-link {
+  fill: none;
+  stroke: var(--line-2);
+  stroke-width: 1.6;
+  transition: stroke 0.2s, stroke-width 0.2s;
+}
+.topo-link.sorot {
+  stroke: var(--accent);
+  stroke-width: 2.4;
+  stroke-dasharray: 6 5;
+  animation: aliran 0.9s linear infinite;
+}
+@keyframes aliran {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+
+.topo-node {
+  cursor: pointer;
+  outline: none;
+}
+.topo-kotak {
+  fill: var(--panel-2);
+  stroke: var(--line-2);
+  stroke-width: 1.4;
+  transition: stroke 0.2s, fill 0.2s;
+}
+.topo-node:hover .topo-kotak,
+.topo-node:focus-visible .topo-kotak {
+  stroke: var(--ink-faint);
+  fill: var(--panel);
+}
+.topo-node.dekat .topo-kotak {
+  stroke: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.topo-node.aktif .topo-kotak {
+  stroke: var(--accent);
+  stroke-width: 2;
+  fill: color-mix(in srgb, var(--accent) 10%, var(--panel-2));
+}
+.topo-ikon {
+  color: var(--ink-faint);
+  transition: color 0.2s;
+}
+.topo-node.aktif .topo-ikon {
+  color: var(--accent);
+}
+.topo-nama {
+  fill: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--display);
+}
+.topo-jenis {
+  fill: var(--ink-faint);
+  font-size: 10px;
+  font-family: var(--mono);
+  letter-spacing: 0.06em;
+}
+
+.topo-detail {
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  padding: 22px;
+  position: sticky;
+  top: 78px;
+}
+.topo-badge {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 99px;
+  background: var(--accent-wash);
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.topo-detail h3 {
+  font-size: 19px;
+  margin-bottom: 18px;
+}
+.topo-blok + .topo-blok {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+.topo-blok p {
+  margin-top: 9px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink-dim);
+}
+.topo-blok.catatan p {
+  color: var(--ink);
+  font-size: 13.5px;
+  border-left: 2px solid var(--accent);
+  padding-left: 12px;
+}
+.topo-blok .hasil {
+  margin-top: 10px;
+}
+.topo-kosong {
+  color: var(--ink-dim);
+  font-size: 14px;
+}
+
+@media (max-width: 980px) {
+  .topo-grid {
+    grid-template-columns: 1fr;
+  }
+  .topo-detail {
+    position: static;
+  }
+}
+
+/* ============================================================
+   STACK — KARTU YANG BISA DIKLIK
+   ============================================================ */
+.tech-icon-card {
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+}
+.tech-icon-card.bisa-klik {
+  cursor: pointer;
+}
+.tech-icon-card:disabled {
+  cursor: default;
+}
+.tech-icon-card.bisa-klik:hover .tech-icon-box,
+.tech-icon-card.bisa-klik:focus-visible .tech-icon-box {
+  border-color: var(--accent);
+}
+.tech-icon-box {
+  position: relative;
+}
+.tech-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  display: grid;
+  place-items: center;
+  border-radius: 99px;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+[data-theme='light'] .tech-badge {
+  color: #fff;
+}
+.tech-tooltip-cat {
+  display: block;
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+.tech-tooltip-aksi {
+  display: block;
+  font-size: 10.5px;
+  color: var(--accent);
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+}
+
+/* Penanda filter yang datang dari section Stack */
+.filter-asal {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px 8px 14px;
+  margin-bottom: 16px;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  background: var(--accent-wash);
+  border-radius: 99px;
+  animation: naik-masuk 0.24s ease-out;
+}
+.filter-asal strong {
+  font-size: 13px;
+  color: var(--accent);
+}
+.filter-asal .icon-btn {
+  width: 26px;
+  height: 26px;
+  border-color: transparent;
+}
+
+/* ============================================================
+   TERMINAL — CHIP PERINTAH CEPAT
+   ============================================================ */
+.term-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 12px 14px;
+  border-top: 1px solid var(--line);
+  background: var(--panel);
+}
+.term-chip {
+  font-size: 11px;
+  padding: 6px 11px;
+  border-radius: 6px;
+  border: 1px solid var(--line-2);
+  color: var(--ink-dim);
+  background: var(--panel-2);
+  transition: 0.16s;
+  cursor: pointer;
+}
+.term-chip:hover,
+.term-chip:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-wash);
+}
+.term-busy {
+  color: var(--accent);
+  animation: kedip 0.7s steps(2, start) infinite;
+  margin-left: 6px;
+}
+.tline.ok {
+  color: var(--green);
+}
+.tline.err {
+  color: var(--rose);
+}
+.tline.acc {
+  color: var(--accent);
+}
+
+/* ============================================================
+   MENU MOBILE (SHEET)
+   ============================================================ */
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  visibility: hidden;
+}
+.sheet.open {
+  pointer-events: auto;
+  visibility: visible;
+}
+.sheet-tirai {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+  backdrop-filter: blur(5px);
+  opacity: 0;
+  transition: opacity 0.24s;
+}
+.sheet.open .sheet-tirai {
+  opacity: 1;
+}
+.sheet-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(360px, 88vw);
+  background: var(--bg-2);
+  border-left: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.3, 1);
+  overflow-y: auto;
+}
+.sheet.open .sheet-panel {
+  transform: translateX(0);
+}
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--line);
+}
+.sheet-nav {
+  padding: 12px 12px 8px;
+}
+.sheet-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px 12px;
+  border-radius: 9px;
+  color: var(--ink-dim);
+  font-size: 15px;
+  text-align: left;
+  transition: 0.16s;
+  cursor: pointer;
+}
+.sheet-link .num {
+  font-size: 11px;
+  color: var(--ink-faint);
+  min-width: 20px;
+}
+.sheet-link .arw {
+  margin-left: auto;
+  opacity: 0;
+  transition: opacity 0.16s;
+}
+.sheet-link:hover,
+.sheet-link:focus-visible {
+  background: var(--panel);
+  color: var(--ink);
+}
+.sheet-link:hover .arw {
+  opacity: 0.6;
+}
+.sheet-link.active {
+  background: var(--accent-wash);
+  color: var(--accent);
+}
+.sheet-link.active .num {
+  color: var(--accent);
+}
+.sheet-aksi {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px 18px;
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+}
+.sheet-aksi .btn {
+  justify-content: flex-start;
+  width: 100%;
+}
+.sheet-foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px 20px;
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+/* ============================================================
+   COMMAND PALETTE (Ctrl + K)
+   ============================================================ */
+.cmd {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  padding: clamp(16px, 10vh, 110px) 16px 16px;
+}
+.cmd-tirai {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(6px);
+  animation: fade-in 0.16s ease-out;
+}
+.cmd-panel {
+  position: relative;
+  width: min(560px, 100%);
+  max-height: min(520px, 78vh);
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+  box-shadow: 0 30px 70px -28px rgba(0, 0, 0, 0.85);
+  overflow: hidden;
+  animation: naik-masuk 0.2s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+.cmd-input {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 15px 16px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-faint);
+}
+.cmd-input input {
+  flex: 1;
+  background: none;
+  border: 0;
+  outline: none;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 15px;
+}
+.cmd-input kbd {
+  font-size: 10px;
+  padding: 3px 7px;
+  border: 1px solid var(--line-2);
+  border-radius: 5px;
+  color: var(--ink-faint);
+}
+.cmd-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+.cmd-grup {
+  padding: 12px 10px 6px;
+  font-size: 10px;
+}
+.cmd-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 11px;
+  border-radius: 8px;
+  color: var(--ink-dim);
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+.cmd-item.sorot {
+  background: var(--accent-wash);
+  color: var(--ink);
+}
+.cmd-item.sorot svg {
+  color: var(--accent);
+}
+.cmd-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cmd-catatan {
+  font-size: 11px;
+  color: var(--ink-faint);
+  flex: none;
+}
+.cmd-kosong {
+  padding: 26px 12px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+.cmd-foot {
+  display: flex;
+  gap: 16px;
+  padding: 11px 16px;
+  border-top: 1px solid var(--line);
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  background: var(--panel-2);
+}
+
+@media (max-width: 600px) {
+  .cmd-foot {
+    display: none;
+  }
+}
+
+/* ============================================================
+   UPTIME HIDUP DI STATUS BAR
+   ============================================================ */
+.uptime-live {
+  color: var(--green);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   AKSESIBILITAS — FOKUS TERLIHAT JELAS
+   ============================================================ */
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   HORMATI PREFERENSI GERAK MINIMAL
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-grid-bg,
+  .kursor-ketik,
+  .term-busy,
+  .topo-link.sorot {
+    animation: none !important;
+  }
+  .spark-garis {
+    stroke-dashoffset: 0;
+    transition: none;
+  }
+  .spark-area,
+  .spark-titik {
+    opacity: 0.09;
+    transition: none;
+  }
+  .spark-titik {
+    opacity: 1;
+  }
+  .sheet-panel,
+  .cmd-panel,
+  .insiden-panel {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* ============================================================
+   PERBAIKAN LAYAR SEMPIT
+   ============================================================
+   Catatan: JANGAN menambal dengan `overflow-x: hidden` pada
+   html/body. .statusbar memakai position:sticky, dan membuat
+   body jadi kontainer scroll akan mematikan efek menempelnya.
+   Sumber luberan diperbaiki satu per satu di bawah ini.
+   ============================================================ */
+
+@media (max-width: 640px) {
+  /* --------------------------------------------------------
+     Bar status 90 hari
+     --------------------------------------------------------
+     90 batang x min-width 2px + 89 gap x 2px = 358px, sedangkan
+     ruang di HP 360px hanya 284px. Selisih 74px inilah yang
+     terpotong di sisi kanan.
+
+     Selain dikecilkan, batang insiden justru diberi lebar
+     minimum lebih besar. Batang setipis 2px mustahil disentuh
+     jari, padahal justru batang berwarna itulah yang perlu
+     diketuk untuk membaca ceritanya.
+     -------------------------------------------------------- */
+  .status-card {
+    padding: 16px 14px;
+  }
+  .status-bars {
+    gap: 1px;
+    height: 42px;
+  }
+  .sbar {
+    min-width: 1px;
+    border-radius: 1px;
+  }
+  .sbar.gangguan,
+  .sbar.down {
+    min-width: 7px;
+    border-radius: 2px;
+  }
+  .status-meta {
+    flex-wrap: wrap;
+    gap: 4px 12px;
+  }
+  .status-nama {
+    font-size: 13.5px;
+  }
+  .status-baris + .status-baris {
+    margin-top: 20px;
+    padding-top: 18px;
+  }
+
+  /* Teks monospace lebih kecil supaya baris panjang (log,
+     tabel neofetch) tidak terus-menerus terpotong jadi dua. */
+  .term-body,
+  .logbox {
+    font-size: 11px;
+    line-height: 1.7;
+  }
+  .term-body {
+    height: 300px;
+    padding: 12px;
+  }
+  .logbox {
+    padding: 14px;
+  }
+}
+
+/* Baris log panjang harus boleh dipotong di tengah kata,
+   sama seperti yang sudah berlaku di .tline */
+.logbox div {
+  overflow-wrap: anywhere;
+}
+
+/* Kolom fleksibel/grid secara bawaan tidak boleh menyusut di
+   bawah lebar kontennya. Tanpa min-width:0 satu anak yang lebar
+   bisa memaksa seluruh baris melebar melewati layar. */
+.status-baris,
+.pipe-grid > *,
+.contact-grid > *,
+.exp-grid > *,
+.topo-grid > * {
+  min-width: 0;
+}
+
+@media (max-width: 420px) {
+  .term-body,
+  .logbox {
+    font-size: 10.5px;
+  }
+  .status-card {
+    padding: 14px 11px;
+  }
+  .insiden-panel {
+    padding: 18px 16px;
+  }
+}
+
+/* ============================================================
+   ============================================================
+   LAPISAN KACA
+   ============================================================
+   Semua yang membuat tampilan jadi bergaya kaca ada di blok ini,
+   supaya mudah ditemukan dan mudah dilepas kalau tidak cocok.
+   ============================================================
+   ============================================================ */
+
+
+
+
+
+
+/* Latar dasar dibuat sedikit bergradasi supaya aurora punya kedalaman */
+body {
+  background:
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 55%, var(--bg) 100%);
+  background-attachment: fixed;
+}
+
+/* Hero tidak lagi butuh kisi sendiri — sudah ada di latar halaman */
+.hero-grid-bg {
+  display: none;
+}
+
+/* ------------------------------------------------------------
+   2. PERMUKAAN KACA
+   ------------------------------------------------------------
+   backdrop-filter itu mahal. Efek ini hanya dipasang pada wadah
+   besar, bukan pada elemen kecil seperti chip atau badge — kalau
+   dipasang di puluhan elemen kecil, halaman jadi tersendat saat
+   digulir, terutama di HP.
+   ------------------------------------------------------------ */
+.metrics,
+.inspector,
+.proj,
+.cert,
+.term,
+.status-card,
+.topo-kanvas,
+.topo-detail,
+.insiden-panel,
+.cmd-panel,
+.sheet-panel,
+.tech-icon-box,
+.deckpanel {
+  background: var(--kaca);
+  -webkit-backdrop-filter: var(--kaca-buram);
+  backdrop-filter: var(--kaca-buram);
+  border: 1px solid var(--kaca-tepi);
+  box-shadow: var(--shadow);
+}
+
+/* Wadah utama dibulatkan lebih besar, khas iOS */
+.metrics,
+.status-card,
+.topo-kanvas,
+.topo-detail,
+.proj,
+.cert,
+.term,
+.inspector {
+  border-radius: var(--r);
+}
+.insiden-panel,
+.cmd-panel {
+  border-radius: 22px;
+}
+.tech-icon-box {
+  border-radius: 20px;
+}
+
+/* Elemen kecil: tembus pandang tapi tanpa blur, demi kelancaran */
+.btn,
+.chip,
+.filter,
+.stage,
+.term-chip,
+.icon-btn,
+.icon-btn .kbd-hint,
+.avail,
+.status,
+.clink,
+.tl-item,
+.cert-item {
+  background: var(--kaca);
+  border-color: var(--kaca-tepi);
+}
+.btn,
+.filter,
+.stage,
+.icon-btn {
+  border-radius: 12px;
+}
+.chip,
+.term-chip {
+  border-radius: 9px;
+}
+
+.btn:hover,
+.filter:hover,
+.stage:hover,
+.icon-btn:hover,
+.term-chip:hover {
+  background: var(--kaca-kuat);
+  border-color: var(--kaca-tepi-kuat);
+}
+
+/* Navbar: kaca paling tebal karena selalu menempel di atas konten */
+.statusbar {
+  background: var(--kaca);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  backdrop-filter: blur(30px) saturate(180%);
+  border-bottom: 1px solid var(--kaca-tepi);
+  box-shadow: var(--kaca-kilau);
+}
+
+/* Tirai modal: buram lebih tebal supaya isi di belakang tidak mengganggu */
+.cmd-tirai,
+.sheet-tirai,
+.insiden-tirai {
+  -webkit-backdrop-filter: blur(18px) saturate(120%);
+  backdrop-filter: blur(18px) saturate(120%);
+}
+
+/* ------------------------------------------------------------
+   3. BLOK YANG SENGAJA TIDAK JADI KACA
+   ------------------------------------------------------------
+   Terminal dan log harus tetap pekat. Teks monospace hijau di atas
+   permukaan tembus pandang jadi sulit dibaca, dan terminal memang
+   seharusnya terlihat seperti terminal.
+   ------------------------------------------------------------ */
+.term-body,
+.logbox {
+  background: rgba(8, 13, 19, 0.72);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+[data-theme='light'] .term-body,
+[data-theme='light'] .logbox {
+  background: rgba(11, 20, 28, 0.9);
+}
+.term header,
+.term-chips {
+  background: var(--kaca-kuat);
+}
+
+/* Metrik: pemisah antar kartu dibuat lebih halus */
+.metric {
+  border-color: var(--kaca-tepi);
+}
+
+/* Foto hero ikut bergaya kaca */
+.hero-foto {
+  border: 1px solid var(--kaca-tepi);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+}
+
+/* ------------------------------------------------------------
+   4. CADANGAN UNTUK PERAMBAN LAMA
+   ------------------------------------------------------------
+   Sebagian peramban lama tidak mendukung backdrop-filter. Tanpa
+   cadangan ini, panel tembus pandang tanpa efek buram membuat
+   teks bertumpuk dengan latar dan nyaris tidak terbaca.
+   ------------------------------------------------------------ */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .metrics,
+  .inspector,
+  .proj,
+  .cert,
+  .term,
+  .status-card,
+  .topo-kanvas,
+  .topo-detail,
+  .insiden-panel,
+  .cmd-panel,
+  .sheet-panel,
+  .statusbar,
+  .tech-icon-box,
+  .deckpanel {
+    background: #131d29;
+  }
+  [data-theme='light'] .metrics,
+  [data-theme='light'] .inspector,
+  [data-theme='light'] .proj,
+  [data-theme='light'] .cert,
+  [data-theme='light'] .term,
+  [data-theme='light'] .status-card,
+  [data-theme='light'] .topo-kanvas,
+  [data-theme='light'] .topo-detail,
+  [data-theme='light'] .insiden-panel,
+  [data-theme='light'] .cmd-panel,
+  [data-theme='light'] .sheet-panel,
+  [data-theme='light'] .statusbar,
+  [data-theme='light'] .tech-icon-box,
+  [data-theme='light'] .deckpanel {
+    background: #ffffff;
+  }
+}
+
+
+/* HP kelas bawah: kurangi tingkat buram supaya gulir tetap lancar */
+@media (max-width: 640px) {
+  :root {
+    --kaca-buram: blur(18px) saturate(150%);
+  }
+  .statusbar {
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    backdrop-filter: blur(20px) saturate(160%);
+  }
+}
+
+/* ============================================================
+   LAYAR PEMBUKA
+   ============================================================ */
+.pembuka {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  opacity: 1;
+  transition: opacity 420ms ease, backdrop-filter 420ms ease;
+}
+.pembuka.memudar {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pembuka-kartu {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 30px;
+  border-radius: 22px;
+  background: var(--kaca);
+  -webkit-backdrop-filter: var(--kaca-buram);
+  backdrop-filter: var(--kaca-buram);
+  border: 1px solid var(--kaca-tepi);
+  box-shadow: var(--shadow);
+  animation: pembuka-naik 520ms cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+@keyframes pembuka-naik {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+}
+
+.pembuka-badge {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #0d141c;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.pembuka-teks {
+  font-size: clamp(19px, 4.5vw, 27px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  white-space: nowrap;
+  /* Ruang dikunci sejak awal supaya kartu tidak melebar
+     huruf demi huruf saat teks diketik. */
+  min-width: 10ch;
+}
+
+.pembuka-kursor {
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  margin-left: 4px;
+  vertical-align: text-bottom;
+  border-radius: 2px;
+  background: var(--accent);
+  animation: kedip 0.9s steps(2, start) infinite;
+}
+
+@media (max-width: 480px) {
+  .pembuka-kartu {
+    padding: 18px 22px;
+    gap: 13px;
+  }
+  .pembuka-badge {
+    width: 34px;
+    height: 34px;
+    font-size: 11px;
+  }
+}
+
+/* ============================================================
+   LATAR HALAMAN — TUMPUKAN LIMA LAPISAN
+   ============================================================
+   Gradasi warna saja selalu terbaca datar, seberapa pun bagus
+   warnanya. Yang membuat sebuah latar terasa dirancang adalah
+   lapisan: warna, struktur, dan butiran halus yang menyatukannya.
+
+   Urutan dari bawah ke atas:
+     1. body            — gradasi dasar
+     2. .aurora         — gumpalan warna lembut
+     3. .aurora-kisi    — kisi blueprint dua tingkat
+     4. .aurora-tekstur — butiran + vignette
+     5. main / .foot    — isi halaman (z-index 1)
+
+   Semuanya position: fixed, jadi diam saat halaman digulir —
+   inilah yang membuat panel kaca terasa melayang di atasnya.
+
+   Dibuat sebagai elemen nyata, bukan body::before, karena satu
+   elemen hanya boleh punya satu ::before — dan stylesheet ini
+   sudah memakainya. Aturan yang bertabrakan akan bergabung diam-
+   diam, lalu efeknya hilang tanpa jejak.
+   ============================================================ */
+
+:root {
+  --kisi-mayor: rgba(255, 255, 255, 0.055);
+  --kisi-minor: rgba(255, 255, 255, 0.022);
+  --butiran: 0.05;
+  --vignette: rgba(0, 0, 0, 0.42);
+  --cahaya-atas: rgba(255, 255, 255, 0.05);
+}
+[data-theme='light'] {
+  --kisi-mayor: rgba(15, 25, 34, 0.05);
+  --kisi-minor: rgba(15, 25, 34, 0.022);
+  /* Butiran dan vignette diringankan untuk tema terang. Di latar
+     gelap keduanya menambah kedalaman; di latar terang justru
+     membuat halaman terlihat berkabut. */
+  --butiran: 0.022;
+  --vignette: rgba(15, 25, 34, 0.06);
+  /* Turun dari 0,65 — latar yang sudah cerah ditambah selimut putih
+     tebal membuat seluruh halaman kehilangan ketajaman. */
+  --cahaya-atas: rgba(255, 255, 255, 0.32);
+}
+
+.aurora,
+.aurora-kisi,
+.aurora-tekstur {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ---------- 1. Gradasi dasar ---------- */
+body {
+  background:
+    linear-gradient(180deg, var(--cahaya-atas) 0%, transparent 38%),
+    linear-gradient(168deg, var(--bg) 0%, var(--bg-2) 46%, var(--bg) 100%);
+  background-attachment: fixed;
+}
+
+/* ---------- 2. Gumpalan warna ---------- */
+.aurora {
+  overflow: hidden;
+}
+.aurora span {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  /* Blur 55px, bukan 70px. Terlalu buram membuat gumpalan kehilangan
+     bentuk dan berubah jadi kabut rata — persis yang bikin latar
+     terasa polos. Sedikit lebih tegas justru terlihat lebih bersih. */
+  filter: blur(55px);
+  will-change: transform;
+}
+.aurora .a1 {
+  width: 42vmax;
+  height: 34vmax;
+  left: -4vmax;
+  top: -8vmax;
+  background: radial-gradient(circle, rgba(240, 160, 60, 0.42), transparent 68%);
+  animation: aurora-1 26s ease-in-out infinite alternate;
+}
+.aurora .a2 {
+  width: 36vmax;
+  height: 32vmax;
+  right: -6vmax;
+  top: 2vmax;
+  background: radial-gradient(circle, rgba(85, 185, 216, 0.36), transparent 68%);
+  animation: aurora-2 31s ease-in-out infinite alternate;
+}
+.aurora .a3 {
+  width: 44vmax;
+  height: 38vmax;
+  right: 6vmax;
+  bottom: -12vmax;
+  background: radial-gradient(circle, rgba(155, 140, 240, 0.34), transparent 68%);
+  animation: aurora-3 35s ease-in-out infinite alternate;
+}
+.aurora .a4 {
+  width: 34vmax;
+  height: 30vmax;
+  left: -6vmax;
+  bottom: 2vmax;
+  background: radial-gradient(circle, rgba(63, 191, 135, 0.28), transparent 68%);
+  animation: aurora-4 29s ease-in-out infinite alternate;
+}
+
+[data-theme='light'] .aurora .a1 {
+  background: radial-gradient(circle, rgba(219, 141, 40, 0.17), transparent 68%);
+}
+[data-theme='light'] .aurora .a2 {
+  background: radial-gradient(circle, rgba(42, 149, 192, 0.15), transparent 68%);
+}
+[data-theme='light'] .aurora .a3 {
+  background: radial-gradient(circle, rgba(122, 104, 226, 0.14), transparent 68%);
+}
+[data-theme='light'] .aurora .a4 {
+  background: radial-gradient(circle, rgba(36, 168, 114, 0.12), transparent 68%);
+}
+
+@keyframes aurora-1 {
+  to {
+    transform: translate3d(7vmax, 4vmax, 0) scale(1.14);
+  }
+}
+@keyframes aurora-2 {
+  to {
+    transform: translate3d(-6vmax, 6vmax, 0) scale(1.1);
+  }
+}
+@keyframes aurora-3 {
+  to {
+    transform: translate3d(-5vmax, -5vmax, 0) scale(1.16);
+  }
+}
+@keyframes aurora-4 {
+  to {
+    transform: translate3d(5vmax, -4vmax, 0) scale(1.08);
+  }
+}
+
+/* ---------- 3. Kisi blueprint dua tingkat ---------- */
+/* Kertas milimeter sungguhan punya garis halus rapat dan garis tebal
+   tiap beberapa kotak. Dua tingkat inilah yang memberi kesan
+   terstruktur — kisi satu tingkat cuma terbaca sebagai pola. */
+.aurora-kisi {
+  background-image:
+    linear-gradient(var(--kisi-mayor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--kisi-mayor) 1px, transparent 1px),
+    linear-gradient(var(--kisi-minor) 1px, transparent 1px),
+    linear-gradient(90deg, var(--kisi-minor) 1px, transparent 1px);
+  background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px;
+  mask-image: radial-gradient(ellipse 110% 85% at 50% 0%, #000 8%, transparent 82%);
+  -webkit-mask-image: radial-gradient(ellipse 110% 85% at 50% 0%, #000 8%, transparent 82%);
+}
+
+/* ---------- 4. Butiran + vignette ---------- */
+/* Butiran halus adalah satu hal yang paling ampuh membuat gradasi
+   berhenti terlihat "polos". Sekaligus menghilangkan banding —
+   garis-garis tangga yang muncul pada gradasi lembut di layar 8-bit.
+   Vignette menggelapkan tepi sedikit supaya mata tertarik ke tengah. */
+/* Elemen induk hanya membawa vignette. Butiran ditaruh di ::after
+   dengan opasitasnya sendiri — kalau digabung di sini, keduanya
+   terpaksa berbagi satu nilai opacity dan butirannya akan tampil
+   pada kepekatan penuh. */
+.aurora-tekstur {
+  background-image:
+    radial-gradient(ellipse 125% 105% at 50% 42%, transparent 42%, var(--vignette) 100%);
+}
+.aurora-tekstur::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: var(--butiran);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* ---------- 5. Isi halaman selalu di atas ---------- */
+main,
+.foot,
+.skip {
+  position: relative;
+  z-index: 1;
+}
+
+/* Gerak minimal: gumpalan diam, latar tetap utuh */
+@media (prefers-reduced-motion: reduce) {
+  .aurora span {
+    animation: none !important;
+  }
+}
+
+/* HP: blur diringankan dan butiran dimatikan demi kelancaran gulir */
+@media (max-width: 640px) {
+  .aurora span {
+    filter: blur(45px);
+  }
+  .aurora-tekstur::after {
+    display: none;
+  }
+  .aurora-kisi {
+    background-size: 72px 72px, 72px 72px, 24px 24px, 24px 24px;
+  }
+}
+
+/* ============================================================
+   ALUR KERJA — PENGELOMPOKAN FASE
+   ============================================================ */
+.stage-blok {
+  display: contents;
+}
+.fase {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 8px;
+  padding-left: 2px;
+}
+.stage-blok:first-child .fase {
+  margin-top: 0;
+}
+.fase-nama {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+.fase-garis {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line-2), transparent);
+}
+
+/* Panel kanan ikut menunjukkan fase tahap yang sedang dibuka,
+   supaya pembaca tidak kehilangan konteks setelah mengklik. */
+.inspector-fase {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-wash);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  padding: 4px 9px;
+  border-radius: 99px;
+  margin-bottom: 12px;
+}
+
+/* Daftar sebelas tahap jadi cukup tinggi — panel kanan dibuat
+   menempel supaya tetap terlihat saat daftar digulir. */
+@media (min-width: 861px) {
+  .inspector {
+    position: sticky;
+    top: 84px;
+  }
+}
