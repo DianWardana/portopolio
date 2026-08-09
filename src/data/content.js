@@ -5,13 +5,6 @@
  *  Kamu tidak perlu menyentuh file lain untuk mengganti konten.
  *  Setelah edit: simpan -> git commit -> git push -> otomatis ter-deploy.
  *
- *  DUA BAHASA
- *  ----------
- *  Teks bisa ditulis dua cara:
- *    'Halo'                          → dipakai untuk ID dan EN
- *    { id: 'Halo', en: 'Hello' }     → ikut tombol bahasa di navbar
- *  Kalau `en` belum diisi, otomatis pakai teks Indonesia. Aman.
- *
  *  GAMBAR / FILE
  *  -------------
  *  Semua file di folder /public ditulis TANPA garis miring depan.
@@ -27,17 +20,11 @@ export const profile = {
   inisial: 'DRW',
   judulBaris1: 'System',
   judulBaris2: 'Administrator',
-  tagline: {
-    id: 'Saya menjaga server tetap hidup, jaringan tetap stabil, dan 400+ user tetap produktif — termasuk saat tidak ada yang sadar ada masalah.',
-    en: 'I keep servers alive, networks stable, and 400+ users productive — including when nobody notices anything was wrong.',
-  },
-  lokasi: { id: 'Mojokerto, Jawa Timur', en: 'Mojokerto, East Java, Indonesia' },
+  tagline: 'Saya menjaga server tetap hidup, jaringan tetap stabil, dan 400+ user tetap produktif — termasuk saat tidak ada yang sadar ada masalah.',
+  lokasi: 'Mojokerto, Jawa Timur',
   zonaWaktu: 'Asia/Jakarta',
   ketersediaan: 'open',
-  labelKetersediaan: {
-    id: 'Terbuka untuk peluang baru',
-    en: 'Open to new opportunities',
-  },
+  labelKetersediaan: 'Terbuka untuk peluang baru',
   email: 'dianwardana.tech@gmail.com',
 
   /* Isi kalau sudah punya. Kosongkan ('') untuk menyembunyikan tombolnya. */
@@ -62,30 +49,30 @@ export const metrik = [
     nilai: 99,
     sufiks: '%',
     desimal: 0,
-    label: { id: 'Uptime rata-rata', en: 'Average uptime' },
-    catatan: { id: 'lingkungan produksi', en: 'production environment' },
+    label: 'Uptime rata-rata',
+    catatan: 'lingkungan produksi',
     tren: [97.8, 98.4, 99.1, 98.9, 99.4, 99.2, 99.6, 99.3, 99.7, 99.5, 99.8, 99.6],
   },
   {
     nilai: 5,
-    sufiks: { id: ' tahun', en: ' years' },
+    sufiks: ' tahun',
     desimal: 0,
-    label: { id: 'Pengalaman langsung', en: 'Hands-on experience' },
-    catatan: { id: 'lingkungan produksi', en: 'production environment' },
+    label: 'Pengalaman langsung',
+    catatan: 'lingkungan produksi',
     tren: [1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5],
   },
   {
     nilai: 1000,
     sufiks: '+',
-    label: { id: 'Tiket diselesaikan', en: 'Tickets resolved' },
-    catatan: { id: 'IT support & sysadmin', en: 'IT support & sysadmin' },
+    label: 'Tiket diselesaikan',
+    catatan: 'IT support & sysadmin',
     tren: [120, 180, 260, 330, 410, 500, 590, 680, 760, 850, 930, 1000],
   },
   {
     nilai: 400,
     sufiks: '+',
-    label: { id: 'User aktif dikelola', en: 'Active users managed' },
-    catatan: { id: 'lingkungan high-demand', en: 'high-demand environment' },
+    label: 'User aktif dikelola',
+    catatan: 'lingkungan high-demand',
     tren: [90, 130, 170, 210, 240, 280, 310, 330, 360, 380, 395, 400],
   },
 ]
@@ -98,10 +85,7 @@ export const pipeline = [
     id: 'monitor',
     nama: 'Monitor',
     durasi: '24/7',
-    ringkas: {
-      id: 'Sistem tidak pernah tidur. Dashboard Grafana & Netdata selalu terbuka.',
-      en: 'Systems never sleep. Grafana & Netdata dashboards stay open all day.',
-    },
+    ringkas: 'Sistem tidak pernah tidur. Dashboard Grafana & Netdata selalu terbuka.',
     tools: ['Grafana', 'Prometheus', 'Netdata'],
     log: [
       '$ netdata-cli status',
@@ -115,10 +99,7 @@ export const pipeline = [
     id: 'secure',
     nama: 'Harden',
     durasi: 'baseline',
-    ringkas: {
-      id: 'SSH port custom, root login dimatikan, UFW whitelist-based, Fail2Ban aktif.',
-      en: 'Custom SSH port, root login disabled, whitelist-based UFW, Fail2Ban running.',
-    },
+    ringkas: 'SSH port custom, root login dimatikan, UFW whitelist-based, Fail2Ban aktif.',
     tools: ['UFW', 'Fail2Ban', 'SSH'],
     log: [
       '$ fail2ban-client status sshd',
@@ -132,10 +113,7 @@ export const pipeline = [
     id: 'deploy',
     nama: 'Deploy',
     durasi: 'on demand',
-    ringkas: {
-      id: 'Deploy manual ke server & VPS: Apache2, PHP/CI4, MySQL, Docker multi-container.',
-      en: 'Manual deploys to on-prem servers & VPS: Apache2, PHP/CI4, MySQL, multi-container Docker.',
-    },
+    ringkas: 'Deploy manual ke server & VPS: Apache2, PHP/CI4, MySQL, Docker multi-container.',
     tools: ['Apache2', 'Docker', 'Git'],
     log: [
       '$ git pull origin main',
@@ -151,10 +129,7 @@ export const pipeline = [
     id: 'network',
     nama: 'Network',
     durasi: 'managed',
-    ringkas: {
-      id: 'VLAN segmentation, MikroTik queue & firewall, bandwidth management, filtering.',
-      en: 'VLAN segmentation, MikroTik queues & firewall, bandwidth management, content filtering.',
-    },
+    ringkas: 'VLAN segmentation, MikroTik queue & firewall, bandwidth management, filtering.',
     tools: ['MikroTik', 'Ruijie', 'UniFi'],
     log: [
       '$ /ip firewall filter print',
@@ -168,10 +143,7 @@ export const pipeline = [
     id: 'backup',
     nama: 'Backup',
     durasi: 'cron',
-    ringkas: {
-      id: 'Backup database multi-instance otomatis via cron, strategi recovery siap pakai.',
-      en: 'Automated multi-instance database backups via cron, with a tested recovery playbook.',
-    },
+    ringkas: 'Backup database multi-instance otomatis via cron, strategi recovery siap pakai.',
     tools: ['Cron', 'MySQL', 'MariaDB'],
     log: [
       '$ crontab -l | grep backup',
@@ -186,10 +158,7 @@ export const pipeline = [
     id: 'resolve',
     nama: 'Resolve',
     durasi: 'on-call',
-    ringkas: {
-      id: 'Troubleshooting real case: HTTP 500, network drop, service mati, akses terkunci.',
-      en: 'Real-world troubleshooting: HTTP 500s, network drops, dead services, lockouts.',
-    },
+    ringkas: 'Troubleshooting real case: HTTP 500, network drop, service mati, akses terkunci.',
     tools: ['Bash', 'journalctl', 'tcpdump'],
     log: [
       '$ journalctl -u apache2 --since "1h ago"',
@@ -212,95 +181,65 @@ export const pipeline = [
  * menangani masalah, bukan cuma klaim angka uptime. */
 export const layananStatus = [
   {
-    nama: { id: 'Server Produksi (4 node)', en: 'Production servers (4 nodes)' },
+    nama: 'Server Produksi (4 node)',
     uptime: 99.94,
     insiden: [
       {
         hariLalu: 12,
         tingkat: 'gangguan',
         durasi: '8 menit',
-        judul: { id: 'Apache2 gagal reload setelah deploy', en: 'Apache2 failed to reload after deploy' },
-        sebab: {
-          id: 'Variable environment CI4 hilang saat deploy — PHP fatal error, HTTP 500 di satu vhost.',
-          en: 'A CI4 environment variable went missing during deploy — PHP fatal error, HTTP 500 on one vhost.',
-        },
-        solusi: {
-          id: 'Ketahuan dari alert Grafana sebelum ada user lapor. Perbaiki .env, reload Apache2, tambahkan pengecekan env ke skrip deploy supaya tidak terulang.',
-          en: 'Caught by a Grafana alert before any user reported it. Fixed .env, reloaded Apache2, and added an env check to the deploy script so it cannot repeat.',
-        },
+        judul: 'Apache2 gagal reload setelah deploy',
+        sebab: 'Variable environment CI4 hilang saat deploy — PHP fatal error, HTTP 500 di satu vhost.',
+        solusi: 'Ketahuan dari alert Grafana sebelum ada user lapor. Perbaiki .env, reload Apache2, tambahkan pengecekan env ke skrip deploy supaya tidak terulang.',
       },
       {
         hariLalu: 41,
         tingkat: 'gangguan',
         durasi: '15 menit',
-        judul: { id: 'Disk usage 92% di server database', en: 'Disk usage hit 92% on the database server' },
-        sebab: {
-          id: 'Log Docker menumpuk tanpa rotasi, ditambah arsip backup lama yang belum terhapus.',
-          en: 'Docker logs piled up without rotation, plus old backup archives that were never pruned.',
-        },
-        solusi: {
-          id: 'Bersihkan dengan docker prune, aktifkan log rotation, pasang alert di ambang 80% supaya ketahuan jauh sebelum kritis.',
-          en: 'Cleared with docker prune, enabled log rotation, and set an alert at the 80% threshold to catch it far earlier.',
-        },
+        judul: 'Disk usage 92% di server database',
+        sebab: 'Log Docker menumpuk tanpa rotasi, ditambah arsip backup lama yang belum terhapus.',
+        solusi: 'Bersihkan dengan docker prune, aktifkan log rotation, pasang alert di ambang 80% supaya ketahuan jauh sebelum kritis.',
       },
     ],
   },
   {
-    nama: { id: 'Jaringan & VLAN (6 zona)', en: 'Network & VLAN (6 zones)' },
+    nama: 'Jaringan & VLAN (6 zona)',
     uptime: 99.87,
     insiden: [
       {
         hariLalu: 27,
         tingkat: 'down',
         durasi: '22 menit',
-        judul: { id: 'Uplink switch core putus', en: 'Core switch uplink went down' },
-        sebab: {
-          id: 'Kabel uplink antara switch core dan distribusi longgar setelah pekerjaan rapikan rak.',
-          en: 'The uplink cable between core and distribution switch worked loose after rack tidying work.',
-        },
-        solusi: {
-          id: 'Isolasi cepat dari topologi, ganti patch cable, labeli ulang seluruh port uplink dan foto kondisi rak sebagai dokumentasi.',
-          en: 'Isolated quickly using the topology map, replaced the patch cable, relabelled every uplink port and photographed the rack as documentation.',
-        },
+        judul: 'Uplink switch core putus',
+        sebab: 'Kabel uplink antara switch core dan distribusi longgar setelah pekerjaan rapikan rak.',
+        solusi: 'Isolasi cepat dari topologi, ganti patch cable, labeli ulang seluruh port uplink dan foto kondisi rak sebagai dokumentasi.',
       },
       {
         hariLalu: 63,
         tingkat: 'gangguan',
         durasi: '11 menit',
-        judul: { id: 'Bandwidth jenuh di jam sibuk', en: 'Bandwidth saturated at peak hour' },
-        sebab: {
-          id: 'Beberapa klien melakukan update besar bersamaan tanpa batas queue per-user.',
-          en: 'Several clients ran large updates at the same time with no per-user queue limit.',
-        },
-        solusi: {
-          id: 'Terapkan queue per-user di MikroTik dan prioritaskan traffic aplikasi kerja di atas traffic hiburan.',
-          en: 'Applied per-user queues on MikroTik and prioritised work-app traffic over entertainment traffic.',
-        },
+        judul: 'Bandwidth jenuh di jam sibuk',
+        sebab: 'Beberapa klien melakukan update besar bersamaan tanpa batas queue per-user.',
+        solusi: 'Terapkan queue per-user di MikroTik dan prioritaskan traffic aplikasi kerja di atas traffic hiburan.',
       },
     ],
   },
   {
-    nama: { id: 'Backup Otomatis', en: 'Automated backups' },
+    nama: 'Backup Otomatis',
     uptime: 100,
     insiden: [],
   },
   {
-    nama: { id: 'Monitoring Stack', en: 'Monitoring stack' },
+    nama: 'Monitoring Stack',
     uptime: 99.98,
     insiden: [
       {
         hariLalu: 55,
         tingkat: 'gangguan',
         durasi: '6 menit',
-        judul: { id: 'Prometheus berhenti scraping satu target', en: 'Prometheus stopped scraping one target' },
-        sebab: {
-          id: 'Container exporter mati setelah restart host dan tidak diset restart otomatis.',
-          en: 'The exporter container died after a host restart and had no automatic restart policy.',
-        },
-        solusi: {
-          id: 'Set restart: unless-stopped di compose, dan tambah alert khusus untuk target yang hilang dari Prometheus.',
-          en: 'Set restart: unless-stopped in compose, and added a dedicated alert for targets missing from Prometheus.',
-        },
+        judul: 'Prometheus berhenti scraping satu target',
+        sebab: 'Container exporter mati setelah restart host dan tidak diset restart otomatis.',
+        solusi: 'Set restart: unless-stopped di compose, dan tambah alert khusus untuk target yang hilang dari Prometheus.',
       },
     ],
   },
@@ -312,11 +251,8 @@ export const layananStatus = [
 /* Koordinat memakai kanvas 1000 x 560. Ubah x/y untuk menggeser node.
  * `jenis` menentukan warna: wan, router, switch, ap, server, vm, storage, field */
 export const topologi = {
-  judul: { id: 'Arsitektur yang saya bangun', en: 'The architecture I built' },
-  deskripsi: {
-    id: 'Sederhanaan dari infrastruktur yang saya kelola sehari-hari. Klik tiap node untuk melihat perannya, spesifikasi, dan alasan di balik keputusannya.',
-    en: 'A simplified view of the infrastructure I run day to day. Click any node to see its role, specs, and the reasoning behind each decision.',
-  },
+  judul: 'Arsitektur yang saya bangun',
+  deskripsi: 'Sederhanaan dari infrastruktur yang saya kelola sehari-hari. Klik tiap node untuk melihat perannya, spesifikasi, dan alasan di balik keputusannya.',
   node: [
     {
       id: 'isp',
@@ -325,12 +261,9 @@ export const topologi = {
       x: 500,
       y: 48,
       detail: {
-        peran: { id: 'Jalur internet masuk', en: 'Inbound internet link' },
+        peran: 'Jalur internet masuk',
         spek: ['Dedicated line + backup link', 'Failover otomatis', 'Public IP statis'],
-        catatan: {
-          id: 'Dua jalur dipakai supaya kantor tidak berhenti kerja saat satu provider bermasalah. Failover diuji berkala, bukan cuma diasumsikan jalan.',
-          en: 'Two links so the office keeps working when one provider fails. Failover is tested regularly, not just assumed to work.',
-        },
+        catatan: 'Dua jalur dipakai supaya kantor tidak berhenti kerja saat satu provider bermasalah. Failover diuji berkala, bukan cuma diasumsikan jalan.',
       },
     },
     {
@@ -340,12 +273,9 @@ export const topologi = {
       x: 500,
       y: 158,
       detail: {
-        peran: { id: 'Router utama, firewall, bandwidth manager', en: 'Core router, firewall, bandwidth manager' },
+        peran: 'Router utama, firewall, bandwidth manager',
         spek: ['48 firewall rule whitelist-based', 'Queue per-user aktif', 'Filtering YouTube & aplikasi non-produktif', 'NAT + port forwarding terkontrol'],
-        catatan: {
-          id: 'Firewall pakai prinsip deny by default — hanya yang perlu yang dibuka. Queue per-user mencegah satu orang menghabiskan bandwidth seluruh kantor.',
-          en: 'The firewall is deny-by-default — only what is needed gets opened. Per-user queues stop one person from eating the whole office bandwidth.',
-        },
+        catatan: 'Firewall pakai prinsip deny by default — hanya yang perlu yang dibuka. Queue per-user mencegah satu orang menghabiskan bandwidth seluruh kantor.',
       },
     },
     {
@@ -355,12 +285,9 @@ export const topologi = {
       x: 500,
       y: 268,
       detail: {
-        peran: { id: 'Distribusi VLAN ke seluruh zona', en: 'Distributes VLANs across every zone' },
+        peran: 'Distribusi VLAN ke seluruh zona',
         spek: ['Ruijie managed switch', '6 VLAN aktif', 'Trunk port ke switch akses', 'Port uplink berlabel & terdokumentasi'],
-        catatan: {
-          id: 'Segmentasi VLAN memisahkan zona server, karyawan, tamu, CCTV, dan perangkat lapangan. Kalau satu zona bermasalah, zona lain tidak ikut terbawa.',
-          en: 'VLAN segmentation separates the server, staff, guest, CCTV, and field-device zones. When one zone has a problem, the others are unaffected.',
-        },
+        catatan: 'Segmentasi VLAN memisahkan zona server, karyawan, tamu, CCTV, dan perangkat lapangan. Kalau satu zona bermasalah, zona lain tidak ikut terbawa.',
       },
     },
     {
@@ -370,12 +297,9 @@ export const topologi = {
       x: 190,
       y: 372,
       detail: {
-        peran: { id: 'Zona khusus server produksi', en: 'Dedicated production server zone' },
+        peran: 'Zona khusus server produksi',
         spek: ['Akses dibatasi per-IP', 'Tidak bisa diakses langsung dari VLAN tamu', 'Traffic antar zona lewat firewall'],
-        catatan: {
-          id: 'Server tidak pernah berada di segmen yang sama dengan laptop karyawan. Ini lapis pertahanan paling murah dan paling sering dilewatkan orang.',
-          en: 'Servers never share a segment with staff laptops. It is the cheapest layer of defence and the one most often skipped.',
-        },
+        catatan: 'Server tidak pernah berada di segmen yang sama dengan laptop karyawan. Ini lapis pertahanan paling murah dan paling sering dilewatkan orang.',
       },
     },
     {
@@ -385,12 +309,9 @@ export const topologi = {
       x: 500,
       y: 372,
       detail: {
-        peran: { id: 'Zona karyawan & tamu', en: 'Staff & guest zone' },
+        peran: 'Zona karyawan & tamu',
         spek: ['400+ user aktif', 'Bandwidth per-user dibatasi', 'Guest terisolasi dari jaringan internal'],
-        catatan: {
-          id: 'Zona dengan jumlah perangkat terbesar. Tamu benar-benar terisolasi — bisa internet, tidak bisa menyentuh apa pun di dalam.',
-          en: 'The zone with the most devices. Guests are genuinely isolated — internet yes, internal resources no.',
-        },
+        catatan: 'Zona dengan jumlah perangkat terbesar. Tamu benar-benar terisolasi — bisa internet, tidak bisa menyentuh apa pun di dalam.',
       },
     },
     {
@@ -400,12 +321,9 @@ export const topologi = {
       x: 810,
       y: 372,
       detail: {
-        peran: { id: 'CCTV, alarm bank, access control', en: 'CCTV, bank alarm, access control' },
+        peran: 'CCTV, alarm bank, access control',
         spek: ['NVR & kamera indoor/outdoor', 'Jaringan alarm bank', 'Door access system'],
-        catatan: {
-          id: 'Perangkat lapangan sering punya firmware lama yang tidak bisa di-update. Solusinya bukan memaksa update, tapi mengurungnya di VLAN sendiri.',
-          en: 'Field devices often run old firmware that cannot be updated. The answer is not forcing updates, but fencing them into their own VLAN.',
-        },
+        catatan: 'Perangkat lapangan sering punya firmware lama yang tidak bisa di-update. Solusinya bukan memaksa update, tapi mengurungnya di VLAN sendiri.',
       },
     },
     {
@@ -415,12 +333,9 @@ export const topologi = {
       x: 90,
       y: 480,
       detail: {
-        peran: { id: 'Host virtualisasi', en: 'Virtualisation host' },
+        peran: 'Host virtualisasi',
         spek: ['Beberapa VM produksi', 'Snapshot sebelum tiap perubahan besar', 'Resource dialokasikan per beban kerja'],
-        catatan: {
-          id: 'Snapshot diambil sebelum tiap perubahan besar. Bukan karena pesimis, tapi karena rollback 2 menit jauh lebih murah daripada rebuild 2 jam.',
-          en: 'Snapshots are taken before every major change. Not pessimism — a two-minute rollback is far cheaper than a two-hour rebuild.',
-        },
+        catatan: 'Snapshot diambil sebelum tiap perubahan besar. Bukan karena pesimis, tapi karena rollback 2 menit jauh lebih murah daripada rebuild 2 jam.',
       },
     },
     {
@@ -430,12 +345,9 @@ export const topologi = {
       x: 290,
       y: 480,
       detail: {
-        peran: { id: '±13 container aplikasi produksi', en: '~13 production application containers' },
+        peran: '±13 container aplikasi produksi',
         spek: ['Web app (PHP / CodeIgniter 4)', 'Database & cache', 'Exporter monitoring', 'Docker prune terjadwal'],
-        catatan: {
-          id: 'Docker prune dijadwalkan supaya disk tidak membengkak pelan-pelan — masalah klasik yang baru terasa saat server sudah penuh.',
-          en: 'Docker prune runs on a schedule so the disk does not creep full — a classic problem you only notice once the server is already out of space.',
-        },
+        catatan: 'Docker prune dijadwalkan supaya disk tidak membengkak pelan-pelan — masalah klasik yang baru terasa saat server sudah penuh.',
       },
     },
     {
@@ -445,12 +357,9 @@ export const topologi = {
       x: 500,
       y: 480,
       detail: {
-        peran: { id: 'Wi-Fi untuk seluruh area kerja', en: 'Wi-Fi covering the whole work area' },
+        peran: 'Wi-Fi untuk seluruh area kerja',
         spek: ['Ruijie AP Mesh', 'AI Roaming optimization', 'Whitelist MAC untuk zona sensitif', 'SSID terpisah per VLAN'],
-        catatan: {
-          id: 'AI Roaming diaktifkan supaya perangkat berpindah AP tanpa memutus sesi — keluhan "wifi putus-putus saat jalan" hilang setelah ini.',
-          en: 'AI Roaming keeps devices moving between APs without dropping sessions — the "wifi cuts out when I walk" complaints stopped after this.',
-        },
+        catatan: 'AI Roaming diaktifkan supaya perangkat berpindah AP tanpa memutus sesi — keluhan "wifi putus-putus saat jalan" hilang setelah ini.',
       },
     },
     {
@@ -460,12 +369,9 @@ export const topologi = {
       x: 700,
       y: 480,
       detail: {
-        peran: { id: 'Backup database multi-instance', en: 'Multi-instance database backups' },
+        peran: 'Backup database multi-instance',
         spek: ['Cron harian jam 02:00', 'Retensi 30 hari', 'Verifikasi backup otomatis', 'Prosedur recovery terdokumentasi'],
-        catatan: {
-          id: 'Backup yang tidak pernah diuji bukan backup, cuma harapan. Restore diuji berkala supaya angka "zero data loss" ada buktinya.',
-          en: 'An untested backup is not a backup, it is a hope. Restores are tested regularly so "zero data loss" has evidence behind it.',
-        },
+        catatan: 'Backup yang tidak pernah diuji bukan backup, cuma harapan. Restore diuji berkala supaya angka "zero data loss" ada buktinya.',
       },
     },
     {
@@ -475,12 +381,9 @@ export const topologi = {
       x: 900,
       y: 480,
       detail: {
-        peran: { id: 'Grafana + Prometheus + Netdata', en: 'Grafana + Prometheus + Netdata' },
+        peran: 'Grafana + Prometheus + Netdata',
         spek: ['Dashboard tunggal untuk semua server', 'Alert sebelum jadi insiden', 'Data historis untuk analisis tren'],
-        catatan: {
-          id: 'Tujuannya bukan grafik yang bagus, tapi tahu duluan sebelum user tahu. Sebagian besar insiden di halaman status ini ketahuan dari sini.',
-          en: 'The point is not pretty graphs, it is knowing before users do. Most incidents on the status page above were caught here first.',
-        },
+        catatan: 'Tujuannya bukan grafik yang bagus, tapi tahu duluan sebelum user tahu. Sebagian besar insiden di halaman status ini ketahuan dari sini.',
       },
     },
   ],
@@ -543,116 +446,83 @@ export const stack = [
  * ---------------------------------------------------------- */
 export const projects = [
   {
-    judul: {
-      id: 'Deploy & Kelola 4 Server: On-Premise, VPS, Backup',
-      en: 'Deploying & Managing 4 Servers: On-Premise, VPS, Backup',
-    },
-    subjudul: {
-      id: 'Security, monitoring, backup, dan recovery dalam satu skema',
-      en: 'Security, monitoring, backup, and recovery in one scheme',
-    },
+    judul: 'Deploy & Kelola 4 Server: On-Premise, VPS, Backup',
+    subjudul: 'Security, monitoring, backup, dan recovery dalam satu skema',
     tahun: '2025',
     status: 'produksi',
     tag: ['Linux', 'Docker', 'Security', 'Backup'],
-    deskripsi: {
-      id: 'Mengelola 4 server produksi secara bersamaan dengan peran yang berbeda: web server, database server, monitoring, dan backup. Setiap server dikonfigurasi dengan hardening penuh, monitoring real-time, dan skema backup-recovery yang terstruktur.',
-      en: 'Running four production servers at once with distinct roles: web, database, monitoring, and backup. Each is fully hardened, monitored in real time, and covered by a structured backup-and-recovery scheme.',
-    },
+    deskripsi: 'Mengelola 4 server produksi secara bersamaan dengan peran yang berbeda: web server, database server, monitoring, dan backup. Setiap server dikonfigurasi dengan hardening penuh, monitoring real-time, dan skema backup-recovery yang terstruktur.',
     hasil: [
-      { id: 'Uptime 99%+ dipertahankan di semua 4 server selama operasional', en: '99%+ uptime sustained across all four servers in production' },
-      { id: 'Skema backup otomatis multi-database berjalan tanpa intervensi manual', en: 'Automated multi-database backups run with zero manual intervention' },
-      { id: 'Fail2Ban memblokir 1.800+ IP berbahaya lintas server', en: 'Fail2Ban blocked 1,800+ malicious IPs across servers' },
-      { id: 'Recovery time teruji — service pulih dalam hitungan menit', en: 'Recovery time proven — services restored within minutes' },
+      'Uptime 99%+ dipertahankan di semua 4 server selama operasional',
+      'Skema backup otomatis multi-database berjalan tanpa intervensi manual',
+      'Fail2Ban memblokir 1.800+ IP berbahaya lintas server',
+      'Recovery time teruji — service pulih dalam hitungan menit',
     ],
     stack: ['Ubuntu Server', 'Apache2', 'Docker', 'UFW', 'Fail2Ban', 'Grafana', 'Cron'],
     repo: '',
     demo: '',
   },
   {
-    judul: { id: 'Infrastruktur Jaringan Multi-VLAN', en: 'Multi-VLAN Network Infrastructure' },
-    subjudul: {
-      id: 'Segmentasi zona, bandwidth management, dan filtering terpusat',
-      en: 'Zone segmentation, bandwidth management, and centralised filtering',
-    },
+    judul: 'Infrastruktur Jaringan Multi-VLAN',
+    subjudul: 'Segmentasi zona, bandwidth management, dan filtering terpusat',
     tahun: '2025',
     status: 'produksi',
     tag: ['Network', 'MikroTik', 'VLAN'],
-    deskripsi: {
-      id: 'Merancang dan mengimplementasikan infrastruktur jaringan dengan segmentasi VLAN untuk memisahkan zona kerja, server, dan tamu. MikroTik dikonfigurasi dengan queue per-user, firewall whitelist, dan filtering konten untuk 400+ user.',
-      en: 'Designed and implemented a network with VLAN segmentation separating the work, server, and guest zones. MikroTik handles per-user queues, whitelist firewalling, and content filtering for 400+ users.',
-    },
+    deskripsi: 'Merancang dan mengimplementasikan infrastruktur jaringan dengan segmentasi VLAN untuk memisahkan zona kerja, server, dan tamu. MikroTik dikonfigurasi dengan queue per-user, firewall whitelist, dan filtering konten untuk 400+ user.',
     hasil: [
-      { id: '6 zona VLAN aktif — traffic antar zona terkontrol penuh', en: '6 active VLAN zones — inter-zone traffic fully controlled' },
-      { id: 'Bandwidth per-user terbatas dan terdistribusi merata', en: 'Per-user bandwidth capped and evenly distributed' },
-      { id: 'Filtering YouTube & aplikasi non-produktif berjalan otomatis', en: 'Automatic filtering of YouTube and non-productive apps' },
-      { id: '400+ user terlayani dengan stabilitas jaringan terjaga', en: '400+ users served with network stability maintained' },
+      '6 zona VLAN aktif — traffic antar zona terkontrol penuh',
+      'Bandwidth per-user terbatas dan terdistribusi merata',
+      'Filtering YouTube & aplikasi non-produktif berjalan otomatis',
+      '400+ user terlayani dengan stabilitas jaringan terjaga',
     ],
     stack: ['MikroTik RouterOS', 'Ruijie Managed Switch', 'UniFi AP', 'VLAN'],
     repo: '',
     demo: '',
   },
   {
-    judul: { id: 'Monitoring Stack: Grafana + Prometheus + Netdata', en: 'Monitoring Stack: Grafana + Prometheus + Netdata' },
-    subjudul: {
-      id: 'Visibilitas penuh atas server dan service produksi',
-      en: 'Full visibility over production servers and services',
-    },
+    judul: 'Monitoring Stack: Grafana + Prometheus + Netdata',
+    subjudul: 'Visibilitas penuh atas server dan service produksi',
     tahun: '2025',
     status: 'aktif',
     tag: ['Monitoring', 'Grafana', 'Prometheus'],
-    deskripsi: {
-      id: 'Membangun stack monitoring untuk semua server produksi menggunakan Grafana sebagai dashboard utama, Prometheus untuk metrik, dan Netdata untuk real-time monitoring. Alert dikonfigurasi untuk kondisi kritis sebelum jadi insiden.',
-      en: 'Built a monitoring stack for every production server: Grafana as the main dashboard, Prometheus for metrics, Netdata for real-time views. Alerts fire on critical conditions before they become incidents.',
-    },
+    deskripsi: 'Membangun stack monitoring untuk semua server produksi menggunakan Grafana sebagai dashboard utama, Prometheus untuk metrik, dan Netdata untuk real-time monitoring. Alert dikonfigurasi untuk kondisi kritis sebelum jadi insiden.',
     hasil: [
-      { id: 'Visibilitas CPU, RAM, disk, dan network di semua server dalam satu dashboard', en: 'CPU, RAM, disk, and network visibility for all servers in one dashboard' },
-      { id: 'Alert proaktif — masalah terdeteksi sebelum user merasakan dampak', en: 'Proactive alerting — issues caught before users feel the impact' },
-      { id: 'Troubleshooting lebih cepat dengan data historis dan tren', en: 'Faster troubleshooting using historical data and trends' },
+      'Visibilitas CPU, RAM, disk, dan network di semua server dalam satu dashboard',
+      'Alert proaktif — masalah terdeteksi sebelum user merasakan dampak',
+      'Troubleshooting lebih cepat dengan data historis dan tren',
     ],
     stack: ['Grafana', 'Prometheus', 'Netdata', 'Docker'],
     repo: '',
     demo: '',
   },
   {
-    judul: { id: 'Otomatisasi Backup Database Multi-Instance', en: 'Automated Multi-Instance Database Backups' },
-    subjudul: {
-      id: 'Backup terjadwal, recovery teruji, zero data loss',
-      en: 'Scheduled backups, tested recovery, zero data loss',
-    },
+    judul: 'Otomatisasi Backup Database Multi-Instance',
+    subjudul: 'Backup terjadwal, recovery teruji, zero data loss',
     tahun: '2025',
     status: 'aktif',
     tag: ['Backup', 'MySQL', 'Automation'],
-    deskripsi: {
-      id: 'Merancang dan mengimplementasikan sistem backup otomatis untuk multiple database MySQL/MariaDB menggunakan cron job dan bash script. Termasuk verifikasi backup, notifikasi status, dan prosedur recovery yang terdokumentasi.',
-      en: 'Designed and implemented automated backups for multiple MySQL/MariaDB databases using cron jobs and bash scripts — including backup verification, status notifications, and a documented recovery procedure.',
-    },
+    deskripsi: 'Merancang dan mengimplementasikan sistem backup otomatis untuk multiple database MySQL/MariaDB menggunakan cron job dan bash script. Termasuk verifikasi backup, notifikasi status, dan prosedur recovery yang terdokumentasi.',
     hasil: [
-      { id: 'Semua database produksi ter-backup otomatis setiap malam', en: 'Every production database backed up automatically each night' },
-      { id: 'Retensi 30 hari — histori backup selalu tersedia', en: '30-day retention — backup history always available' },
-      { id: 'Prosedur recovery teruji dan terdokumentasi untuk setiap database', en: 'Recovery procedure tested and documented for every database' },
-      { id: 'Zero data loss dalam 3+ tahun operasional', en: 'Zero data loss across 3+ years of operation' },
+      'Semua database produksi ter-backup otomatis setiap malam',
+      'Retensi 30 hari — histori backup selalu tersedia',
+      'Prosedur recovery teruji dan terdokumentasi untuk setiap database',
+      'Zero data loss dalam 3+ tahun operasional',
     ],
     stack: ['Bash', 'Cron', 'MySQL', 'MariaDB'],
     repo: '',
     demo: '',
   },
   {
-    judul: { id: 'Docker Multi-Container untuk Aplikasi Produksi', en: 'Multi-Container Docker for Production Apps' },
-    subjudul: {
-      id: '±13 container berjalan stabil di server on-premise',
-      en: '~13 containers running stably on on-premise servers',
-    },
+    judul: 'Docker Multi-Container untuk Aplikasi Produksi',
+    subjudul: '±13 container berjalan stabil di server on-premise',
     tahun: '2025',
     status: 'produksi',
     tag: ['Docker', 'Linux', 'PHP'],
-    deskripsi: {
-      id: 'Mengatur dan memelihara ±13 container Docker yang berjalan bersamaan di server produksi on-premise, mencakup web app, database, cache, dan service pendukung. Termasuk resource control, maintenance rutin, dan troubleshooting production error.',
-      en: 'Set up and maintain ~13 Docker containers running side by side on on-premise production servers — web apps, databases, cache, and supporting services — including resource control, routine maintenance, and production error troubleshooting.',
-    },
+    deskripsi: 'Mengatur dan memelihara ±13 container Docker yang berjalan bersamaan di server produksi on-premise, mencakup web app, database, cache, dan service pendukung. Termasuk resource control, maintenance rutin, dan troubleshooting production error.',
     hasil: [
-      { id: '±13 container aktif berjalan stabil tanpa konflik resource', en: '~13 active containers running stably with no resource conflicts' },
-      { id: 'Docker prune terjadwal — disk tidak membengkak', en: 'Scheduled Docker prune — disk usage stays under control' },
-      { id: 'HTTP 500 dan config error CI4 dapat ditangani langsung di level container', en: 'HTTP 500s and CI4 config errors handled directly at the container level' },
+      '±13 container aktif berjalan stabil tanpa konflik resource',
+      'Docker prune terjadwal — disk tidak membengkak',
+      'HTTP 500 dan config error CI4 dapat ditangani langsung di level container',
     ],
     stack: ['Docker', 'Docker Compose', 'PHP', 'CodeIgniter 4', 'Apache2'],
     repo: '',
@@ -665,30 +535,15 @@ export const projects = [
  * ---------------------------------------------------------- */
 export const pengalaman = [
   {
-    posisi: { id: 'IT Support / System Administrator', en: 'IT Support / System Administrator' },
-    perusahaan: { id: 'Multi-perusahaan (±15 klien serentak)', en: 'Multi-company (~15 concurrent clients)' },
-    periode: { id: '2019 — sekarang', en: '2019 — present' },
+    posisi: 'IT Support / System Administrator',
+    perusahaan: 'Multi-perusahaan (±15 klien serentak)',
+    periode: '2019 — sekarang',
     poin: [
-      {
-        id: 'Mengelola infrastruktur IT untuk ±15 perusahaan secara bersamaan, termasuk server, jaringan, dan end-user support',
-        en: 'Manage IT infrastructure for ~15 companies simultaneously — servers, networks, and end-user support',
-      },
-      {
-        id: 'Handle 400+ user aktif di lingkungan produksi dengan target uptime 99%+',
-        en: 'Support 400+ active users in production with a 99%+ uptime target',
-      },
-      {
-        id: 'Menangani instalasi & maintenance CCTV (Hikvision), jaringan alarm bank, sistem telepon, dan access control',
-        en: 'Handle installation & maintenance of CCTV (Hikvision), bank alarm networks, phone systems, and access control',
-      },
-      {
-        id: 'Deploy dan kelola 4 server produksi secara bersamaan dengan skema backup, monitoring, dan security terpadu',
-        en: 'Deploy and run four production servers concurrently with integrated backup, monitoring, and security',
-      },
-      {
-        id: 'Merancang infrastruktur jaringan LAN skala kecil–menengah dari nol termasuk VLAN, firewall, dan bandwidth management',
-        en: 'Design small-to-medium LAN infrastructure from scratch, including VLANs, firewalls, and bandwidth management',
-      },
+      'Mengelola infrastruktur IT untuk ±15 perusahaan secara bersamaan, termasuk server, jaringan, dan end-user support',
+      'Handle 400+ user aktif di lingkungan produksi dengan target uptime 99%+',
+      'Menangani instalasi & maintenance CCTV (Hikvision), jaringan alarm bank, sistem telepon, dan access control',
+      'Deploy dan kelola 4 server produksi secara bersamaan dengan skema backup, monitoring, dan security terpadu',
+      'Merancang infrastruktur jaringan LAN skala kecil–menengah dari nol termasuk VLAN, firewall, dan bandwidth management',
     ],
   },
 ]
@@ -698,7 +553,7 @@ export const pengalaman = [
  * ---------------------------------------------------------- */
 export const sertifikasi = [
   { nama: 'MikroTik Certified Network Associate (MTCNA)', penerbit: 'MikroTik', tahun: '', url: '' },
-  { nama: 'Linux Server Administration', penerbit: { id: 'Praktik Mandiri', en: 'Self-directed practice' }, tahun: '', url: '' },
+  { nama: 'Linux Server Administration', penerbit: 'Praktik Mandiri', tahun: '', url: '' },
 ]
 
 /* ------------------------------------------------------------
@@ -709,22 +564,13 @@ export const sertifikasi = [
  *   'CONTACT' 'PROJECTS' 'STACK' 'STATUS' 'NEOFETCH'
  * Perintah goto / theme / cv / lang / clear / help ditangani otomatis. */
 export const perintahTerminal = {
-  whoami: {
-    id: [
+  whoami: [
       'nama    : Dian Rizki Wardana',
       'peran   : IT Support / System Administrator',
       'fokus   : Linux server, networking, security, on-prem infra',
       'prinsip : sistem yang baik adalah sistem yang tidak pernah dibicarakan',
     ],
-    en: [
-      'name      : Dian Rizki Wardana',
-      'role      : IT Support / System Administrator',
-      'focus     : Linux servers, networking, security, on-prem infra',
-      'principle : a good system is one nobody ever has to talk about',
-    ],
-  },
-  about: {
-    id: [
+  about: [
       'Saya senang membuat infrastruktur yang tidak pernah jadi berita.',
       'Server yang selalu hidup, jaringan yang stabil, backup yang bisa dipercaya.',
       '',
@@ -733,34 +579,13 @@ export const perintahTerminal = {
       '',
       'Di luar kantor: utak-atik homelab dan kopi hitam tanpa gula.',
     ],
-    en: [
-      'I like building infrastructure that never makes the news.',
-      'Servers that stay up, networks that stay stable, backups you can trust.',
-      '',
-      '5 years of hands-on production experience,',
-      'supporting 400+ users across ~15 companies at once.',
-      '',
-      'Outside work: tinkering with a homelab and black coffee, no sugar.',
-    ],
-  },
-  uptime: {
-    id: [
+  uptime: [
       'sistem aktif 5 tahun',
       'uptime rata-rata: 99%',
       'insiden terbuka : 0',
       'fail2ban aktif  : 1.847 IP diblokir',
     ],
-    en: [
-      'system active for 5 years',
-      'average uptime  : 99%',
-      'open incidents  : 0',
-      'fail2ban active : 1,847 IPs blocked',
-    ],
-  },
-  sudo: {
-    id: ['Maaf, kamu tidak ada di daftar sudoers. Kejadian ini dilaporkan.'],
-    en: ['Sorry, you are not in the sudoers file. This incident will be reported.'],
-  },
+  sudo: ['Maaf, kamu tidak ada di daftar sudoers. Kejadian ini dilaporkan.'],
   contact: 'CONTACT',
   projects: 'PROJECTS',
   skills: 'STACK',
@@ -773,89 +598,65 @@ export const perintahTerminal = {
  * ---------------------------------------------------------- */
 export const ui = {
   nav: [
-    { id: 'pipeline', label: { id: 'Alur Kerja', en: 'Workflow' } },
-    { id: 'status', label: { id: 'Status', en: 'Status' } },
-    { id: 'arsitektur', label: { id: 'Arsitektur', en: 'Architecture' } },
-    { id: 'stack', label: { id: 'Stack', en: 'Stack' } },
-    { id: 'projects', label: { id: 'Project', en: 'Projects' } },
-    { id: 'pengalaman', label: { id: 'Pengalaman', en: 'Experience' } },
-    { id: 'kontak', label: { id: 'Kontak', en: 'Contact' } },
+    { id: 'pipeline', label: 'Alur Kerja' },
+    { id: 'status', label: 'Status' },
+    { id: 'arsitektur', label: 'Arsitektur' },
+    { id: 'stack', label: 'Stack' },
+    { id: 'projects', label: 'Project' },
+    { id: 'pengalaman', label: 'Pengalaman' },
+    { id: 'kontak', label: 'Kontak' },
   ],
   hero: {
-    ctaUtama: { id: 'Lihat project', en: 'View projects' },
-    ctaKedua: { id: 'Salin email', en: 'Copy email' },
-    tersalin: { id: 'Email tersalin', en: 'Email copied' },
-    unduhCv: { id: 'Unduh CV', en: 'Download CV' },
+    ctaUtama: 'Lihat project',
+    ctaKedua: 'Salin email',
+    tersalin: 'Email tersalin',
+    unduhCv: 'Unduh CV',
   },
-  pipelineJudul: { id: 'Cara saya menjaga sistem tetap hidup', en: 'How I keep systems alive' },
-  pipelineDeskripsi: {
-    id: 'Klik tiap tahap untuk melihat apa yang sebenarnya saya kerjakan sehari-hari — atau tekan Jalankan untuk melihat semuanya berurutan.',
-    en: 'Click any stage to see what I actually do day to day — or press Run to watch the whole sequence.',
-  },
-  statusJudul: { id: 'Riwayat uptime & insiden', en: 'Uptime & incident history' },
-  statusDeskripsi: {
-    id: 'Angka uptime mudah diklaim. Ini kejadian nyatanya: apa yang rusak, kenapa, dan apa yang saya ubah supaya tidak terulang. Arahkan kursor ke batang berwarna untuk detailnya.',
-    en: 'Uptime numbers are easy to claim. Here is what actually happened: what broke, why, and what I changed so it would not repeat. Hover any coloured bar for details.',
-  },
-  stackJudul: { id: 'Alat yang saya pakai di lapangan', en: 'Tools I use in the field' },
-  stackDeskripsi: {
-    id: 'Disaring per kategori. Semua sudah teruji di production — bukan cuma lab. Klik satu ikon untuk melihat project yang memakainya.',
-    en: 'Filtered by category. All battle-tested in production, not just in a lab. Click an icon to see the projects that use it.',
-  },
-  projectsJudul: { id: 'Yang sudah saya kerjakan', en: 'What I have built' },
-  projectsDeskripsi: { id: 'Pilih satu untuk membuka detail dan hasilnya.', en: 'Pick one to open the details and outcomes.' },
-  pengalamanJudul: { id: 'Jejak pekerjaan', en: 'Work history' },
-  kontakJudul: { id: 'Mari bicara', en: "Let's talk" },
-  kontakDeskripsi: {
-    id: 'Balasan biasanya di bawah 24 jam. Atau coba terminal di samping — ketik "help".',
-    en: 'I usually reply within 24 hours. Or try the terminal beside this — type "help".',
-  },
-  footer: {
-    id: 'Dibangun dengan React dan Vite. Di-deploy otomatis lewat GitHub Actions.',
-    en: 'Built with React and Vite. Deployed automatically via GitHub Actions.',
-  },
+  pipelineJudul: 'Cara saya menjaga sistem tetap hidup',
+  pipelineDeskripsi: 'Klik tiap tahap untuk melihat apa yang sebenarnya saya kerjakan sehari-hari.',
+  statusJudul: 'Riwayat uptime & insiden',
+  statusDeskripsi: 'Angka uptime mudah diklaim. Ini kejadian nyatanya: apa yang rusak, kenapa, dan apa yang saya ubah supaya tidak terulang. Arahkan kursor ke batang berwarna untuk detailnya.',
+  stackJudul: 'Alat yang saya pakai di lapangan',
+  stackDeskripsi: 'Disaring per kategori. Semua sudah teruji di production — bukan cuma lab. Klik satu ikon untuk melihat project yang memakainya.',
+  projectsJudul: 'Yang sudah saya kerjakan',
+  projectsDeskripsi: 'Pilih satu untuk membuka detail dan hasilnya.',
+  pengalamanJudul: 'Jejak pekerjaan',
+  kontakJudul: 'Mari bicara',
+  kontakDeskripsi: 'Balasan biasanya di bawah 24 jam. Atau coba terminal di samping — ketik "help".',
+  footer: 'Dibangun dengan React dan Vite. Di-deploy otomatis lewat GitHub Actions.',
 
   /* Label kecil yang dipakai di banyak tempat */
   label: {
-    semua: { id: 'Semua', en: 'All' },
-    lewati: { id: 'Lewati ke konten', en: 'Skip to content' },
-    layananNormal: { id: 'semua layanan normal', en: 'all systems normal' },
-    menu: { id: 'Menu', en: 'Menu' },
-    tutup: { id: 'Tutup', en: 'Close' },
-    cariPerintah: { id: 'Cari halaman atau perintah…', en: 'Search pages or commands…' },
-    buka: { id: 'Buka', en: 'Go to' },
-    tindakan: { id: 'Tindakan', en: 'Actions' },
-    temaTerang: { id: 'Tema terang', en: 'Light theme' },
-    temaGelap: { id: 'Tema gelap', en: 'Dark theme' },
-    salinEmail: { id: 'Salin email', en: 'Copy email' },
-    cetakCv: { id: 'Cetak / simpan PDF', en: 'Print / save as PDF' },
-    gantiBahasa: { id: 'Switch to English', en: 'Ganti ke Bahasa Indonesia' },
-    jalankan: { id: 'Jalankan', en: 'Run' },
-    hentikan: { id: 'Hentikan', en: 'Stop' },
-    ulangi: { id: 'Ulangi', en: 'Replay' },
-    berjalan: { id: 'berjalan', en: 'running' },
-    selesai: { id: 'selesai', en: 'done' },
-    hasil: { id: 'hasil', en: 'outcomes' },
-    stack: { id: 'stack', en: 'stack' },
-    lihatKode: { id: 'Lihat kode', en: 'View code' },
-    bukaDemo: { id: 'Buka demo', en: 'Open demo' },
-    sertifikasi: { id: 'Sertifikasi', en: 'Certifications' },
-    hariTerakhir: { id: '90 hari terakhir', en: 'last 90 days' },
-    hariIni: { id: 'hari ini', en: 'today' },
-    peran: { id: 'Peran', en: 'Role' },
-    spesifikasi: { id: 'Spesifikasi', en: 'Specs' },
-    kenapa: { id: 'Kenapa begitu', en: 'Why it is built this way' },
-    pilihNode: { id: 'Pilih salah satu node di diagram untuk melihat detailnya.', en: 'Select a node in the diagram to see its details.' },
-    dipakaiDi: { id: 'dipakai di', en: 'used in' },
-    project: { id: 'project', en: 'projects' },
-    kosongProject: { id: 'Belum ada project dengan tag ini. Pilih tag lain.', en: 'No projects with this tag yet. Try another one.' },
-    resetFilter: { id: 'Tampilkan semua', en: 'Show all' },
-    difilterDari: { id: 'Difilter dari stack', en: 'Filtered from stack' },
-    hintTerminal: {
-      id: 'Tab untuk melengkapi perintah · panah atas untuk mengulang · "clear" untuk mengosongkan layar',
-      en: 'Tab to autocomplete · up arrow for history · "clear" to wipe the screen',
-    },
-    konsolJudul: { id: 'konsol — coba ketik sesuatu', en: 'console — try typing something' },
-    uptimeKarier: { id: 'uptime', en: 'uptime' },
+    semua: 'Semua',
+    lewati: 'Lewati ke konten',
+    layananNormal: 'semua layanan normal',
+    menu: 'Menu',
+    tutup: 'Tutup',
+    cariPerintah: 'Cari halaman atau perintah…',
+    buka: 'Buka',
+    tindakan: 'Tindakan',
+    temaTerang: 'Tema terang',
+    temaGelap: 'Tema gelap',
+    salinEmail: 'Salin email',
+    cetakCv: 'Cetak / simpan PDF',
+    hasil: 'hasil',
+    stack: 'stack',
+    lihatKode: 'Lihat kode',
+    bukaDemo: 'Buka demo',
+    sertifikasi: 'Sertifikasi',
+    hariTerakhir: '90 hari terakhir',
+    hariIni: 'hari ini',
+    peran: 'Peran',
+    spesifikasi: 'Spesifikasi',
+    kenapa: 'Kenapa begitu',
+    pilihNode: 'Pilih salah satu node di diagram untuk melihat detailnya.',
+    dipakaiDi: 'dipakai di',
+    project: 'project',
+    kosongProject: 'Belum ada project dengan tag ini. Pilih tag lain.',
+    resetFilter: 'Tampilkan semua',
+    difilterDari: 'Difilter dari stack',
+    hintTerminal: 'Tab untuk melengkapi perintah · panah atas untuk mengulang · "clear" untuk mengosongkan layar',
+    konsolJudul: 'konsol — coba ketik sesuatu',
+    uptimeKarier: 'uptime',
   },
 }

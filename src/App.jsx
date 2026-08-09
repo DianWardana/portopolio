@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { profile, ui } from './data/content'
 import { useReveal, useScrollSpy } from './lib/hooks'
-import { PenyediaBahasa, useT } from './lib/i18n'
 
 import StatusBar from './components/StatusBar'
 import MobileNav from './components/MobileNav'
@@ -18,8 +17,7 @@ import ContactSection from './components/ContactSection'
 
 const ids = ui.nav.map((n) => n.id)
 
-function Isi() {
-  const [t, bahasa] = useT()
+export default function App() {
   const aktif = useScrollSpy(ids)
 
   const [menuBuka, setMenuBuka] = useState(false)
@@ -29,8 +27,7 @@ function Isi() {
   const [tagLuar, setTagLuar] = useState(null)
   const [asalFilter, setAsalFilter] = useState(null)
 
-  // reveal dijalankan ulang saat bahasa berubah supaya elemen baru ikut muncul
-  useReveal(bahasa)
+  useReveal()
 
   const pilihDariStack = useCallback((tag, namaTool) => {
     if (!tag) return
@@ -71,7 +68,7 @@ function Isi() {
   return (
     <>
       <a className="skip" href="#pipeline">
-        {t(ui.label.lewati)}
+        {ui.label.lewati}
       </a>
 
       <StatusBar
@@ -100,17 +97,9 @@ function Isi() {
           <span>
             © {new Date().getFullYear()} {profile.nama}
           </span>
-          <span>{t(ui.footer)}</span>
+          <span>{ui.footer}</span>
         </div>
       </footer>
     </>
-  )
-}
-
-export default function App() {
-  return (
-    <PenyediaBahasa>
-      <Isi />
-    </PenyediaBahasa>
   )
 }

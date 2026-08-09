@@ -1,7 +1,8 @@
 # Panduan Portofolio
 
 Versi ini memperbaiki navigasi mobile, path ikon, konsistensi data, dan meta tag —
-plus menambah 5 fitur interaktif dan seluruh polesan tampilan.
+plus menambah fitur interaktif dan polesan tampilan. Seluruh situs
+berbahasa Indonesia.
 
 ---
 
@@ -63,18 +64,6 @@ Sekali saja di GitHub: **Settings → Pages → Source = "GitHub Actions"**.
 
 Hampir semua yang ingin kamu ubah ada di **`src/data/content.js`**.
 Kamu tidak perlu menyentuh file lain.
-
-### Dua bahasa
-
-Teks bisa ditulis dua cara:
-
-```js
-judul: 'Halo'                        // dipakai untuk ID dan EN
-judul: { id: 'Halo', en: 'Hello' }   // ikut tombol bahasa di navbar
-```
-
-Kalau `en` belum diisi, otomatis jatuh ke teks Indonesia. Aman —
-kamu bisa menerjemahkan sedikit-sedikit tanpa merusak situs.
 
 ### Gambar dan file
 
@@ -146,20 +135,18 @@ yang memakai stylesheet cetak — Ctrl+P menghasilkan CV rapi langsung dari situ
 | Status page | section "Status" | klik batang kuning/merah |
 | Topologi interaktif | section "Arsitektur" | klik node untuk detail |
 | Stack → Project | klik ikon di section Stack | angka di pojok = jumlah project |
-| Pipeline auto-play | tombol "Jalankan" | log mengetik per baris |
 | Terminal upgrade | section Kontak | Tab autocomplete, chip perintah |
 | Deep link terminal | `?cmd=whoami` di URL | enak dikirim ke recruiter |
 | Sparkline metrik | kartu angka | grafik mini |
 | Uptime hidup | navbar | menghitung dari `mulaiKarier` |
 | Progres scroll | garis tipis di navbar | |
-| Dua bahasa ID/EN | tombol 🌐 di navbar | otomatis EN untuk pengunjung luar |
 | Stylesheet cetak | `Ctrl + P` | project otomatis terbuka semua |
 
 ### Perintah terminal
 
 ```
 help  whoami  about  projects  skills  status  uptime  contact
-neofetch  goto <section>  theme <dark|light>  lang <id|en>  cv  date  clear
+neofetch  goto <bagian>  theme <dark|light>  cv  date  clear
 ```
 
 Tekan **Tab** untuk melengkapi, **panah atas** untuk mengulang, **Ctrl+L** untuk mengosongkan.
@@ -174,4 +161,6 @@ Tekan **Tab** untuk melengkapi, **panah atas** untuk mengulang, **Ctrl+L** untuk
 - Semua animasi menghormati `prefers-reduced-motion`.
 - Akses `localStorage` dibungkus `try/catch` — Safari mode privat memblokirnya
   dan tanpa penjagaan itu situs bisa gagal tampil sama sekali.
-- Sudah diuji: 46 pemeriksaan render dan interaksi, nol error konsol.
+- Situs sepenuhnya Bahasa Indonesia. Lapisan terjemahan sudah dilepas,
+  jadi semua teks di `content.js` ditulis sebagai string biasa.
+- Sudah diuji: 33 pemeriksaan render dan interaksi, nol error konsol.

@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import { topologi, ui } from '../data/content'
-import { useT } from '../lib/i18n'
 import { IKON_NODE } from './Icons'
 
 const W = 1000
@@ -12,7 +11,6 @@ const NODE_H = 58
  * Ini bagian yang paling sulit ditiru daftar chip biasa — pengunjung
  * bisa melihat bentuk sistemnya, bukan cuma nama-nama toolnya. */
 export default function TopologySection() {
-  const [t] = useT()
   const [aktif, setAktif] = useState('mikrotik')
 
   const petaNode = useMemo(
@@ -41,8 +39,8 @@ export default function TopologySection() {
       <div className="wrap">
         <div className="section-head" data-reveal>
           <span className="eyebrow">arsitektur</span>
-          <h2>{t(topologi.judul)}</h2>
-          <p>{t(topologi.deskripsi)}</p>
+          <h2>{topologi.judul}</h2>
+          <p>{topologi.deskripsi}</p>
         </div>
 
         <div className="topo-grid" data-reveal>
@@ -51,7 +49,7 @@ export default function TopologySection() {
               viewBox={`0 0 ${W} ${H}`}
               className="topo-svg"
               role="img"
-              aria-label={t(topologi.judul)}
+              aria-label={topologi.judul}
             >
               {/* Grid latar */}
               <defs>
@@ -120,10 +118,7 @@ export default function TopologySection() {
             </svg>
 
             <p className="topo-hint mono">
-              {t({
-                id: 'geser untuk melihat seluruh diagram · klik node untuk detail',
-                en: 'scroll sideways to see the full diagram · click a node for details',
-              })}
+              {'geser untuk melihat seluruh diagram · klik node untuk detail'}
             </p>
           </div>
 
@@ -135,14 +130,14 @@ export default function TopologySection() {
                 <h3>{nodeAktif.nama}</h3>
 
                 <div className="topo-blok">
-                  <span className="eyebrow">{t(ui.label.peran)}</span>
-                  <p>{t(nodeAktif.detail.peran)}</p>
+                  <span className="eyebrow">{ui.label.peran}</span>
+                  <p>{nodeAktif.detail.peran}</p>
                 </div>
 
                 <div className="topo-blok">
-                  <span className="eyebrow">{t(ui.label.spesifikasi)}</span>
+                  <span className="eyebrow">{ui.label.spesifikasi}</span>
                   <ul className="hasil">
-                    {t(nodeAktif.detail.spek).map((s) => (
+                    {nodeAktif.detail.spek.map((s) => (
                       <li key={s}>
                         <span>→</span>
                         {s}
@@ -152,12 +147,12 @@ export default function TopologySection() {
                 </div>
 
                 <div className="topo-blok catatan">
-                  <span className="eyebrow">{t(ui.label.kenapa)}</span>
-                  <p>{t(nodeAktif.detail.catatan)}</p>
+                  <span className="eyebrow">{ui.label.kenapa}</span>
+                  <p>{nodeAktif.detail.catatan}</p>
                 </div>
               </>
             ) : (
-              <p className="topo-kosong">{t(ui.label.pilihNode)}</p>
+              <p className="topo-kosong">{ui.label.pilihNode}</p>
             )}
           </aside>
         </div>
