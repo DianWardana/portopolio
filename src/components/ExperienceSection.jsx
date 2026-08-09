@@ -7,7 +7,7 @@ export default function ExperienceSection() {
     <section className="band" id="pengalaman">
       <div className="wrap">
         <div className="section-head" data-reveal>
-          <span className="eyebrow">riwayat</span>
+          <span className="eyebrow">karier</span>
           <h2>{ui.pengalamanJudul}</h2>
         </div>
 

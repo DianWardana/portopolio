@@ -36,7 +36,7 @@ export const profile = {
   foto: 'foto-profil.png',
 
   /* Dipakai untuk penghitung "uptime karier" hidup di navbar. */
-  mulaiKarier: '2019-01-01',
+  mulaiKarier: '2019-05-01',
 }
 
 /* ------------------------------------------------------------
@@ -54,12 +54,12 @@ export const metrik = [
     tren: [97.8, 98.4, 99.1, 98.9, 99.4, 99.2, 99.6, 99.3, 99.7, 99.5, 99.8, 99.6],
   },
   {
-    nilai: 5,
+    nilai: 7,
     sufiks: ' tahun',
     desimal: 0,
     label: 'Pengalaman langsung',
-    catatan: 'lingkungan produksi',
-    tren: [1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5],
+    catatan: 'sejak Mei 2019',
+    tren: [1, 1, 2, 2, 3, 4, 4, 5, 5, 6, 6, 7],
   },
   {
     nilai: 1000,
@@ -81,34 +81,6 @@ export const metrik = [
  *  3. PIPELINE — Alur Kerja Harian Sysadmin
  * ---------------------------------------------------------- */
 export const pipeline = [
-  {
-    id: 'monitor',
-    nama: 'Monitor',
-    durasi: '24/7',
-    ringkas: 'Sistem tidak pernah tidur. Dashboard Grafana & Netdata selalu terbuka.',
-    tools: ['Grafana', 'Prometheus', 'Netdata'],
-    log: [
-      '$ netdata-cli status',
-      'CPU usage    : 12% (normal)',
-      'RAM free     : 4.1 GB / 8 GB',
-      'Disk I/O     : 18 MB/s',
-      'Alert aktif  : 0',
-    ],
-  },
-  {
-    id: 'secure',
-    nama: 'Harden',
-    durasi: 'baseline',
-    ringkas: 'SSH port custom, root login dimatikan, UFW whitelist-based, Fail2Ban aktif.',
-    tools: ['UFW', 'Fail2Ban', 'SSH'],
-    log: [
-      '$ fail2ban-client status sshd',
-      'Currently banned : 312 IP',
-      'Total banned     : 1.847 IP',
-      'UFW default: deny (incoming)',
-      'Root login: disabled',
-    ],
-  },
   {
     id: 'deploy',
     nama: 'Deploy',
@@ -133,10 +105,24 @@ export const pipeline = [
     tools: ['MikroTik', 'Ruijie', 'UniFi'],
     log: [
       '$ /ip firewall filter print',
-      'Whitelist rules  : 48 aktif',
+      'Firewall rules   : 100+ aktif',
       'Blocked domain   : YouTube, apps filter',
       'VLAN segment     : 6 zona aktif',
       'Bandwidth queue  : per-user limit aktif',
+    ],
+  },
+  {
+    id: 'secure',
+    nama: 'Harden',
+    durasi: 'baseline',
+    ringkas: 'SSH port custom, root login dimatikan, UFW whitelist-based, Fail2Ban aktif.',
+    tools: ['UFW', 'Fail2Ban', 'SSH'],
+    log: [
+      '$ fail2ban-client status sshd',
+      'Currently banned : 312 IP',
+      'Total banned     : 1.847 IP',
+      'UFW default: deny (incoming)',
+      'Root login: disabled',
     ],
   },
   {
@@ -166,6 +152,20 @@ export const pipeline = [
       'Action: fix env, reload apache2',
       'Service restored in < 5 menit',
       'Root cause: env variable missing after deploy',
+    ],
+  },
+  {
+    id: 'monitor',
+    nama: 'Monitor',
+    durasi: '24/7',
+    ringkas: 'Sistem tidak pernah tidur. Dashboard Grafana & Netdata selalu terbuka.',
+    tools: ['Grafana', 'Prometheus', 'Netdata'],
+    log: [
+      '$ netdata-cli status',
+      'CPU usage    : 12% (normal)',
+      'RAM free     : 4.1 GB / 8 GB',
+      'Disk I/O     : 18 MB/s',
+      'Alert aktif  : 0',
     ],
   },
 ]
@@ -274,7 +274,7 @@ export const topologi = {
       y: 158,
       detail: {
         peran: 'Router utama, firewall, bandwidth manager',
-        spek: ['48 firewall rule whitelist-based', 'Queue per-user aktif', 'Filtering YouTube & aplikasi non-produktif', 'NAT + port forwarding terkontrol'],
+        spek: ['100+ rule firewall aktif', 'Queue per-user aktif', 'Web filtering & VLAN', 'PPTP + NAT terkontrol'],
         catatan: 'Firewall pakai prinsip deny by default — hanya yang perlu yang dibuka. Queue per-user mencegah satu orang menghabiskan bandwidth seluruh kantor.',
       },
     },
@@ -536,14 +536,29 @@ export const projects = [
 export const pengalaman = [
   {
     posisi: 'IT Support / System Administrator',
-    perusahaan: 'Multi-perusahaan (±15 klien serentak)',
-    periode: '2019 — sekarang',
+    perusahaan: 'PT Jayamas Medica Industri Tbk',
+    periode: 'Februari 2025 — sekarang',
     poin: [
-      'Mengelola infrastruktur IT untuk ±15 perusahaan secara bersamaan, termasuk server, jaringan, dan end-user support',
-      'Handle 400+ user aktif di lingkungan produksi dengan target uptime 99%+',
-      'Menangani instalasi & maintenance CCTV (Hikvision), jaringan alarm bank, sistem telepon, dan access control',
-      'Deploy dan kelola 4 server produksi secara bersamaan dengan skema backup, monitoring, dan security terpadu',
-      'Merancang infrastruktur jaringan LAN skala kecil–menengah dari nol termasuk VLAN, firewall, dan bandwidth management',
+      'Daily support untuk 400+ user aktif: setup perangkat baru, pencatatan aset, dan pencatatan task agar setiap permintaan terlacak',
+      'Mengelola 4 server dengan peran terpisah — development, staging, backup, dan production di VPS — sebagian berjalan di atas Docker, sebagian native',
+      'Menyatukan seluruh layanan di bawah satu domain lewat reverse proxy, dipisah per subdomain',
+      'Mengeraskan sisi keamanan dengan UFW dan Fail2Ban, ditambah notifikasi Telegram untuk setiap login yang masuk ke server',
+      'Menjalankan backup terjadwal dengan notifikasi status dan uji restore pada setiap backup — bukan sekadar backup yang tidak pernah dibuka',
+      'Memasang pemantauan Prometheus + Grafana dan healthcheck monitor yang mengirim notifikasi saat ada server mati atau offline',
+      'Menganalisa alur bisnis departemen lain, menyusunnya menjadi blueprint sistem, lalu menyerahkannya ke tim developer',
+      'Mengelola jaringan MikroTik: 100+ rule firewall aktif, web filtering, simple queue, VLAN, dan PPTP',
+      'Memastikan 300+ titik CCTV menyala dan terpantau setiap hari',
+    ],
+  },
+  {
+    posisi: 'IT Support — Vendor Pengadaan Barang & Jasa',
+    perusahaan: '30+ klien perusahaan dan perorangan',
+    periode: 'Mei 2019 — Januari 2025',
+    poin: [
+      'Menangani support IT untuk lebih dari 30 klien perusahaan dan perorangan secara bersamaan',
+      'Instalasi dan maintenance jaringan internet, jaringan telepon, serta jaringan alarm',
+      'Instalasi dan perawatan perangkat: komputer, printer, CCTV, PABX, alarm, dan access control',
+      'Menjadi titik kontak pertama user di sisi IT — dari keluhan harian sampai perbaikan langsung di lokasi klien',
     ],
   },
 ]
@@ -574,13 +589,14 @@ export const perintahTerminal = {
       'Saya senang membuat infrastruktur yang tidak pernah jadi berita.',
       'Server yang selalu hidup, jaringan yang stabil, backup yang bisa dipercaya.',
       '',
-      '5 tahun pengalaman langsung di production environment,',
-      'mengelola 400+ user dan ±15 perusahaan sekaligus.',
+      '7 tahun pengalaman langsung di lapangan sejak Mei 2019 —',
+      'dari vendor yang melayani 30+ klien, kini in-house',
+      'menangani 400+ user, 4 server, dan 300+ titik CCTV.',
       '',
       'Di luar kantor: utak-atik homelab dan kopi hitam tanpa gula.',
     ],
   uptime: [
-      'sistem aktif 5 tahun',
+      'sistem aktif 7 tahun',
       'uptime rata-rata: 99%',
       'insiden terbuka : 0',
       'fail2ban aktif  : 1.847 IP diblokir',
@@ -620,7 +636,7 @@ export const ui = {
   stackDeskripsi: 'Disaring per kategori. Semua sudah teruji di production — bukan cuma lab. Klik satu ikon untuk melihat project yang memakainya.',
   projectsJudul: 'Yang sudah saya kerjakan',
   projectsDeskripsi: 'Pilih satu untuk membuka detail dan hasilnya.',
-  pengalamanJudul: 'Jejak pekerjaan',
+  pengalamanJudul: 'Riwayat pekerjaan',
   kontakJudul: 'Mari bicara',
   kontakDeskripsi: 'Balasan biasanya di bawah 24 jam. Atau coba terminal di samping — ketik "help".',
   footer: 'Dibangun dengan React dan Vite. Di-deploy otomatis lewat GitHub Actions.',
@@ -629,7 +645,7 @@ export const ui = {
   label: {
     semua: 'Semua',
     lewati: 'Lewati ke konten',
-    layananNormal: 'berkarier sejak 2019',
+    layananNormal: 'semua layanan normal',
     menu: 'Menu',
     tutup: 'Tutup',
     cariPerintah: 'Cari halaman atau perintah…',
