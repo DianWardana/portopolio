@@ -74,11 +74,16 @@ const ICON_MAP = {
   grafana: si('grafana', 'F46800'),
   prometheus: si('prometheus', 'E6522C'),
   netdata: si('netdata', '00AB44'),
+  // Workflow
+  git: si('git', 'F05032'),
+  'git flow': si('git', 'F05032'),
+  'vs code': si('visualstudiocode', '007ACC'),
+  'dokumentasi teknis': { gelap: si('markdown', 'C6D3E0'), terang: si('markdown', '1B2733') },
   // Field
   'nvr & cctv': { gelap: si('icloud', 'A3B2C0'), terang: si('icloud', '4A5A69') },
   'jaringan alarm bank': si('amazonroute53', '8C4FFF'),
   'access control': si('adguard', '66B574'),
-  pabx: { gelap: si('panasonic', 'D9E3ED'), terang: si('panasonic', '0050A0') },
+  pabx: { gelap: si('cisco', '7FC4DC'), terang: si('cisco', '1BA0D7') },
 }
 
 function getIcon(nama, tema) {
