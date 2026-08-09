@@ -1,37 +1,14 @@
-import { useEffect, useState } from 'react'
 import { profile, ui } from '../data/content'
 import { useScrollSpy, useTema, useScrollProgress, useUptime } from '../lib/hooks'
-import { useT } from '../lib/i18n'
-import { Sun, Moon, Menu, Search, Globe } from './Icons'
+import { Sun, Moon, Menu, Search } from './Icons'
 
 const ids = ui.nav.map((n) => n.id)
 
 export default function StatusBar({ onBukaMenu, onBukaPalette }) {
-  const [t, bahasa, gantiBahasa] = useT()
   const aktif = useScrollSpy(ids)
   const [tema, gantiTema] = useTema()
   const progres = useScrollProgress()
   const uptime = useUptime(profile.mulaiKarier)
-  const [jam, setJam] = useState('')
-
-  useEffect(() => {
-    const perbarui = () => {
-      try {
-        setJam(
-          new Intl.DateTimeFormat(bahasa === 'id' ? 'id-ID' : 'en-GB', {
-            hour: '2-digit',
-            minute: '2-digit',
-            timeZone: profile.zonaWaktu,
-          }).format(new Date())
-        )
-      } catch {
-        setJam('')
-      }
-    }
-    perbarui()
-    const timer = setInterval(perbarui, 30000)
-    return () => clearInterval(timer)
-  }, [bahasa])
 
   return (
     <div className="statusbar">
@@ -41,21 +18,23 @@ export default function StatusBar({ onBukaMenu, onBukaPalette }) {
           <span className="brand-nama">{profile.nama}</span>
         </a>
 
+        {/* Indikator kesehatan + uptime karier yang berjalan hidup.
+            Ditulis satu baris penuh (nowrap) supaya tidak pernah
+            terpecah jadi beberapa baris di dalam bar setinggi 60px. */}
         <div className="health">
           <span className="pulse" aria-hidden="true" />
-          <span>{t(ui.label.layananNormal)}</span>
+          <span className="health-teks">{ui.label.layananNormal}</span>
           {uptime && (
-            <span className="uptime-live mono" title={t(ui.label.uptimeKarier)}>
-              · {uptime}
+            <span className="uptime-live mono" title="uptime karier">
+              {uptime}
             </span>
           )}
-          {jam && <span className="jam">· {jam} WIB</span>}
         </div>
 
         <nav className="nav" aria-label="Navigasi utama">
           {ui.nav.map((n) => (
             <a key={n.id} href={`#${n.id}`} className={aktif === n.id ? 'active' : ''}>
-              {t(n.label)}
+              {n.label}
             </a>
           ))}
         </nav>
@@ -64,28 +43,18 @@ export default function StatusBar({ onBukaMenu, onBukaPalette }) {
           <button
             className="icon-btn palette-btn"
             onClick={onBukaPalette}
-            aria-label={t(ui.label.cariPerintah)}
-            title={`${t(ui.label.cariPerintah)}  (Ctrl+K)`}
+            aria-label={ui.label.cariPerintah}
+            title={`${ui.label.cariPerintah}  (Ctrl+K)`}
           >
             <Search width="16" height="16" />
-            <span className="kbd-hint mono">⌘K</span>
-          </button>
-
-          <button
-            className="icon-btn lang-btn"
-            onClick={gantiBahasa}
-            aria-label={t(ui.label.gantiBahasa)}
-            title={t(ui.label.gantiBahasa)}
-          >
-            <Globe width="15" height="15" />
-            <span className="mono">{bahasa === 'id' ? 'ID' : 'EN'}</span>
+            <span className="kbd-hint mono">Ctrl K</span>
           </button>
 
           <button
             className="icon-btn"
             onClick={gantiTema}
-            aria-label={tema === 'dark' ? t(ui.label.temaTerang) : t(ui.label.temaGelap)}
-            title={tema === 'dark' ? t(ui.label.temaTerang) : t(ui.label.temaGelap)}
+            aria-label={tema === 'dark' ? ui.label.temaTerang : ui.label.temaGelap}
+            title={tema === 'dark' ? ui.label.temaTerang : ui.label.temaGelap}
           >
             {tema === 'dark' ? <Sun /> : <Moon />}
           </button>
@@ -93,8 +62,8 @@ export default function StatusBar({ onBukaMenu, onBukaPalette }) {
           <button
             className="icon-btn menu-btn"
             onClick={onBukaMenu}
-            aria-label={t(ui.label.menu)}
-            title={t(ui.label.menu)}
+            aria-label={ui.label.menu}
+            title={ui.label.menu}
           >
             <Menu />
           </button>

@@ -1,14 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { profile, projects, ui } from '../data/content'
 import { useKunciScroll, useTema } from '../lib/hooks'
-import { useT } from '../lib/i18n'
-import { Search, Arrow, Sun, Moon, Globe, Copy, Printer, Terminal } from './Icons'
+import { Search, Arrow, Sun, Copy, Printer, Terminal } from './Icons'
 import { aset } from '../lib/aset'
 
 /* Palet perintah ala editor kode — Ctrl/Cmd + K.
  * Detail kecil, tapi langsung terbaca "orang ini kerja di terminal". */
 export default function CommandPalette({ buka, tutup }) {
-  const [t, bahasa, gantiBahasa] = useT()
   const [, gantiTema] = useTema()
   const [kueri, setKueri] = useState('')
   const [sorot, setSorot] = useState(0)
@@ -26,15 +24,15 @@ export default function CommandPalette({ buka, tutup }) {
 
   const perintah = useMemo(() => {
     const nav = ui.nav.map((n) => ({
-      grup: t(ui.label.buka),
-      label: t(n.label),
+      grup: ui.label.buka,
+      label: n.label,
       ikon: Arrow,
       jalan: () => pergiKe(n.id),
     }))
 
     const proyek = projects.map((p) => ({
-      grup: t(ui.label.project),
-      label: t(p.judul),
+      grup: ui.label.project,
+      label: p.judul,
       catatan: p.tahun,
       ikon: Arrow,
       jalan: () => pergiKe('projects'),
@@ -42,8 +40,8 @@ export default function CommandPalette({ buka, tutup }) {
 
     const aksi = [
       {
-        grup: t(ui.label.tindakan),
-        label: t(ui.label.temaTerang) + ' / ' + t(ui.label.temaGelap),
+        grup: ui.label.tindakan,
+        label: 'Ganti tema terang / gelap',
         ikon: Sun,
         jalan: () => {
           gantiTema()
@@ -51,17 +49,8 @@ export default function CommandPalette({ buka, tutup }) {
         },
       },
       {
-        grup: t(ui.label.tindakan),
-        label: bahasa === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia',
-        ikon: Globe,
-        jalan: () => {
-          gantiBahasa()
-          tutup()
-        },
-      },
-      {
-        grup: t(ui.label.tindakan),
-        label: t(ui.label.salinEmail),
+        grup: ui.label.tindakan,
+        label: ui.label.salinEmail,
         catatan: profile.email,
         ikon: Copy,
         jalan: async () => {
@@ -74,8 +63,8 @@ export default function CommandPalette({ buka, tutup }) {
         },
       },
       {
-        grup: t(ui.label.tindakan),
-        label: t(ui.label.cetakCv),
+        grup: ui.label.tindakan,
+        label: ui.label.cetakCv,
         ikon: Printer,
         jalan: () => {
           tutup()
@@ -83,8 +72,8 @@ export default function CommandPalette({ buka, tutup }) {
         },
       },
       {
-        grup: t(ui.label.tindakan),
-        label: bahasa === 'id' ? 'Buka konsol interaktif' : 'Open interactive console',
+        grup: ui.label.tindakan,
+        label: 'Buka konsol interaktif',
         ikon: Terminal,
         jalan: () => pergiKe('kontak'),
       },
@@ -92,8 +81,8 @@ export default function CommandPalette({ buka, tutup }) {
 
     if (profile.cv) {
       aksi.push({
-        grup: t(ui.label.tindakan),
-        label: t(ui.hero.unduhCv),
+        grup: ui.label.tindakan,
+        label: ui.hero.unduhCv,
         ikon: Arrow,
         jalan: () => {
           window.open(aset(profile.cv), '_blank', 'noreferrer')
@@ -103,7 +92,7 @@ export default function CommandPalette({ buka, tutup }) {
     }
 
     return [...nav, ...proyek, ...aksi]
-  }, [bahasa])
+  }, [])
 
   const hasil = useMemo(() => {
     const q = kueri.trim().toLowerCase()
@@ -152,7 +141,7 @@ export default function CommandPalette({ buka, tutup }) {
   let grupTerakhir = null
 
   return (
-    <div className="cmd" role="dialog" aria-modal="true" aria-label={t(ui.label.cariPerintah)}>
+    <div className="cmd" role="dialog" aria-modal="true" aria-label={ui.label.cariPerintah}>
       <div className="cmd-tirai" onClick={tutup} />
 
       <div className="cmd-panel">
@@ -163,20 +152,16 @@ export default function CommandPalette({ buka, tutup }) {
             value={kueri}
             onChange={(e) => setKueri(e.target.value)}
             onKeyDown={onKey}
-            placeholder={t(ui.label.cariPerintah)}
+            placeholder={ui.label.cariPerintah}
             spellCheck="false"
             autoComplete="off"
-            aria-label={t(ui.label.cariPerintah)}
+            aria-label={ui.label.cariPerintah}
           />
           <kbd className="mono">esc</kbd>
         </div>
 
         <div className="cmd-list" ref={daftarRef}>
-          {hasil.length === 0 && (
-            <div className="cmd-kosong mono">
-              {bahasa === 'id' ? 'tidak ada hasil' : 'no results'}
-            </div>
-          )}
+          {hasil.length === 0 && <div className="cmd-kosong mono">tidak ada hasil</div>}
 
           {hasil.map((p, i) => {
             const Ikon = p.ikon
@@ -200,9 +185,9 @@ export default function CommandPalette({ buka, tutup }) {
         </div>
 
         <footer className="cmd-foot mono">
-          <span>↑↓ {bahasa === 'id' ? 'pilih' : 'navigate'}</span>
-          <span>↵ {bahasa === 'id' ? 'buka' : 'open'}</span>
-          <span>esc {bahasa === 'id' ? 'tutup' : 'close'}</span>
+          <span>↑↓ pilih</span>
+          <span>↵ buka</span>
+          <span>esc tutup</span>
         </footer>
       </div>
     </div>

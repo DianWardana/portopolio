@@ -1,6 +1,5 @@
 import { metrik } from '../data/content'
 import { useCountUp } from '../lib/hooks'
-import { useT } from '../lib/i18n'
 
 /* Sparkline: grafik garis mini tanpa sumbu.
  * Dinormalisasi sendiri, jadi skala data tidak perlu seragam. */
@@ -38,7 +37,6 @@ function Sparkline({ data = [], aktif }) {
 }
 
 function Kartu({ m }) {
-  const [t] = useT()
   const [ref, nilai, selesai] = useCountUp(m.nilai, { desimal: m.desimal || 0 })
 
   return (
@@ -48,24 +46,23 @@ function Kartu({ m }) {
         {m.desimal
           ? nilai.toFixed(m.desimal).replace('.', ',')
           : Math.round(nilai).toLocaleString('id-ID')}
-        {m.sufiks && <em>{t(m.sufiks)}</em>}
+        {m.sufiks && <em>{m.sufiks}</em>}
       </div>
 
       <Sparkline data={m.tren} aktif={selesai} />
 
-      <div className="lb">{t(m.label)}</div>
-      <div className="nt">{t(m.catatan)}</div>
+      <div className="lb">{m.label}</div>
+      <div className="nt">{m.catatan}</div>
     </div>
   )
 }
 
 export default function Metrics() {
-  const [t] = useT()
   return (
     <div className="wrap">
       <div className="metrics" data-reveal>
         {metrik.map((m) => (
-          <Kartu key={t(m.label)} m={m} />
+          <Kartu key={m.label} m={m} />
         ))}
       </div>
     </div>

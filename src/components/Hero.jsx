@@ -1,15 +1,13 @@
 import { useState } from 'react'
 import { profile, ui } from '../data/content'
 import { useTypewriter } from '../lib/hooks'
-import { useT } from '../lib/i18n'
 import { aset } from '../lib/aset'
 import { Copy, Arrow, Printer } from './Icons'
 
 export default function Hero() {
-  const [t] = useT()
   const [tersalin, setTersalin] = useState(false)
 
-  const tagline = t(profile.tagline)
+  const tagline = profile.tagline
   const [ketikan, selesaiKetik] = useTypewriter(tagline, { kecepatan: 18, jeda: 500 })
 
   const salinEmail = async () => {
@@ -32,7 +30,7 @@ export default function Hero() {
         <div className="hero-left">
           <span className="avail">
             <span className="pulse" aria-hidden="true" />
-            {t(profile.labelKetersediaan)}
+            {profile.labelKetersediaan}
           </span>
 
           <h1>
@@ -41,7 +39,7 @@ export default function Hero() {
           </h1>
 
           <div className="name">
-            {profile.nama} — {t(profile.lokasi)}
+            {profile.nama} — {profile.lokasi}
           </div>
 
           {/* Tagline diketik seperti di terminal.
@@ -56,22 +54,22 @@ export default function Hero() {
 
           <div className="cta-row">
             <a className="btn solid" href="#projects">
-              {t(ui.hero.ctaUtama)} <Arrow width="14" height="14" />
+              {ui.hero.ctaUtama} <Arrow width="14" height="14" />
             </a>
 
             <button className="btn" onClick={salinEmail}>
               <Copy width="14" height="14" />
-              {tersalin ? t(ui.hero.tersalin) : t(ui.hero.ctaKedua)}
+              {tersalin ? ui.hero.tersalin : ui.hero.ctaKedua}
             </button>
 
             {profile.cv ? (
               <a className="btn" href={aset(profile.cv)} target="_blank" rel="noreferrer">
-                {t(ui.hero.unduhCv)}
+                {ui.hero.unduhCv}
               </a>
             ) : (
               <button className="btn" onClick={() => window.print()}>
                 <Printer width="14" height="14" />
-                {t(ui.label.cetakCv)}
+                {ui.label.cetakCv}
               </button>
             )}
           </div>

@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import { stack, kategoriStack, projects, ui } from '../data/content'
-import { useT } from '../lib/i18n'
 import { aset } from '../lib/aset'
 
 /*
@@ -59,7 +58,6 @@ function getIcon(nama) {
 }
 
 export default function StackSection({ onPilihTag }) {
-  const [t] = useT()
   const [aktif, setAktif] = useState('Semua')
 
   const daftar = aktif === 'Semua' ? stack : stack.filter((s) => s.kategori === aktif)
@@ -78,8 +76,8 @@ export default function StackSection({ onPilihTag }) {
       <div className="wrap">
         <div className="section-head" data-reveal>
           <span className="eyebrow">stacks</span>
-          <h2>{t(ui.stackJudul)}</h2>
-          <p>{t(ui.stackDeskripsi)}</p>
+          <h2>{ui.stackJudul}</h2>
+          <p>{ui.stackDeskripsi}</p>
         </div>
 
         <div className="filters" data-reveal>
@@ -90,7 +88,7 @@ export default function StackSection({ onPilihTag }) {
               aria-pressed={aktif === k}
               onClick={() => setAktif(k)}
             >
-              {k === 'Semua' ? t(ui.label.semua) : k}
+              {k === 'Semua' ? ui.label.semua : k}
               {k !== 'Semua' && (
                 <span style={{ opacity: 0.5 }}> {stack.filter((s) => s.kategori === k).length}</span>
               )}
@@ -114,7 +112,7 @@ export default function StackSection({ onPilihTag }) {
                 onClick={() => bisaKlik && onPilihTag?.(s.proyek, s.nama)}
                 aria-label={
                   bisaKlik
-                    ? `${s.nama} — ${t(ui.label.dipakaiDi)} ${n} ${t(ui.label.project)}`
+                    ? `${s.nama} — ${ui.label.dipakaiDi} ${n} ${ui.label.project}`
                     : s.nama
                 }
               >
@@ -125,7 +123,7 @@ export default function StackSection({ onPilihTag }) {
                   {s.catatan && <span className="tech-tooltip-cat">{s.catatan}</span>}
                   {bisaKlik && (
                     <span className="tech-tooltip-aksi">
-                      {t(ui.label.dipakaiDi)} {n} {t(ui.label.project)} →
+                      {ui.label.dipakaiDi} {n} {ui.label.project} →
                     </span>
                   )}
                 </div>

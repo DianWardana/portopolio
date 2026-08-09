@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { projects, ui } from '../data/content'
-import { useT } from '../lib/i18n'
 import { Chevron, Arrow, Close } from './Icons'
 
 export default function ProjectsSection({ tagLuar, asalFilter, resetFilter }) {
-  const [t] = useT()
   const [tag, setTag] = useState('Semua')
   const [buka, setBuka] = useState(0)
 
@@ -35,20 +33,20 @@ export default function ProjectsSection({ tagLuar, asalFilter, resetFilter }) {
       <div className="wrap">
         <div className="section-head" data-reveal>
           <span className="eyebrow">arsip pekerjaan</span>
-          <h2>{t(ui.projectsJudul)}</h2>
-          <p>{t(ui.projectsDeskripsi)}</p>
+          <h2>{ui.projectsJudul}</h2>
+          <p>{ui.projectsDeskripsi}</p>
         </div>
 
         {/* Penanda kalau filter datang dari klik di section Stack */}
         {asalFilter && (
           <div className="filter-asal" role="status">
-            <span className="eyebrow">{t(ui.label.difilterDari)}</span>
+            <span className="eyebrow">{ui.label.difilterDari}</span>
             <strong>{asalFilter}</strong>
             <button
               className="icon-btn"
               onClick={() => pilihTag('Semua')}
-              aria-label={t(ui.label.resetFilter)}
-              title={t(ui.label.resetFilter)}
+              aria-label={ui.label.resetFilter}
+              title={ui.label.resetFilter}
             >
               <Close width="14" height="14" />
             </button>
@@ -63,20 +61,20 @@ export default function ProjectsSection({ tagLuar, asalFilter, resetFilter }) {
               aria-pressed={tag === x}
               onClick={() => pilihTag(x)}
             >
-              {x === 'Semua' ? t(ui.label.semua) : x}
+              {x === 'Semua' ? ui.label.semua : x}
             </button>
           ))}
         </div>
 
         <div className="proj-list" data-reveal>
           {daftar.length === 0 && (
-            <p style={{ color: 'var(--ink-dim)' }}>{t(ui.label.kosongProject)}</p>
+            <p style={{ color: 'var(--ink-dim)' }}>{ui.label.kosongProject}</p>
           )}
 
           {daftar.map((p, i) => {
             const terbuka = buka === i
             return (
-              <article className={`proj${terbuka ? ' open' : ''}`} key={t(p.judul)}>
+              <article className={`proj${terbuka ? ' open' : ''}`} key={p.judul}>
                 <button
                   className="proj-head"
                   onClick={() => setBuka(terbuka ? null : i)}
@@ -86,10 +84,10 @@ export default function ProjectsSection({ tagLuar, asalFilter, resetFilter }) {
 
                   <span>
                     <span className="proj-title" style={{ display: 'block' }}>
-                      {t(p.judul)}
+                      {p.judul}
                     </span>
                     <span className="proj-sub" style={{ display: 'block' }}>
-                      {t(p.subjudul)}
+                      {p.subjudul}
                     </span>
                     <span className="proj-tags">
                       {p.tag.map((x) => (
@@ -112,15 +110,15 @@ export default function ProjectsSection({ tagLuar, asalFilter, resetFilter }) {
                 <div className="proj-body">
                   <div>
                     <div className="proj-inner">
-                      <p>{t(p.deskripsi)}</p>
+                      <p>{p.deskripsi}</p>
 
                       <div className="proj-cols">
                         <div>
                           <span className="eyebrow" style={{ marginBottom: 12 }}>
-                            {t(ui.label.hasil)}
+                            {ui.label.hasil}
                           </span>
                           <ul className="hasil" style={{ marginTop: 12 }}>
-                            {t(p.hasil).map((h) => (
+                            {p.hasil.map((h) => (
                               <li key={h}>
                                 <span>→</span>
                                 {h}
@@ -131,7 +129,7 @@ export default function ProjectsSection({ tagLuar, asalFilter, resetFilter }) {
 
                         <div>
                           <span className="eyebrow" style={{ marginBottom: 12 }}>
-                            {t(ui.label.stack)}
+                            {ui.label.stack}
                           </span>
                           <div className="chips" style={{ marginTop: 12 }}>
                             {p.stack.map((s) => (
@@ -147,12 +145,12 @@ export default function ProjectsSection({ tagLuar, asalFilter, resetFilter }) {
                         <div className="proj-links">
                           {p.repo && (
                             <a className="btn" href={p.repo} target="_blank" rel="noreferrer">
-                              {t(ui.label.lihatKode)} <Arrow width="13" height="13" />
+                              {ui.label.lihatKode} <Arrow width="13" height="13" />
                             </a>
                           )}
                           {p.demo && (
                             <a className="btn" href={p.demo} target="_blank" rel="noreferrer">
-                              {t(ui.label.bukaDemo)} <Arrow width="13" height="13" />
+                              {ui.label.bukaDemo} <Arrow width="13" height="13" />
                             </a>
                           )}
                         </div>

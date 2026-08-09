@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { layananStatus, ui } from '../data/content'
 import { useKunciScroll } from '../lib/hooks'
-import { useT } from '../lib/i18n'
 import { Alert, Close } from './Icons'
 
 const HARI = 90
@@ -10,7 +9,6 @@ const HARI = 90
  * 90 batang = 90 hari terakhir. Hijau = normal, kuning = gangguan,
  * merah = down. Yang berwarna bisa diklik untuk membaca ceritanya. */
 export default function StatusSection() {
-  const [t] = useT()
   const [terpilih, setTerpilih] = useState(null)
 
   useKunciScroll(!!terpilih)
@@ -40,8 +38,8 @@ export default function StatusSection() {
   )
 
   const labelHari = (n) => {
-    if (n === 0) return t(ui.label.hariIni)
-    return t({ id: `${n} hari lalu`, en: `${n} days ago` })
+    if (n === 0) return ui.label.hariIni
+    return `${n} hari lalu`
   }
 
   return (
@@ -49,15 +47,15 @@ export default function StatusSection() {
       <div className="wrap">
         <div className="section-head" data-reveal>
           <span className="eyebrow">uptime</span>
-          <h2>{t(ui.statusJudul)}</h2>
-          <p>{t(ui.statusDeskripsi)}</p>
+          <h2>{ui.statusJudul}</h2>
+          <p>{ui.statusDeskripsi}</p>
         </div>
 
         <div className="status-card" data-reveal>
           {data.map((layanan) => (
-            <div className="status-baris" key={t(layanan.nama)}>
+            <div className="status-baris" key={layanan.nama}>
               <div className="status-meta">
-                <span className="status-nama">{t(layanan.nama)}</span>
+                <span className="status-nama">{layanan.nama}</span>
                 <span className="status-angka mono">{layanan.uptime}%</span>
               </div>
 
@@ -65,8 +63,8 @@ export default function StatusSection() {
                 {layanan.hari.map((h) => {
                   const tingkat = h.insiden?.tingkat || 'ok'
                   const judul = h.insiden
-                    ? `${labelHari(h.hariLalu)} — ${t(h.insiden.judul)}`
-                    : `${labelHari(h.hariLalu)} — ${t({ id: 'normal', en: 'operational' })}`
+                    ? `${labelHari(h.hariLalu)} — ${h.insiden.judul}`
+                    : `${labelHari(h.hariLalu)} — ${'normal'}`
 
                   return h.insiden ? (
                     <button
@@ -75,7 +73,7 @@ export default function StatusSection() {
                       title={judul}
                       aria-label={judul}
                       onClick={() =>
-                        setTerpilih({ ...h.insiden, layanan: t(layanan.nama), hariLalu: h.hariLalu })
+                        setTerpilih({ ...h.insiden, layanan: layanan.nama, hariLalu: h.hariLalu })
                       }
                     />
                   ) : (
@@ -85,17 +83,17 @@ export default function StatusSection() {
               </div>
 
               <div className="status-kaki mono">
-                <span>{t(ui.label.hariTerakhir)}</span>
+                <span>{ui.label.hariTerakhir}</span>
                 <span className="status-garis" />
-                <span>{t(ui.label.hariIni)}</span>
+                <span>{ui.label.hariIni}</span>
               </div>
             </div>
           ))}
 
           <div className="status-legenda mono">
-            <span><i className="lg ok" /> {t({ id: 'normal', en: 'operational' })}</span>
-            <span><i className="lg gangguan" /> {t({ id: 'gangguan', en: 'degraded' })}</span>
-            <span><i className="lg down" /> {t({ id: 'down', en: 'down' })}</span>
+            <span><i className="lg ok" /> {'normal'}</span>
+            <span><i className="lg gangguan" /> {'gangguan'}</span>
+            <span><i className="lg down" /> {'down'}</span>
           </div>
         </div>
 
@@ -109,19 +107,19 @@ export default function StatusSection() {
                 <span className={`insiden-tag mono ${terpilih.tingkat}`}>
                   <Alert width="12" height="12" />
                   {terpilih.tingkat === 'down'
-                    ? t({ id: 'DOWN', en: 'DOWN' })
-                    : t({ id: 'GANGGUAN', en: 'DEGRADED' })}
+                    ? 'DOWN'
+                    : 'GANGGUAN'}
                 </span>
                 <button
                   className="icon-btn"
                   onClick={() => setTerpilih(null)}
-                  aria-label={t(ui.label.tutup)}
+                  aria-label={ui.label.tutup}
                 >
                   <Close width="15" height="15" />
                 </button>
               </header>
 
-              <h3>{t(terpilih.judul)}</h3>
+              <h3>{terpilih.judul}</h3>
 
               <div className="insiden-meta mono">
                 <span>{terpilih.layanan}</span>
@@ -132,13 +130,13 @@ export default function StatusSection() {
               </div>
 
               <div className="insiden-blok">
-                <span className="eyebrow">{t({ id: 'akar masalah', en: 'root cause' })}</span>
-                <p>{t(terpilih.sebab)}</p>
+                <span className="eyebrow">{'akar masalah'}</span>
+                <p>{terpilih.sebab}</p>
               </div>
 
               <div className="insiden-blok">
-                <span className="eyebrow">{t({ id: 'penanganan & pencegahan', en: 'response & prevention' })}</span>
-                <p>{t(terpilih.solusi)}</p>
+                <span className="eyebrow">{'penanganan & pencegahan'}</span>
+                <p>{terpilih.solusi}</p>
               </div>
             </article>
           </div>
