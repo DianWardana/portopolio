@@ -14,20 +14,17 @@ export default function StatusBar({ onBukaMenu, onBukaPalette }) {
     <div className="statusbar">
       <div className="wrap">
         <a href="#atas" className="brand">
-          <span className="badge">{profile.inisial}</span>
-          <span className="brand-nama">{profile.nama}</span>
+          <span className="brand-nama">{profile.nama.split(' ')[0]}</span>
         </a>
 
         {/* Indikator kesehatan + uptime karier yang berjalan hidup.
             Ditulis satu baris penuh (nowrap) supaya tidak pernah
             terpecah jadi beberapa baris di dalam bar setinggi 60px. */}
-       <div className="health">
+        <div className="health">
           <span className="pulse" aria-hidden="true" />
-          <span className="health-teks">
-            berkarier sejak {new Date(profile.mulaiKarier).getFullYear()}
-          </span>
+          <span className="health-teks">{ui.label.layananNormal}</span>
           {uptime && (
-            <span className="uptime-live mono" title="lama berkarier">
+            <span className="uptime-live mono" title="uptime karier">
               {uptime}
             </span>
           )}
