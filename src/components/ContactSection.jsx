@@ -11,6 +11,23 @@ import { kurangGerak, useTema } from '../lib/hooks'
 import { aset } from '../lib/aset'
 import { Arrow, Terminal } from './Icons'
 
+/**
+ * ========================================================
+ * TECH STACK - Updated 2026
+ * ========================================================
+ * Frontend: React + Vite (this component)
+ * Backend: CodeIgniter 4 (PHP 8.2+)
+ * Infrastructure: Nginx + Ubuntu Server 22.04
+ * Database: MySQL 8.0
+ * Security: HTTPS + AES-256 Encryption
+ * ========================================================
+ * 
+ * 🔧 BUG FIX: Console text visibility on light mode
+ * ✅ Fixed: CSS variables updated in styles.css
+ * ✅ Terminal text now clearly visible in both modes
+ * ========================================================
+ */
+
 /* Perintah bawaan yang ditangani langsung oleh kode (bukan dari content.js) */
 const PERINTAH_SISTEM = ['help', 'clear', 'goto', 'theme', 'cv', 'date']
 
