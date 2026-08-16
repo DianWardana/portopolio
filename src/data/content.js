@@ -528,13 +528,14 @@ export const topologi = {
 /* ------------------------------------------------------------
  *  6. TOOLS & SKILL
  * ---------------------------------------------------------- */
-export const kategoriStack = ['Semua', 'Linux/Server', 'Network', 'Virtualisasi', 'Database', 'Security', 'Monitoring', 'Workflow', 'Field']
+export const kategoriStack = ['Semua', 'Linux/Server', 'Backend', 'Network', 'Virtualisasi', 'Database', 'Security', 'Monitoring', 'Workflow', 'Field']
 
 /* `proyek` = daftar tag project yang memakai tool ini.
  * Dipakai untuk fitur klik ikon → filter project otomatis. */
 export const stack = [
   // Linux/Server
   { nama: 'Linux (Ubuntu)', kategori: 'Linux/Server', level: 5, catatan: '20.04 / 22.04 / 24.04 production', proyek: 'Linux' },
+  { nama: 'Nginx', kategori: 'Linux/Server', level: 5, catatan: 'reverse proxy, load balancing, performance tuning', proyek: 'Linux' },
   { nama: 'Apache2', kategori: 'Linux/Server', level: 5, catatan: 'web server & reverse proxy hybrid', proyek: 'Linux' },
   { nama: 'Bash Scripting', kategori: 'Linux/Server', level: 4, catatan: 'automation, cron job, maintenance', proyek: 'Automation' },
   { nama: 'SSH Hardening', kategori: 'Linux/Server', level: 5, catatan: 'custom port, disable root, key-based auth', proyek: 'Security' },
@@ -544,6 +545,9 @@ export const stack = [
   { nama: 'VLAN / Switch', kategori: 'Network', level: 4, catatan: 'Ruijie, UniFi, segmentasi jaringan', proyek: 'VLAN' },
   { nama: 'Network Design', kategori: 'Network', level: 4, catatan: 'LAN skala kecil–menengah, troubleshoot', proyek: 'Network' },
   { nama: 'Ruijie', kategori: 'Network', level: 5, catatan: 'Whitelist management, AP Mesh deployment, AI Roaming optimization', proyek: 'VLAN' },
+  // Backend & Framework
+  { nama: 'PHP 8.2+', kategori: 'Backend', level: 4, catatan: 'server-side scripting, REST API development', proyek: 'Backend' },
+  { nama: 'CodeIgniter 4', kategori: 'Backend', level: 4, catatan: 'lightweight MVC framework, migrations, ORM', proyek: 'Backend' },
   // Virtualisasi & Container
   { nama: 'Docker', kategori: 'Virtualisasi', level: 4, catatan: 'multi-container, ±13 container running', proyek: 'Docker' },
   { nama: 'VMware ESXi', kategori: 'Virtualisasi', level: 4, catatan: 'ESXi, Workstation, VM management', proyek: 'Linux' },
@@ -575,6 +579,29 @@ export const stack = [
  *  7. PROJECT
  * ---------------------------------------------------------- */
 export const projects = [
+  {
+    judul: 'Backup Panel — Sistem Backup Database Terenkripsi',
+    subjudul: 'Aplikasi web sendiri untuk mengelola backup lintas server, dengan audit trail penuh',
+    tahun: '2026—kini',
+    status: 'produksi',
+    tag: ['Backend', 'Backup', 'MySQL', 'Security', 'Docker'],
+    gambar: 'img/backup-panel-audit-trail.png',
+    gambarAlt: 'Halaman Audit Trail Log di Backup Panel, menampilkan riwayat aktivitas backup dan restore',
+    deskripsi:
+      'Aplikasi internal yang saya bangun sendiri untuk menggantikan kumpulan skrip bash yang sebelumnya tersebar di beberapa server. Backend memakai CodeIgniter 4, antarmuka memakai React, dan seluruh eksekusi backup berjalan lewat SSH ke server target — termasuk yang databasenya berada di dalam container Docker. Setiap berkas hasil mysqldump dienkripsi AES-256 sebelum disimpan, dan setiap tindakan pengguna tercatat di audit trail: siapa, kapan, server mana, dan apa yang diubah.',
+    hasil: [
+      'Backup instan maupun terjadwal untuk banyak server dan database dari satu dasbor',
+      'Seluruh berkas backup tersimpan terenkripsi (.sql.enc, AES-256-CBC) — bukan dump mentah',
+      'Kredensial sensitif (kunci SSH, sandi database, token bot) disimpan terenkripsi di database, hasil audit keamanan internal',
+      'Setiap backup diverifikasi lewat proses dekripsi dan validasi sebelum dianggap berhasil',
+      'Audit trail mencatat seluruh aktivitas pengguna dan sistem, dapat difilter per tanggal',
+      'Notifikasi Telegram real-time untuk keberhasilan, kegagalan, dan proses restore',
+      'Pembersihan otomatis berkas lama mengikuti kebijakan retensi per database',
+    ],
+    stack: ['CodeIgniter 4', 'PHP 8.2+', 'React', 'Nginx', 'MySQL 8.0', 'Docker', 'SSH', 'OpenSSL', 'Telegram Bot API'],
+    repo: '',
+    demo: '',
+  },
   {
     judul: 'Infrastruktur 4 Server: Development, Staging, Backup, Production',
     subjudul: 'Empat lingkungan terpisah, satu domain, dikelola sendirian',
@@ -913,7 +940,7 @@ export const ui = {
   pengalamanJudul: 'Riwayat pekerjaan',
   kontakJudul: 'Mari bicara',
   kontakDeskripsi: 'Balasan biasanya di bawah 24 jam. Atau coba terminal di samping — ketik "help".',
-  footer: 'Dibangun dengan React dan Vite. Di-deploy otomatis lewat GitHub Actions.',
+  footer: 'Frontend: React + Vite · Backend: PHP 8.2 + CodeIgniter 4 · Server: Nginx + Ubuntu · DB: MySQL 8.0',
 
   /* Label kecil yang dipakai di banyak tempat */
   label: {

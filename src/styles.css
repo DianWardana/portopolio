@@ -102,7 +102,51 @@
 }
 [data-theme='light'] .logbox div,
 [data-theme='light'] .tline {
-  color: #c3d0dd;
+  color: #dbe4ee; /* ✅ FIXED: Improved visibility on light mode */
+}
+
+/* ✅ FIXED: Ensure terminal text is visible in light mode */
+[data-theme='light'] .tline.cmd {
+  color: #e9eef4;
+}
+[data-theme='light'] .tline.out,
+[data-theme='light'] .tline.acc {
+  color: #d0dce6;
+}
+[data-theme='light'] .tline.ok {
+  color: #3fbf87;
+}
+[data-theme='light'] .tline.err {
+  color: #ff6b6b;
+}
+[data-theme='light'] .prompt {
+  color: #3fbf87;
+}
+
+/* ✅ AKAR MASALAH: input yang diketik user memakai var(--ink).
+   Di tema terang var(--ink) = #0b141c (hitam), sementara latar
+   terminal tetap gelap (#0f1922) — teksnya jadi tidak terlihat.
+   Terminal selalu gelap, jadi warnanya dipatok terang. */
+[data-theme='light'] .term-input input {
+  color: #e9eef4;
+  -webkit-text-fill-color: #e9eef4;
+  caret-color: #3fbf87;
+}
+[data-theme='light'] .term-input input::placeholder {
+  color: #7d8fa1;
+}
+[data-theme='light'] .term-body {
+  color-scheme: dark;
+}
+[data-theme='light'] .term-busy {
+  color: #8fa1b3;
+}
+/* Baris tanpa kelas tipe (fallback) juga ikut terang */
+[data-theme='light'] .term-body,
+[data-theme='light'] .term-body * {
+  --ink: #e9eef4;
+  --ink-dim: #b9c6d3;
+  --ink-faint: #8fa1b3;
 }
 
 /* ============================================================
@@ -1103,6 +1147,30 @@ section.band {
   max-width: 68ch;
   font-size: 15px;
 }
+/* Tangkapan layar project — dibingkai supaya terbaca sebagai bukti
+   nyata, bukan sekadar dekorasi. */
+.proj-shot {
+  margin: 0 0 22px;
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg-2);
+  box-shadow: var(--shadow);
+}
+.proj-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.proj-shot figcaption {
+  padding: 9px 13px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ink-faint);
+}
+
 .proj-cols {
   display: grid;
   grid-template-columns: 1.4fr 1fr;

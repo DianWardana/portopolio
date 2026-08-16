@@ -50,6 +50,7 @@ const si = (slug, warna) => `https://cdn.simpleicons.org/${slug}/${warna}`
 const ICON_MAP = {
   // Linux/Server
   'linux (ubuntu)': si('ubuntu', 'E95420'),
+  nginx: si('nginx', '009639'),
   apache2: si('apache', 'D22128'),
   'bash scripting': si('gnubash', '4EAA25'),
   'ssh hardening': aset('icons/ssh.svg'), // ← lokal: slug 'openssh' sudah dihapus juga
@@ -59,6 +60,9 @@ const ICON_MAP = {
   'vlan / switch': { gelap: si('mikrotik', 'BCCBDA'), terang: si('mikrotik', '293239') },
   'network design': si('wireshark', '1679A7'),
   ruijie: aset('icons/ruijie.svg'), // ← icon custom milikmu sendiri
+  // Backend
+  'php 8.2+': { gelap: si('php', 'A9B4E0'), terang: si('php', '777BB4') },
+  'codeigniter 4': si('codeigniter', 'EF4223'),
   // Virtualisasi
   docker: si('docker', '2496ED'),
   'vmware esxi': { gelap: si('vmware', '9AA9B4'), terang: si('vmware', '607078') },

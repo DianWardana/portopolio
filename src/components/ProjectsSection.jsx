@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { projects, ui } from '../data/content'
+import { aset } from '../lib/aset'
 import { Chevron, Arrow, Close } from './Icons'
 
 export default function ProjectsSection({ tagLuar, asalFilter, resetFilter }) {
@@ -111,6 +112,18 @@ export default function ProjectsSection({ tagLuar, asalFilter, resetFilter }) {
                   <div>
                     <div className="proj-inner">
                       <p>{p.deskripsi}</p>
+
+                      {p.gambar && (
+                        <figure className="proj-shot">
+                          <img
+                            src={aset(p.gambar)}
+                            alt={p.gambarAlt || p.judul}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                          {p.gambarAlt && <figcaption>{p.gambarAlt}</figcaption>}
+                        </figure>
+                      )}
 
                       <div className="proj-cols">
                         <div>
