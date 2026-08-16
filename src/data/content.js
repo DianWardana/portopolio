@@ -588,7 +588,7 @@ export const projects = [
     gambar: 'img/backup-panel-audit-trail.png',
     gambarAlt: 'Halaman Audit Trail Log di Backup Panel, menampilkan riwayat aktivitas backup dan restore',
     deskripsi:
-      'Aplikasi internal yang saya bangun sendiri untuk menggantikan kumpulan skrip bash yang sebelumnya tersebar di beberapa server. Backend memakai CodeIgniter 4, antarmuka memakai React, dan seluruh eksekusi backup berjalan lewat SSH ke server target — termasuk yang databasenya berada di dalam container Docker. Setiap berkas hasil mysqldump dienkripsi AES-256 sebelum disimpan, dan setiap tindakan pengguna tercatat di audit trail: siapa, kapan, server mana, dan apa yang diubah.',
+      'Aplikasi internal yang saya bangun sendiri untuk menggantikan kumpulan skrip bash yang sebelumnya tersebar di beberapa server. Backend memakai CodeIgniter 4, dan seluruh eksekusi backup berjalan lewat SSH ke server target — termasuk yang databasenya berada di dalam container Docker. Setiap berkas hasil mysqldump dienkripsi AES-256 sebelum disimpan, dan setiap tindakan pengguna tercatat di audit trail: siapa, kapan, server mana, dan apa yang diubah.',
     hasil: [
       'Backup instan maupun terjadwal untuk banyak server dan database dari satu dasbor',
       'Seluruh berkas backup tersimpan terenkripsi (.sql.enc, AES-256-CBC) — bukan dump mentah',
@@ -598,7 +598,7 @@ export const projects = [
       'Notifikasi Telegram real-time untuk keberhasilan, kegagalan, dan proses restore',
       'Pembersihan otomatis berkas lama mengikuti kebijakan retensi per database',
     ],
-    stack: ['CodeIgniter 4', 'PHP 8.2+', 'React', 'Nginx', 'MySQL 8.0', 'Docker', 'SSH', 'OpenSSL', 'Telegram Bot API'],
+    stack: ['CodeIgniter 4', 'PHP 8.2+', 'Nginx', 'MySQL 8.0', 'Docker', 'SSH', 'OpenSSL', 'Telegram Bot API'],
     repo: '',
     demo: '',
   },
