@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { profile, ui } from './data/content'
 import { useReveal, useScrollSpy } from './lib/hooks'
 
-import Pembuka from './components/Pembuka'
 import StatusBar from './components/StatusBar'
 import MobileNav from './components/MobileNav'
 import CommandPalette from './components/CommandPalette'
@@ -68,20 +67,6 @@ export default function App() {
 
   return (
     <>
-      <Pembuka />
-
-      {/* Lapisan warna di belakang seluruh halaman. Inilah yang
-          diburamkan panel-panel kaca di atasnya — tanpa ini,
-          backdrop-filter tidak punya apa pun untuk diburamkan. */}
-      <div className="aurora" aria-hidden="true">
-        <span className="a1" />
-        <span className="a2" />
-        <span className="a3" />
-        <span className="a4" />
-      </div>
-      <div className="aurora-kisi" aria-hidden="true" />
-      <div className="aurora-tekstur" aria-hidden="true" />
-
       <a className="skip" href="#pipeline">
         {ui.label.lewati}
       </a>
