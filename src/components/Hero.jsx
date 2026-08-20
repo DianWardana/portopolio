@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { profile, ui } from '../data/content'
+import { useTypewriter } from '../lib/hooks'
 import { aset } from '../lib/aset'
 import { Copy, Arrow } from './Icons'
 
@@ -7,6 +8,7 @@ export default function Hero() {
   const [tersalin, setTersalin] = useState(false)
 
   const tagline = profile.tagline
+  const [ketikan, selesaiKetik] = useTypewriter(tagline, { kecepatan: 18, jeda: 500 })
 
   const salinEmail = async () => {
     try {
@@ -40,7 +42,15 @@ export default function Hero() {
             {profile.nama} — {profile.lokasi}
           </div>
 
-          <p className="tagline">{tagline}</p>
+          {/* Tagline diketik seperti di terminal.
+              Teks lengkap tetap ada di DOM untuk pembaca layar & SEO. */}
+          <p className="tagline">
+            <span aria-hidden="true">
+              {ketikan}
+              {!selesaiKetik && <span className="kursor-ketik" />}
+            </span>
+            <span className="sr-only">{tagline}</span>
+          </p>
 
           <div className="cta-row">
             <a className="btn solid" href="#projects">
