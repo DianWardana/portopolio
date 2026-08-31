@@ -43,7 +43,7 @@ const logList = [
   '        System init complete. Starting portofolio services...'
 ]
 
-export default function Pembuka() {
+export default function Pembuka({ onSelesai }) {
   const [tahap, setTahap] = useState('kernel')
   const [logsTampil, setLogsTampil] = useState([])
   const [teksKetik, setTeksKetik] = useState('')
@@ -56,7 +56,7 @@ export default function Pembuka() {
 
   useEffect(() => {
     let currentIndex = 0
-    const intervalTime = DURASI_KERNEL / logList.length
+    const intervalTime = Math.max(10, DURASI_KERNEL / logList.length)
     const interval = setInterval(() => {
       if (currentIndex < logList.length) {
         setLogsTampil((prev) => [...prev, logList[currentIndex]])
@@ -71,58 +71,28 @@ export default function Pembuka() {
     timers.current.push(
       setTimeout(() => {
         clearInterval(interval)
-        setTahap('terminal')
-      }, DURASI_KERNEL)
-    )
-    return () => {
-      clearInterval(interval)
-      timers.current.forEach(clearTimeout)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (tahap !== 'terminal') return
-    const terminalText = 'selamat datang'
-    setTeksKetik('')
-    let i = 0
-    const interval = setInterval(() => {
-      if (i < terminalText.length) {
-        setTeksKetik(terminalText.slice(0, i + 1))
-        i++
-      } else {
-        clearInterval(interval)
-      }
-    }, 100)
-    timers.current.push(
-      setTimeout(() => {
-        clearInterval(interval)
         setTahap('memudar')
-      }, DURASI_TERMINAL),
+      }, DURASI_KERNEL),
       setTimeout(() => {
-        setTahap('selesai')
         document.body.style.overflow = ''
-      }, DURASI_TERMINAL + MEMUDAR)
+        if (onSelesai) onSelesai()
+      }, DURASI_KERNEL + MEMUDAR)
     )
     return () => {
       clearInterval(interval)
       timers.current.forEach(clearTimeout)
-      document.body.style.overflow = ''
     }
-  }, [tahap])
-
-  // Removed early return for 'selesai' so it stays in DOM with opacity: 0 during/after transition, 
-  // preventing layout shift or black screen flash before fully unmounting.
-  const isHidden = tahap === 'selesai'
+  }, [onSelesai])
 
   return (
     <div
-      className={`kernel-boot-screen${tahap === 'memudar' || tahap === 'selesai' ? ' memudar' : ''}`}
+      className={`kernel-boot-screen${tahap === 'memudar' ? ' memudar' : ''}`}
       aria-hidden="true"
-      style={{ display: isHidden ? 'none' : 'block' }}
     >
       <div className="kernel-term" ref={termRef}>
         {tahap === 'kernel' &&
           logsTampil.map((log, index) => {
+            if (!log) return null
             const isOk = log.includes('[  OK  ]')
             return (
               <div key={index} className={`kernel-line ${isOk ? 'ok' : 'normal'}`}>
@@ -139,12 +109,6 @@ export default function Pembuka() {
               </div>
             )
           })}
-        {tahap === 'terminal' && (
-          <div className="kernel-line welcome-line">
-            <span className="welcome-text">{teksKetik}</span>
-            <span className="kernel-cursor">_</span>
-          </div>
-        )}
         {tahap === 'kernel' && <span className="kernel-cursor" />}
       </div>
     </div>
