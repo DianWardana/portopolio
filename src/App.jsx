@@ -70,18 +70,6 @@ export default function App() {
     <>
       <Pembuka />
 
-      {/* Lapisan warna di belakang seluruh halaman. Inilah yang
-          diburamkan panel-panel kaca di atasnya — tanpa ini,
-          backdrop-filter tidak punya apa pun untuk diburamkan. */}
-      <div className="aurora" aria-hidden="true">
-        <span className="a1" />
-        <span className="a2" />
-        <span className="a3" />
-        <span className="a4" />
-      </div>
-      <div className="aurora-kisi" aria-hidden="true" />
-      <div className="aurora-tekstur" aria-hidden="true" />
-
       <a className="skip" href="#pipeline">
         {ui.label.lewati}
       </a>
@@ -98,12 +86,14 @@ export default function App() {
       <main>
         <Hero />
         <Metrics />
+        <ProjectsSection tagLuar={tagLuar} asalFilter={asalFilter} resetFilter={resetFilter} />
         <PipelineSection />
         <StatusSection />
         <TopologySection />
-        <StackSection onPilihTag={pilihDariStack} />
-        <ProjectsSection tagLuar={tagLuar} asalFilter={asalFilter} resetFilter={resetFilter} />
-        <ExperienceSection />
+        <div className="wrap stack-experience-grid">
+          <StackSection compact onPilihTag={pilihDariStack} />
+          <ExperienceSection compact />
+        </div>
         <ContactSection />
       </main>
 

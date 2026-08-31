@@ -97,7 +97,7 @@ function getIcon(nama, tema) {
   return tema === 'light' ? entri.terang : entri.gelap
 }
 
-export default function StackSection({ onPilihTag }) {
+export default function StackSection({ onPilihTag, compact = false }) {
   const [aktif, setAktif] = useState('Semua')
   const [tema] = useTema()
 
@@ -113,8 +113,8 @@ export default function StackSection({ onPilihTag }) {
   }, [])
 
   return (
-    <section className="band" id="stack">
-      <div className="wrap">
+    <section className={compact ? 'section-column' : 'band'} id="stack">
+      <div className={compact ? undefined : 'wrap'}>
         <div className="section-head" data-reveal>
           <span className="eyebrow">stacks</span>
           <h2>{ui.stackJudul}</h2>
