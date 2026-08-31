@@ -24,6 +24,7 @@ export default function App() {
 
   const [menuBuka, setMenuBuka] = useState(false)
   const [paletteBuka, setPaletteBuka] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   /* Jembatan Stack → Project: klik ikon tool memfilter daftar project */
   const [tagLuar, setTagLuar] = useState(null)
@@ -74,7 +75,7 @@ export default function App() {
 
   return (
     <>
-      <Pembuka />
+      {loading && <Pembuka onSelesai={() => setLoading(false)} />}
 
       <a className="skip" href="#pipeline">
         {ui.label.lewati}
@@ -93,7 +94,7 @@ export default function App() {
 
       <CommandPalette buka={paletteBuka} tutup={() => setPaletteBuka(false)} />
 
-      <main>
+      <main style={{ display: loading ? 'none' : 'block' }}>
         <Hero />
         <Metrics />
         <ProjectsSection tagLuar={tagLuar} asalFilter={asalFilter} resetFilter={resetFilter} />
