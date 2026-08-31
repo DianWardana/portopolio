@@ -1,10 +1,10 @@
 import { profile, ui } from '../data/content'
 import { useScrollSpy, useTema, useScrollProgress, useUptime } from '../lib/hooks'
-import { Sun, Moon, Menu, Search } from './Icons'
+import { Sun, Moon, Menu, Search, Alert } from './Icons'
 
 const ids = ui.nav.map((n) => n.id)
 
-export default function StatusBar({ onBukaMenu, onBukaPalette }) {
+export default function StatusBar({ onBukaMenu, onBukaPalette, incident, onToggleIncident }) {
   const aktif = useScrollSpy(ids)
   const [tema, gantiTema] = useTema()
   const progres = useScrollProgress()
@@ -39,6 +39,15 @@ export default function StatusBar({ onBukaMenu, onBukaPalette }) {
         </nav>
 
         <div className="bar-aksi">
+          <button
+            className={`icon-btn ${incident ? 'incident-on' : ''}`}
+            onClick={onToggleIncident}
+            aria-label={incident ? 'Matikan incident' : 'Simulate Incident'}
+            title={incident ? 'Matikan incident' : 'Simulate Incident'}
+            aria-pressed={incident}
+          >
+            <Alert width="16" height="16" />
+          </button>
           <button
             className="icon-btn palette-btn"
             onClick={onBukaPalette}

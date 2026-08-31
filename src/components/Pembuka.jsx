@@ -1,99 +1,148 @@
 import { useEffect, useRef, useState } from 'react'
-import { profile } from '../data/content'
-import { kurangGerak } from '../lib/hooks'
 
-/* ============================================================
- *  LAYAR PEMBUKA
- * ============================================================
- *  Tiga aturan yang membuatnya membantu, bukan mengganggu:
- *
- *  1. Maksimal 1,2 detik lalu hilang sendiri. Tidak ada tombol
- *     yang harus diklik. Situs ini muat di bawah satu detik, jadi
- *     layar ini tidak boleh menciptakan penantian baru.
- *
- *  2. Sekali per sesi, bukan tiap muat ulang. Disimpan di
- *     sessionStorage — orang yang bolak-balik halaman tidak
- *     dipaksa menonton ulang. Terhapus sendiri saat tab ditutup.
- *
- *  3. Dilewati sepenuhnya kalau pengguna meminta gerak minimal.
- *
- *  Isi halaman tetap dirender di belakangnya sejak awal, jadi
- *  mesin pencari dan crawler tautan tetap membaca situs dengan
- *  utuh walau layar ini sedang tampil.
- * ============================================================ */
+const DURASI_KERNEL = 3000
+const DURASI_TERMINAL = 3000
+const MEMUDAR = 500
 
-const KUNCI = 'pembuka-tampil'
-const DURASI = 1900 // ms sebelum mulai memudar
-const MEMUDAR = 500 // ms lama transisi memudar
+const logList = [
+  '[  OK  ] Started Apply Kernel Variables.',
+  '[  OK  ] Mounted Kernel Debug File System.',
+  '[  OK  ] Mounted Huge Pages File System.',
+  '[  OK  ] Mounted POSIX Message Queue File System.',
+  '[  OK  ] Started Read and set NIS domainname from /etc/sysconfig/network.',
+  '[  OK  ] Activated swap /dev/mapper/cl-swap.',
+  '[  OK  ] Reached target Swap.',
+  '[  OK  ] Started Remount Root and Kernel File Systems.',
+  '        Starting Flush Journal to Persistent Storage...',
+  '        Starting Load/Save Random Seed...',
+  '        Starting Create Static Device Nodes in /dev...',
+  '[  OK  ] Started Load/Save Random Seed.',
+  '[  OK  ] Started Flush Journal to Persistent Storage.',
+  '[  OK  ] Started Setup Virtual Console.',
+  '[  OK  ] Started Create Static Device Nodes in /dev.',
+  '        Starting udev Kernel Device Manager...',
+  '[  OK  ] Started udev Kernel Device Manager.',
+  '[  OK  ] Created slice system-lvm2\\x2dpvslice.slice.',
+  '        Starting LVM event activation on device 8:2...',
+  '[  OK  ] Started Monitoring of LVM2 mirrors, snapshots etc. using dmeventd or progress polling',
+  '[  OK  ] Reached target Local File Systems (Pre).',
+  '        Starting File System Check on /dev/disk/by-uuid/0868ca58-6212-404b-91d8-b512c612c58a.',
+  '[  OK  ] Started File System Check on /dev/disk/by-uuid/0868ca58-6212-404b-91d8-b512c612c58a.',
+  '        Mounting /boot...',
+  '[  OK  ] Mounted /boot.',
+  '[  OK  ] Reached target Local File Systems.',
+  '        Starting Import network configuration from initramfs...',
+  '        Starting Tell Plymouth To Write Out Runtime Data...',
+  '        Starting Restore /run/initramfs on shutdown...',
+  '[  OK  ] Started Restore /run/initramfs on shutdown.',
+  '[  OK  ] Started Tell Plymouth To Write Out Runtime Data.',
+  '[  OK  ] Started Import network configuration from initramfs.',
+  '        Starting Create Volatile Files and Directories...',
+  '[  OK  ] Started Create Volatile Files and Directories.',
+  '[  OK  ] Started Security Auditing Service...',
+  '        System init complete. Starting portofolio services...'
+]
 
 export default function Pembuka() {
-  const [tahap, setTahap] = useState('cek') // cek → tampil → memudar → selesai
-  const [ketikan, setKetikan] = useState('')
-  const timer = useRef([])
-
-  const sapaan = `Hi, saya ${profile.nama.split(' ')[0]}`
+  const [tahap, setTahap] = useState('kernel')
+  const [logsTampil, setLogsTampil] = useState([])
+  const [teksKetik, setTeksKetik] = useState('')
+  const termRef = useRef(null)
+  const timers = useRef([])
 
   useEffect(() => {
-    let lewati = false
-    try {
-      lewati = sessionStorage.getItem(KUNCI) === '1'
-    } catch {
-      /* sessionStorage bisa diblokir — anggap saja belum pernah tampil */
-    }
-
-    if (lewati || kurangGerak()) {
-      setTahap('selesai')
-      return
-    }
-
-    try {
-      sessionStorage.setItem(KUNCI, '1')
-    } catch {
-      /* diabaikan dengan sengaja */
-    }
-
-    setTahap('tampil')
     document.body.style.overflow = 'hidden'
+  }, [])
 
-    /* Ketik satu per satu. Waktunya diatur supaya sapaan sudah utuh
-       jauh sebelum layar mulai memudar — kalau huruf terakhir baru
-       muncul di detik terakhir, orang tidak sempat membacanya. */
-    const MULAI_KETIK = 180
-    const jedaHuruf = Math.min(40, (DURASI - 600) / sapaan.length)
-    sapaan.split('').forEach((_, i) => {
-      timer.current.push(
-        setTimeout(() => setKetikan(sapaan.slice(0, i + 1)), MULAI_KETIK + i * jedaHuruf)
-      )
-    })
+  useEffect(() => {
+    let currentIndex = 0
+    const intervalTime = DURASI_KERNEL / logList.length
+    const interval = setInterval(() => {
+      if (currentIndex < logList.length) {
+        setLogsTampil((prev) => [...prev, logList[currentIndex]])
+        currentIndex++
+        if (termRef.current) {
+          termRef.current.scrollTop = termRef.current.scrollHeight
+        }
+      } else {
+        clearInterval(interval)
+      }
+    }, intervalTime)
+    timers.current.push(
+      setTimeout(() => {
+        clearInterval(interval)
+        setTahap('terminal')
+      }, DURASI_KERNEL)
+    )
+    return () => {
+      clearInterval(interval)
+      timers.current.forEach(clearTimeout)
+    }
+  }, [])
 
-    timer.current.push(setTimeout(() => setTahap('memudar'), DURASI))
-    timer.current.push(
+  useEffect(() => {
+    if (tahap !== 'terminal') return
+    const terminalText = 'selamat datang'
+    setTeksKetik('')
+    let i = 0
+    const interval = setInterval(() => {
+      if (i < terminalText.length) {
+        setTeksKetik(terminalText.slice(0, i + 1))
+        i++
+      } else {
+        clearInterval(interval)
+      }
+    }, 100)
+    timers.current.push(
+      setTimeout(() => {
+        clearInterval(interval)
+        setTahap('memudar')
+      }, DURASI_TERMINAL),
       setTimeout(() => {
         setTahap('selesai')
         document.body.style.overflow = ''
-      }, DURASI + MEMUDAR)
+      }, DURASI_TERMINAL + MEMUDAR)
     )
-
     return () => {
-      timer.current.forEach(clearTimeout)
+      clearInterval(interval)
+      timers.current.forEach(clearTimeout)
       document.body.style.overflow = ''
     }
-  }, [sapaan])
+  }, [tahap])
 
-  if (tahap === 'selesai' || tahap === 'cek') return null
+  if (tahap === 'selesai') return null
 
   return (
     <div
-      className={`pembuka${tahap === 'memudar' ? ' memudar' : ''}`}
-      // Disembunyikan dari pembaca layar: isinya cuma sapaan hiasan,
-      // dan halaman aslinya sudah ada di belakang.
+      className={`kernel-boot-screen${tahap === 'memudar' ? ' memudar' : ''}`}
       aria-hidden="true"
     >
-      <div className="pembuka-kartu">
-        <p className="pembuka-teks">
-          {ketikan}
-          <span className="pembuka-kursor" />
-        </p>
+      <div className="kernel-term" ref={termRef}>
+        {tahap === 'kernel' &&
+          logsTampil.map((log, index) => {
+            const isOk = log.includes('[  OK  ]')
+            return (
+              <div key={index} className={`kernel-line ${isOk ? 'ok' : 'normal'}`}>
+                {isOk ? (
+                  <>
+                    <span className="bracket">[</span>
+                    <span className="ok-text">  OK  </span>
+                    <span className="bracket">]</span>
+                    <span className="msg">{log.replace('[  OK  ]', '')}</span>
+                  </>
+                ) : (
+                  <span className="msg">{log}</span>
+                )}
+              </div>
+            )
+          })}
+        {tahap === 'terminal' && (
+          <div className="kernel-line welcome-line">
+            <span className="welcome-text">{teksKetik}</span>
+            <span className="kernel-cursor">_</span>
+          </div>
+        )}
+        {tahap === 'kernel' && <span className="kernel-cursor" />}
       </div>
     </div>
   )
