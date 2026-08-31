@@ -110,12 +110,15 @@ export default function Pembuka() {
     }
   }, [tahap])
 
-  if (tahap === 'selesai') return null
+  // Removed early return for 'selesai' so it stays in DOM with opacity: 0 during/after transition, 
+  // preventing layout shift or black screen flash before fully unmounting.
+  const isHidden = tahap === 'selesai'
 
   return (
     <div
-      className={`kernel-boot-screen${tahap === 'memudar' ? ' memudar' : ''}`}
+      className={`kernel-boot-screen${tahap === 'memudar' || tahap === 'selesai' ? ' memudar' : ''}`}
       aria-hidden="true"
+      style={{ display: isHidden ? 'none' : 'block' }}
     >
       <div className="kernel-term" ref={termRef}>
         {tahap === 'kernel' &&
