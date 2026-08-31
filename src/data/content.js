@@ -33,7 +33,7 @@ export const profile = {
   inisial: 'DRW',
   judulBaris1: 'System',
   judulBaris2: 'Administrator',
-  tagline: 'Saya menjaga server tetap hidup, jaringan tetap stabil, dan 400+ user tetap produktif — termasuk saat tidak ada yang sadar ada masalah.',
+  tagline: 'Saya menjaga server tetap hidup, jaringan tetap stabil, dan 100 user tetap produktif — termasuk saat tidak ada yang sadar ada masalah.',
   lokasi: 'Mojokerto, Jawa Timur',
   zonaWaktu: 'Asia/Jakarta',
   ketersediaan: 'open',
@@ -86,11 +86,11 @@ export const metrik = [
     tren: [120, 180, 260, 330, 410, 500, 590, 680, 760, 850, 930, 1000],
   },
   {
-    nilai: 400,
+    nilai: 100,
     sufiks: '+',
     label: 'User aktif dikelola',
     catatan: 'lingkungan high-demand',
-    tren: [90, 130, 170, 210, 240, 280, 310, 330, 360, 380, 395, 400],
+    tren: [22, 32, 42, 52, 60, 70, 77, 82, 90, 95, 98, 100],
   },
 ]
 
@@ -434,7 +434,7 @@ export const topologi = {
       y: 372,
       detail: {
         peran: 'Zona karyawan & tamu',
-        spek: ['400+ user aktif', 'Bandwidth per-user dibatasi', 'Guest terisolasi dari jaringan internal'],
+        spek: ['100 user aktif', 'Bandwidth per-user dibatasi', 'Guest terisolasi dari jaringan internal'],
         catatan: 'Zona dengan jumlah perangkat terbesar. Tamu benar-benar terisolasi — bisa internet, tidak bisa menyentuh apa pun di dalam.',
       },
     },
@@ -675,13 +675,13 @@ export const projects = [
     demo: '',
   },
   {
-    judul: 'Jaringan MikroTik Multi-VLAN untuk 400+ User',
+    judul: 'Jaringan MikroTik Multi-VLAN untuk 100 User',
     subjudul: '100+ rule firewall, segmentasi VLAN, dan pembagian bandwidth',
     tahun: '2025—kini',
     status: 'produksi',
     tag: ['Network', 'MikroTik', 'VLAN'],
     deskripsi:
-      'Mengelola jaringan berbasis MikroTik untuk lingkungan dengan 400+ user aktif. Mencakup lebih dari 100 rule firewall, segmentasi VLAN antar zona, simple queue untuk membagi bandwidth per user, web filtering, serta jalur PPTP untuk akses dari luar kantor.',
+      'Mengelola jaringan berbasis MikroTik untuk lingkungan dengan 100 user aktif. Mencakup lebih dari 100 rule firewall, segmentasi VLAN antar zona, simple queue untuk membagi bandwidth per user, web filtering, serta jalur PPTP untuk akses dari luar kantor.',
     hasil: [
       '100+ rule firewall aktif dengan prinsip hanya membuka yang memang diperlukan',
       'Segmentasi VLAN memisahkan zona kerja, server, dan perangkat lapangan',
@@ -829,7 +829,7 @@ export const pengalaman = [
     perusahaan: 'PT Jayamas Medica Industri Tbk',
     periode: 'Februari 2025 — sekarang',
     poin: [
-      'Daily support untuk 400+ user aktif: setup perangkat baru, pencatatan aset, dan pencatatan task agar setiap permintaan terlacak',
+      'Daily support untuk 100 user aktif: setup perangkat baru, pencatatan aset, dan pencatatan task agar setiap permintaan terlacak',
       'Mengelola 4 server dengan peran terpisah — development, staging, backup, dan production di VPS — sebagian berjalan di atas Docker, sebagian native',
       'Menyatukan seluruh layanan di bawah satu domain lewat reverse proxy, dipisah per subdomain',
       'Mengeraskan sisi keamanan dengan UFW dan Fail2Ban, ditambah notifikasi Telegram untuk setiap login yang masuk ke server',
@@ -892,7 +892,7 @@ export const perintahTerminal = {
       '',
       '7 tahun pengalaman langsung di lapangan sejak Mei 2019 —',
       'dari vendor yang melayani 30+ klien, kini in-house',
-      'menangani 400+ user, 4 server, dan 300+ titik CCTV.',
+      'menangani 100 user, 4 server, dan 300+ titik CCTV.',
       '',
       'Di luar kantor: utak-atik homelab dan kopi hitam tanpa gula.',
     ],
@@ -915,11 +915,11 @@ export const perintahTerminal = {
  * ---------------------------------------------------------- */
 export const ui = {
   nav: [
+    { id: 'projects', label: 'Project' },
     { id: 'pipeline', label: 'Alur Kerja' },
     { id: 'status', label: 'Status' },
     { id: 'arsitektur', label: 'Arsitektur' },
     { id: 'stack', label: 'Stack' },
-    { id: 'projects', label: 'Project' },
     { id: 'pengalaman', label: 'Pengalaman' },
     { id: 'kontak', label: 'Kontak' },
   ],

@@ -1,11 +1,11 @@
 import { pengalaman, sertifikasi, ui } from '../data/content'
 import { Arrow } from './Icons'
 
-export default function ExperienceSection() {
+export default function ExperienceSection({ compact = false }) {
 
   return (
-    <section className="band" id="pengalaman">
-      <div className="wrap">
+    <section className={compact ? 'section-column' : 'band'} id="pengalaman">
+      <div className={compact ? undefined : 'wrap'}>
         <div className="section-head" data-reveal>
           <span className="eyebrow">karier</span>
           <h2>{ui.pengalamanJudul}</h2>
