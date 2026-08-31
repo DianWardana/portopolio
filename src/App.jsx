@@ -6,6 +6,7 @@ import Pembuka from './components/Pembuka'
 import StatusBar from './components/StatusBar'
 import MobileNav from './components/MobileNav'
 import CommandPalette from './components/CommandPalette'
+import IncidentOverlay from './components/IncidentOverlay'
 import Hero from './components/Hero'
 import Metrics from './components/Metrics'
 import PipelineSection from './components/PipelineSection'
@@ -27,8 +28,13 @@ export default function App() {
   /* Jembatan Stack → Project: klik ikon tool memfilter daftar project */
   const [tagLuar, setTagLuar] = useState(null)
   const [asalFilter, setAsalFilter] = useState(null)
+  const [incident, setIncident] = useState(false)
 
   useReveal()
+
+  useEffect(() => {
+    document.body.classList.toggle('incident-mode', incident)
+  }, [incident])
 
   const pilihDariStack = useCallback((tag, namaTool) => {
     if (!tag) return
@@ -77,7 +83,11 @@ export default function App() {
       <StatusBar
         onBukaMenu={() => setMenuBuka(true)}
         onBukaPalette={() => setPaletteBuka(true)}
+        incident={incident}
+        onToggleIncident={() => setIncident((v) => !v)}
       />
+
+      <IncidentOverlay active={incident} onClose={() => setIncident(false)} />
 
       <MobileNav buka={menuBuka} tutup={() => setMenuBuka(false)} aktif={aktif} />
 

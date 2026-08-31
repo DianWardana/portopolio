@@ -8,7 +8,7 @@ export default function Hero() {
   const [tersalin, setTersalin] = useState(false)
 
   const tagline = profile.tagline
-  const [ketikan, selesaiKetik] = useTypewriter(tagline, { kecepatan: 18, jeda: 500 })
+  const [ketikan, selesaiKetik] = useTypewriter(tagline, { kecepatan: 8, jeda: 200 })
 
   const salinEmail = async () => {
     try {
